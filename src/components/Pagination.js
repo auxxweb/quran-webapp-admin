@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+function Pagination({ currentPage, onPageChange, totalPages }) {
+  // totalItems, itemsPerPage,
+  // const totalPages = Math.ceil(totalItems / itemsPerPage);
   const [activePage, setActivePage] = useState(currentPage || 1);
 
   const handlePageChange = (page) => {
@@ -20,7 +21,11 @@ function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
       pageNumbers.push(
         <button
           key={i}
-          className={`pagination-button px-3 py-1 rounded ${activePage === i ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+          className={`pagination-button px-3 py-1 rounded ${
+            activePage === i
+              ? "bg-teal-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
           onClick={() => handlePageChange(i)}
         >
           {i}
@@ -35,7 +40,9 @@ function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
     <div className="flex justify-center items-center space-x-2 p-4 bg-teal-50">
       {/* Previous Button */}
       <button
-        className={`p-2 bg-teal-500 text-white rounded ${activePage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`p-2 bg-teal-500 text-white rounded ${
+          activePage === 1 ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         onClick={() => handlePageChange(activePage - 1)}
         disabled={activePage === 1}
       >
@@ -46,7 +53,12 @@ function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
           stroke="currentColor"
           className="w-5 h-5"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
 
@@ -55,7 +67,9 @@ function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
 
       {/* Next Button */}
       <button
-        className={`p-2 bg-teal-500 text-white rounded ${activePage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`p-2 bg-teal-500 text-white rounded ${
+          activePage === totalPages ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         onClick={() => handlePageChange(activePage + 1)}
         disabled={activePage === totalPages}
       >
@@ -66,7 +80,12 @@ function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
           stroke="currentColor"
           className="w-5 h-5"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </button>
     </div>

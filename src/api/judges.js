@@ -5,8 +5,8 @@ const tagInjection = api.enhanceEndpoints({ addTagTypes: [] });
 
 // Define a service using a base URL and expected endpoints
 export const judgesApi = tagInjection.injectEndpoints({
-  endpoints: (builder) => ({
-    getJudges: builder.query({
+    endpoints: (builder) => ({
+        getJudges: builder.query({
       query: (body) => {
         return {
           body,

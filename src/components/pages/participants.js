@@ -40,7 +40,7 @@ const Participants = () => {
     const phone = formData.get("phoneNumber");
     const address = formData.get("address");
     const gender = formData.get("gender");
-    const zone = formData.get("zone");
+    // const zone = formData.get("zone");
     const age = formData.get("age");
 
     try {
@@ -51,7 +51,7 @@ const Participants = () => {
           phone,
           address,
           gender,
-          zone,
+          zone:["670e5df063e12ac02509fc9b"],
           age,
         };
         const res = await editParticipant?.(body);
@@ -69,7 +69,7 @@ const Participants = () => {
           phone,
           address,
           gender,
-          zone,
+          zone:["670e5df063e12ac02509fc9b"],
           age,
         };
         const res = await addParticipant?.(body);
