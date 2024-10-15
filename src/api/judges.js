@@ -5,8 +5,8 @@ const tagInjection = api.enhanceEndpoints({ addTagTypes: [] });
 
 // Define a service using a base URL and expected endpoints
 export const judgesApi = tagInjection.injectEndpoints({
-    endpoints: (builder) => ({
-        getJudges: builder.query({
+  endpoints: (builder) => ({
+    getJudges: builder.query({
       query: (params) => {
         return {
           params,
@@ -42,6 +42,15 @@ export const judgesApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    blockJudge: builder.mutation({
+      query: (body) => {
+        return {
+          body,
+          url: "/api/admin/judge/blockOrUnblock",
+          method: "patch",
+        };
+      },
+    }),
   }),
 });
 
@@ -52,4 +61,5 @@ export const {
   useGetJudgesQuery,
   useEditJudgeMutation,
   useDeleteJudgeMutation,
+  useBlockJudgeMutation,
 } = judgesApi;
