@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Modal from "../reUsableCmponent/modal/Modal";
 import Pagination from "../Pagination";
+import { BiSolidDownArrow } from "react-icons/bi";
+
 import {
   useAddJudgeMutation,
   useDeleteJudgeMutation,
@@ -385,7 +387,7 @@ const Judges = () => {
                 <td className="px-4 py-2">{judge?.email}</td>
                 <td className="px-4 py-2">{judge?.password}</td>
                 <td className="px-4 py-2 ">
-                  <button className={`p-2 ${judge?.isBlocked? " text-red-700 border-red-700":" text-[#1DB290]"} rounded-full  border `}>{judge?.isBlocked ? "Blocked" : "Unblocked"}</button>
+                  <button className={`py-2 px-5 flex space-x-2 items-center ${judge?.isBlocked? " text-[#FF0404] border-[#FF0404]":"  border-[#1DB290] text-[#1DB290]"} rounded-full  border `}> <span>{judge?.isBlocked ? "Blocked" : "Unblocked"}</span><BiSolidDownArrow className="text-black"/></button>
                 </td>
                 <td className="px-4 py-2 text-right">
                   <button onClick={() => handleEditClick(judge)}>
