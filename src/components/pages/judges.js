@@ -120,7 +120,6 @@ const Judges = () => {
     setShowDeletePopup(false);
   };
 
-
   const handleSearchChange = useDebouncedCallback(
     // function
     (value) => {
@@ -351,7 +350,7 @@ const Judges = () => {
         </div>
       </div>
 
-      <table className="min-w-full table-auto border-separate border-spacing-y-2">
+      <table className="min-w-full table-auto ">
         <thead className="bg-white">
           <tr>
             <th className="px-4 py-4 text-left">Sl No</th>
@@ -364,12 +363,15 @@ const Judges = () => {
             <th className="px-4 py-4 text-left">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="border-[2px] border-opacity-50 border-[#969696]">
           {isLoading ? (
             <>Loading...</>
           ) : (
             data?.judge?.map((judge, index) => (
-              <tr className="bg-teal-100" key={index}>
+              <tr
+                className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
+                key={index}
+              >
                 <td className="px-4 py-2">{index}</td>
                 <td className="px-4 py-2 flex items-center">
                   <img
@@ -382,8 +384,8 @@ const Judges = () => {
                 <td className="px-4 py-2">{judge?.zone?.name}</td>
                 <td className="px-4 py-2">{judge?.email}</td>
                 <td className="px-4 py-2">{judge?.password}</td>
-                <td className="px-4 py-2">
-                  {judge?.isBlocked ? "Blocked" : "Unblocked"}
+                <td className="px-4 py-2 ">
+                  <button className={`p-2 ${judge?.isBlocked? " text-red-700 border-red-700":" text-[#1DB290]"} rounded-full  border `}>{judge?.isBlocked ? "Blocked" : "Unblocked"}</button>
                 </td>
                 <td className="px-4 py-2 text-right">
                   <button onClick={() => handleEditClick(judge)}>
@@ -407,12 +409,12 @@ const Judges = () => {
         </tbody>
       </table>
 
-      <div className="m-auto flex justify-end mt-8">
+      <div className="m-auto flex justify-end ">
         <Pagination
-          totalItems={totalItems}
-          itemsPerPage={itemsPerPage}
+          itemsPerPage={limit}
           currentPage={currentPage}
           onPageChange={handlePageChange}
+          totalPages={data?.totalPages}
         />
       </div>
     </>
