@@ -84,7 +84,7 @@ function Sidebar({ isOpen, setIsOpen }) {
         </div>
 
         <div
-          onClick={() => navigate("/projetspage")}
+          onClick={() => navigate("/judges")}
           className="cursor-pointer flex items-center text-[#909294] hover:text-[#75eed2]"
         >
           <span className="flex items-center ml-2">
@@ -106,7 +106,7 @@ function Sidebar({ isOpen, setIsOpen }) {
           </span>
         </div>
         <div
-          onClick={() => navigate("/projetspage")}
+          onClick={() => navigate("/participants")}
           className="cursor-pointer flex items-center text-[#909294] hover:text-[#75eed2]"
         >
           <span className="flex items-center ml-2">

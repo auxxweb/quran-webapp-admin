@@ -31,13 +31,13 @@ const Zones = () => {
     const image =
       "https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Duser&psig=AOvVaw1ktqYCunJV8n85eGc6eIR2&ust=1729073699253000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJjg186TkIkDFQAAAAAdAAAAABAE";
     try {
-      const body = {
-        zoneId: editPopupData?._id,
-        name,
-        description,
-        image,
-      };
       if (editPopupData) {
+        const body = {
+          zoneId: editPopupData?._id,
+          name,
+          description,
+          image,
+        };
         const res = await EditZone?.(body);
         if (res?.data?.success) {
           refetch();
@@ -47,6 +47,11 @@ const Zones = () => {
           alert(res.data.message);
         }
       } else {
+        const body = {
+          name,
+          description,
+          image,
+        };
         const res = await addZone?.(body);
         if (res?.data?.success) {
           refetch();

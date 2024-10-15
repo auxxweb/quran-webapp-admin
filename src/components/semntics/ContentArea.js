@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import AllEmployees from "../pages/AllEmployees";
-import Leaves from "../pages/Leaves";
+// import Leaves from "../pages/Leaves";
 import Attendence from "../pages/Attendence";
 import ShiftAndSchedule from "../pages/ShiftAndSchedule";
 import ClientDetails from "../pages/ClientDetails";
@@ -17,6 +16,8 @@ import DeveloperDetails from "../pages/DeveloperDetails";
 import DashBoard from "../pages/DashBoard";
 import Zones from "../pages/Zones";
 import Login from "../pages/Login";
+import Judges from "../pages/judges";
+import Participants from "../pages/participants";
 
 function ContentArea() {
   return (
@@ -25,8 +26,8 @@ function ContentArea() {
       <Route path="/" element={<DashBoard />} />
       <Route path="/login" element={<Login />} />
       <Route path="/zones" element={<Zones />} />
-      <Route path="/allemployees" element={<AllEmployees />} />
-      <Route path="/leaves" element={<Leaves />} />
+      <Route path="/judges" element={<Judges />} />
+      <Route path="/participants" element={<Participants />} />
       <Route path="/attendence" element={<Attendence />} />
       <Route path="/shiftsandschedules" element={<ShiftAndSchedule />} />
       <Route path="/clientsdetails" element={<ClientDetails />} />
