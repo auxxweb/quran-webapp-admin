@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../api/auth";
 import { getUserCredential } from "../../common/utils";
+import { PiEyeFill, PiEyeSlashFill } from "react-icons/pi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -47,115 +48,92 @@ const Login = () => {
         className="relative h-screen bg-cover bg-center"
         style={{ backgroundImage: 'url("/quranBackground.jpeg")' }}
       >
-        <div className="relative z-10 flex flex-col items-center justify-center border border-[#C19D5C]">
-          <div className="flex flex-row w-25 h-auto justify-center">
-            <img src="/quranLogo.svg" alt="Bay Fitness Logo" priority />
+        <div className="relative z-10 flex flex-col h-full items-center space-y-4 justify-center ">
+          <div className="flex flex-row w-24 h-auto justify-center">
+            <img
+              src="/quranLogo.svg"
+              alt="Bay Fitness Logo"
+              className="h-full w-full object-contain"
+              priority
+            />
           </div>
-          <div className="w-auto h-auto">
+          <div className="w-full max-w-lg ">
             <form
               onSubmit={onSubmit}
-              className="bg-white rounded-lg p-8 max-w-md w-full"
+              className="bg-white border space-y-4 border-[#C19D5C] shadow-md rounded-lg text-center py-14 px-8  w-full"
             >
-              <h1 className="text-xl text-[#C19D5C] font-semibold">Login</h1>
-              <h3 className="text-xl text-[#C19D5C]">
-                Enter your username and password to Login in!
+              <h1 className="text-5xl text-[#C19D5C] font-semibold">Log In</h1>
+              <h3 className="text-base text-[#686219]">
+                Enter your Username And Password To Login in!
               </h3>
 
               {/* Email Input Field */}
-              <div className="relative mb-10 group items-center">
+              <div className="relative mb-10 group space-y-1 items-center">
                 {/* Increased margin for spacing */}
                 <label
-                  className="px-3 py-1 text-base text-[#C19D5C] bg-transparent m-auto" // Increased padding and adjusted label positioning
+                  className="px-3 py-1 text-lg font-medium text-[#C19D5C] bg-transparent m-auto" // Increased padding and adjusted label positioning
                   htmlFor="name"
                 >
                   User Name
                 </label>
                 <input
-                  className="w-full px-6 py-4 border border-gold-500 text-gold-500 placeholder-gold-500 rounded-full bg-transparent outline-none focus:border-gold-600 focus:border-white focus:text-white"
+                  className="w-full px-6 py-4 border border-[#CCCCCC] text-gold-500 placeholder-gold-500 rounded-[22px] bg-transparent outline-none focus:border-gold-600 "
                   type="email"
                   id="email"
+                  placeholder="Email"
+
                   name="email"
                   required
                 />
               </div>
 
               {/* Password Input Field */}
-              <div className="relative mb-4 group">
+              <div className="relative  group  space-y-1">
                 <label
-                  className="px-3 py-1 text-base text-[#C19D5C] bg-transparent m-auto" // Increased padding and adjusted label positioning
+                  className="px-3 py-1 text-lg font-medium text-[#C19D5C] bg-transparent m-auto" // Increased padding and adjusted label positioning
                   htmlFor="password"
                 >
                   Password
                 </label>
-                <input
-                  className="w-full px-6 py-4 border border-gold-500 text-gold-500 placeholder-gold-500 rounded-full bg-transparent outline-none"
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  class="absolute inset-y-0 end-0 flex items-center z-20 px-3 mt-5 mr-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-none focus:text-blue-600 dark:text-neutral-600 dark:focus:text-blue-500"
-                >
-                  <svg
-                    class="shrink-0 size-3.5"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                <div className="relative">
+                  <input
+                    className="w-full px-6 py-4 border border-[#CCCCCC] text-gold-500 placeholder-gold-500 rounded-[22px] bg-transparent outline-none focus:border-gold-600 "
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    class="absolute inset-y-0 end-0 text-xl  flex items-center  z-20 px-3  cursor-pointer text-[#888888] rounded-e-md   "
                   >
-                    <path
-                      class="hs-password-active:hidden"
-                      d="M9.88 9.88a3 3 0 1 0 4.24 4.24"
-                    ></path>
-                    <path
-                      class="hs-password-active:hidden"
-                      d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
-                    ></path>
-                    <path
-                      class="hs-password-active:hidden"
-                      d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
-                    ></path>
-                    <line
-                      class="hs-password-active:hidden"
-                      x1="2"
-                      x2="22"
-                      y1="2"
-                      y2="22"
-                    ></line>
-                    <path
-                      class="hidden hs-password-active:block"
-                      d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
-                    ></path>
-                    <circle
-                      class="hidden hs-password-active:block"
-                      cx="12"
-                      cy="12"
-                      r="3"
-                    ></circle>
-                  </svg>
-                </button>
+                    {showPassword ?  <PiEyeSlashFill />: <PiEyeFill />}
+                  </button>
+                </div>
               </div>
 
               {/* Forgot Password Link (Right-aligned under Password) */}
-              <div className="flex justify-end mb-8text-sm text-[#C19D5C] hover:underline">
-                Forgot Password?
+              <div className="flex justify-between mb-8 text-sm text-[#C19D5C] hover:underline">
+                <span className="space-x-2 flex items-center">
+                  <input type="checkbox" className="bg-[#C19D5C] h-4 w-4" />
+                  <span>Remember me</span>
+                </span>
+                <span>Forgot Password?</span>
               </div>
 
               {/* Sign In Button */}
-              <button
+              <div className="pt-3">
+                 <button
                 disabled={isLoading}
-                className="w-full mt-5 py-4 bg-gold-500 text-[#C19D5C] font-bold rounded-full hover:bg-gold-600 focus:outline-none focus:ring focus:ring-gold-500 focus:ring-opacity-50"
+                className="w-full  py-3 max-w-[217px] rounded-lg bg-gradient-to-r from-[#C19D5C] to-[#5F4D2D]  text-white  "
                 type="submit"
               >
-                Sign In
+                Log In
               </button>
+              </div>
+             
             </form>
           </div>
         </div>
