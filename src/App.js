@@ -1,13 +1,18 @@
-import React from "react"
-import { BrowserRouter } from "react-router-dom"
-import Browse from "./components/semntics/Browse"
+import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { store } from "./api/store";
+import Browse from "./components/semntics/Browse";
 
 function App() {
   return (
-    <BrowserRouter> {/* Wrap your app in BrowserRouter */}
-      <Browse />
+    <BrowserRouter>
+      <Provider store={store}>
+        <Browse />
+        {/* Wrap your app in BrowserRouter */}
+      </Provider>
     </BrowserRouter>
   );
 }
 
-export default App
+export default App;
