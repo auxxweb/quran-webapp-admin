@@ -7,9 +7,9 @@ const tagInjection = api.enhanceEndpoints({ addTagTypes: [] });
 export const zonesApi = tagInjection.injectEndpoints({
   endpoints: (builder) => ({
     getZones: builder.query({
-      query: (body) => {
+      query: (params) => {
         return {
-          body,
+          params,
           url: "/api/admin/zone",
           method: "get",
         };

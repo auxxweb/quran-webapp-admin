@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import Modal from "../reUsableCmponent/modal/Modal";
 import {
   useAddZoneMutation,
@@ -12,9 +13,16 @@ import Pagination from "../Pagination";
 const Zones = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editPopupData, setEditPopupData] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedZoneId, setSelectedZoneId] = useState(null);
-  const { data, isLoading, refetch } = useGetZonesQuery();
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 2;
+  const { data, isLoading, refetch } = useGetZonesQuery({
+    limit,
+    page: currentPage,
+    search: searchValue,
+  });
   const [addZone, { isLoading: isLoadingMutation }] = useAddZoneMutation();
   const [deleteZone, { isLoading: isLoadingDelete }] = useDeleteZoneMutation();
   const [EditZone, { isLoading: isLoadingEdit }] = useEditZoneMutation();
@@ -40,7 +48,7 @@ const Zones = () => {
         };
         const res = await EditZone?.(body);
         if (res?.data?.success) {
-          refetch();
+          refetch({ page: 1 });
           toggleModal();
           setEditPopupData(null);
         } else {
@@ -100,13 +108,21 @@ const Zones = () => {
   const handleDeleteModalClose = () => {
     setShowDeletePopup(false);
   };
-
+  const handleSearchChange = useDebouncedCallback(
+    // function
+    (value) => {
+      setSearchValue(value ?? "");
+    },
+    500
+  );
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  };
   return (
     <>
       <div className="flex rounded-lg p-4">
         <h2 className="text-2xl font-semibold text-gray-700">Zones</h2>
         <div className="ml-auto flex items-center space-x-4">
-          {" "}
           <span className="flex items-center">
             <span
               className="bg-[#0EB599] text-white rounded-full p-3 cursor-pointer"
@@ -406,6 +422,9 @@ const Zones = () => {
           <input
             className="p-2 lg:w-[300px] w-full appearance-none bg-white border border-gray-500"
             placeholder="Search by name"
+            onChange={(e) => {
+              handleSearchChange(e.target.value);
+            }}
           />
         </span>
         <span className="flex items-center">
@@ -466,7 +485,12 @@ const Zones = () => {
           )}
         </tbody>
       </table>
-      <Pagination />
+      <Pagination
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        totalPages={data?.totalPages}
+      />
 
       {/* <div className="flex flex-wrap justify-center mt-4">
         <EmpCard

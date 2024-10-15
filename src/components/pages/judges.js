@@ -30,13 +30,12 @@ const Judges = () => {
     const formData = new FormData(event.target); // Make sure event.target is the form
     const name = formData.get("fullName"); // Get email input value
     const email = formData.get("email");
-    const phone = formData.get("phoneNumber")
-    const address = formData.get("address")
-    const gender = formData.get("gender")
-    const zone = formData.get("zone")
-    const isMain = !!formData.get("isMain")
-    console.log("is",isMain);
-    
+    const phone = formData.get("phoneNumber");
+    const address = formData.get("address");
+    const gender = formData.get("gender");
+    // const zone = formData.get("zone");
+    const isMain = !!formData.get("isMain");
+
     try {
       if (editPopupData) {
         const body = {
@@ -45,8 +44,8 @@ const Judges = () => {
           phone,
           address,
           gender,
-          zone,
-          isMain
+          zone: ["670e5df063e12ac02509fc9b"],
+          isMain,
         };
         const res = await EditZone?.(body);
         if (res?.data?.success) {
@@ -63,8 +62,8 @@ const Judges = () => {
           phone,
           address,
           gender,
-          zone,
-          isMain
+          zone: ["670e5df063e12ac02509fc9b"],
+          isMain,
         };
         const res = await addZone?.(body);
         if (res?.data?.success) {
@@ -346,10 +345,12 @@ const Judges = () => {
         <thead className="bg-white">
           <tr>
             <th className="px-4 py-4 text-left">Sl No</th>
-            <th className="px-4 py-4 text-left">Name</th>
             <th className="px-4 py-4 text-left">Image</th>
-            <th className="px-4 py-4 text-left">Link</th>
-            <th className="px-4 py-4 text-left">Description</th>
+            <th className="px-4 py-4 text-left">Name</th>
+            <th className="px-4 py-4 text-left">Zone</th>
+            <th className="px-4 py-4 text-left">Email</th>
+            <th className="px-4 py-4 text-left">Password</th>
+            <th className="px-4 py-4 text-left">Status</th>
             <th className="px-4 py-4 text-left">Action</th>
           </tr>
         </thead>
@@ -357,30 +358,32 @@ const Judges = () => {
           {isLoading ? (
             <>Loading...</>
           ) : (
-            data?.judge?.map((zone, index) => (
+            data?.judge?.map((judge, index) => (
               <tr className="bg-teal-100" key={index}>
                 <td className="px-4 py-2">{index}</td>
-                <td className="px-4 py-2">{zone?.name}</td>
                 <td className="px-4 py-2 flex items-center">
                   <img
                     alt="img"
-                    src={zone?.image}
+                    src={judge?.image}
                     className="w-8 h-8 rounded-full mr-2"
                   />
                 </td>
-                <td className="px-4 py-2">Competition Link</td>
+                <td className="px-4 py-2">{judge?.name}</td>
+                <td className="px-4 py-2">{judge?.zone[0]?.name}</td>
+                <td className="px-4 py-2">{judge?.email}</td>
+                <td className="px-4 py-2">{judge?.password}</td>
                 <td className="px-4 py-2">
-                  <div className="flex -space-x-2">{zone?.description}</div>
+                  {judge?.isBlocked ? "Blocked" : "Unblocked"}
                 </td>
                 <td className="px-4 py-2 text-right">
-                  <button onClick={() => handleEditClick(zone)}>
+                  <button onClick={() => handleEditClick(judge)}>
                     <img
                       alt="pics"
                       src="/icons/edit.svg"
                       className="w-8 h-8 rounded-full mr-2"
                     />
                   </button>
-                  <button onClick={() => handleDeleteClick(zone?._id)}>
+                  <button onClick={() => handleDeleteClick(judge?._id)}>
                     <img
                       alt="pics"
                       src="/icons/delete.svg"
