@@ -25,9 +25,10 @@ const Judges = () => {
     page: currentPage,
     search: searchValue,
   });
-  const [addZone, { isLoading: isLoadingMutation }] = useAddJudgeMutation({});
-  const [deleteZone, { isLoading: isLoadingDelete }] = useDeleteJudgeMutation();
-  const [EditZone, { isLoading: isLoadingEdit }] = useEditJudgeMutation();
+  const [addJudge, { isLoading: isLoadingMutation }] = useAddJudgeMutation({});
+  const [deleteJudge, { isLoading: isLoadingDelete }] = useDeleteJudgeMutation();
+  const [EditJudge, { isLoading: isLoadingEdit }] = useEditJudgeMutation();
+  const [blockJudge, { isLoading: isLoadingBlock }] = useEditJudgeMutation();
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -55,7 +56,7 @@ const Judges = () => {
           zone: ["670e5df063e12ac02509fc9b"],
           isMain,
         };
-        const res = await EditZone?.(body);
+        const res = await EditJudge?.(body);
         if (res?.data?.success) {
           refetch();
           toggleModal();
@@ -73,7 +74,7 @@ const Judges = () => {
           zone: ["670e5df063e12ac02509fc9b"],
           isMain,
         };
-        const res = await addZone?.(body);
+        const res = await addJudge?.(body);
         if (res?.data?.success) {
           refetch();
           toggleModal();
@@ -98,13 +99,28 @@ const Judges = () => {
   const handleDelete = async () => {
     try {
       const body = {
-        zoneId: selectedJudgeId,
+        judgeId: selectedJudgeId,
       };
-      const deleteres = await deleteZone?.(body);
+      const deleteres = await deleteJudge?.(body);
       if (deleteres?.data?.success) {
         refetch();
         setSelectedJudgeId(null);
         setShowDeletePopup(false);
+      } else {
+        alert(deleteres.data.message);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  const handleBlockJudge = async (id) => {
+    try {
+      const body = {
+        judgeId: id,
+      };
+      const deleteres = await blockJudge?.(body);
+      if (deleteres?.data?.success) {
+        refetch();
       } else {
         alert(deleteres.data.message);
       }
