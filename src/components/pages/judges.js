@@ -7,17 +7,23 @@ import {
   useEditJudgeMutation,
   useGetJudgesQuery,
 } from "../../api/judges";
+import { useDebouncedCallback } from "use-debounce";
 
 const Judges = () => {
-  // const [isGrid, setGrid] = useState(true)
-  const [selectedRole, setSelectedRole] = useState("");
-
+  const [searchValue, setSearchValue] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-  const [selectedZoneId, setSelectedZoneId] = useState(null);
-  const { data, isLoading, refetch } = useGetJudgesQuery();
-  const [addZone, { isLoading: isLoadingMutation }] = useAddJudgeMutation();
+  const [selectedJudgeId, setSelectedJudgeId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 2;
+
+  const { data, isLoading, refetch } = useGetJudgesQuery({
+    limit,
+    page: currentPage,
+    search: searchValue,
+  });
+  const [addZone, { isLoading: isLoadingMutation }] = useAddJudgeMutation({});
   const [deleteZone, { isLoading: isLoadingDelete }] = useDeleteJudgeMutation();
   const [EditZone, { isLoading: isLoadingEdit }] = useEditJudgeMutation();
 
@@ -85,17 +91,17 @@ const Judges = () => {
 
   const handleDeleteClick = (id) => {
     setShowDeletePopup(true);
-    setSelectedZoneId(id);
+    setSelectedJudgeId(id);
   };
   const handleDelete = async () => {
     try {
       const body = {
-        zoneId: selectedZoneId,
+        zoneId: selectedJudgeId,
       };
       const deleteres = await deleteZone?.(body);
       if (deleteres?.data?.success) {
         refetch();
-        setSelectedZoneId(null);
+        setSelectedJudgeId(null);
         setShowDeletePopup(false);
       } else {
         alert(deleteres.data.message);
@@ -114,16 +120,19 @@ const Judges = () => {
     setShowDeletePopup(false);
   };
 
-  const handleInputChange = (event) => {
-    setSelectedRole(event.target.value);
-  };
 
+  const handleSearchChange = useDebouncedCallback(
+    // function
+    (value) => {
+      setSearchValue(value ?? "");
+    },
+    500
+  );
   const totalItems = 100;
   const itemsPerPage = 10;
-  const currentPage = 1;
 
   const handlePageChange = (page) => {
-    console.log("Page changed:", page);
+    setCurrentPage(page);
   };
 
   return (
@@ -324,8 +333,9 @@ const Judges = () => {
           {/* Parent div for span elements */}
           <span className="flex items-center justify-center">
             <input
-              value={selectedRole} // Bind the state to the input value
-              onChange={handleInputChange} // Call handleInputChange on input change
+              onChange={(e) => {
+                handleSearchChange(e.target.value);
+              }}
               className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-500"
               placeholder="Search by name"
             />

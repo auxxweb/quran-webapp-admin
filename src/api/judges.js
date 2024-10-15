@@ -7,9 +7,9 @@ const tagInjection = api.enhanceEndpoints({ addTagTypes: [] });
 export const judgesApi = tagInjection.injectEndpoints({
     endpoints: (builder) => ({
         getJudges: builder.query({
-      query: (body) => {
+      query: (params) => {
         return {
-          body,
+          params,
           url: "/api/admin/judge",
           method: "get",
         };
