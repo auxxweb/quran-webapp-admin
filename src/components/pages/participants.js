@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import Pagination from "../Pagination";
 import EmpCard from "../reUsableCmponent/EmpCard";
 import Modal from "../reUsableCmponent/modal/Modal";
@@ -12,7 +13,14 @@ import {
 const Participants = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editPopupData, setEditPopupData] = useState(null);
-  const { data, isLoading, refetch } = useGetParticipantQuery();
+  const [currentPage, setCurrentPage] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  const limit = 2;
+  const { data, isLoading, refetch } = useGetParticipantQuery({
+    limit,
+    page: currentPage,
+    search: searchValue,
+  });
   const [addParticipant, { isLoading: isLoadingMutation }] =
     useAddParticipantMutation();
   //   const [deleteParticipant, { isLoading: isLoadingDelete }] =
@@ -51,7 +59,7 @@ const Participants = () => {
           phone,
           address,
           gender,
-          zone:["670e5df063e12ac02509fc9b"],
+          zone: ["670e5df063e12ac02509fc9b"],
           age,
         };
         const res = await editParticipant?.(body);
@@ -69,7 +77,7 @@ const Participants = () => {
           phone,
           address,
           gender,
-          zone:["670e5df063e12ac02509fc9b"],
+          zone: ["670e5df063e12ac02509fc9b"],
           age,
         };
         const res = await addParticipant?.(body);
@@ -85,12 +93,16 @@ const Participants = () => {
     }
   };
 
-  const totalItems = 100;
-  const itemsPerPage = 10;
-  const currentPage = 1;
+  const handleSearchChange = useDebouncedCallback(
+    // function
+    (value) => {
+      setSearchValue(value ?? "");
+    },
+    500
+  );
 
   const handlePageChange = (page) => {
-    console.log("Page changed:", page);
+    setCurrentPage(page);
   };
   const handleModalClose = () => {
     toggleModal();
@@ -257,6 +269,9 @@ const Participants = () => {
           <input
             className="p-2 lg:w-[300px] w-full appearance-none bg-white border border-gray-500"
             placeholder="Search by name"
+            onChange={(e) => {
+              handleSearchChange(e.target.value);
+            }}
           />
         </span>
         <span className="flex items-center">
@@ -267,16 +282,17 @@ const Participants = () => {
       </div>
       <div className="flex flex-wrap justify-center mt-4">
         <EmpCard
+          cardArray={data?.participant}
           selectedRole={""}
           selectedDesignation={"client"}
           isGrid={true}
         />
       </div>
       <Pagination
-        totalItems={totalItems}
-        itemsPerPage={itemsPerPage}
+        itemsPerPage={limit}
         currentPage={currentPage}
         onPageChange={handlePageChange}
+        totalPages={data?.totalPages}
       />
     </>
   );

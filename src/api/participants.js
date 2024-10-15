@@ -7,9 +7,9 @@ const tagInjection = api.enhanceEndpoints({ addTagTypes: [] });
 export const participantApi = tagInjection.injectEndpoints({
   endpoints: (builder) => ({
     getParticipant: builder.query({
-      query: (body) => {
+      query: (params) => {
         return {
-          body,
+          params,
           url: "/api/admin/participant",
           method: "get",
         };

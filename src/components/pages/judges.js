@@ -369,7 +369,7 @@ const Judges = () => {
                   />
                 </td>
                 <td className="px-4 py-2">{judge?.name}</td>
-                <td className="px-4 py-2">{judge?.zone[0]?.name}</td>
+                <td className="px-4 py-2">{judge?.zone?.name}</td>
                 <td className="px-4 py-2">{judge?.email}</td>
                 <td className="px-4 py-2">{judge?.password}</td>
                 <td className="px-4 py-2">
