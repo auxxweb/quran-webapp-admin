@@ -21,10 +21,10 @@ function Pagination({ currentPage, onPageChange, totalPages }) {
       pageNumbers.push(
         <button
           key={i}
-          className={`pagination-button px-3 py-1 rounded ${
+          className={`pagination-button  px-0.5 rounded ${
             activePage === i
-              ? "bg-teal-500 text-white"
-              : "bg-gray-200 text-gray-700"
+              ? " text-black"
+              : " text-[#4D5154] text-sm"
           }`}
           onClick={() => handlePageChange(i)}
         >
@@ -40,7 +40,7 @@ function Pagination({ currentPage, onPageChange, totalPages }) {
     <div className="flex justify-center items-center space-x-2 p-4 bg-teal-50">
       {/* Previous Button */}
       <button
-        className={`p-2 bg-teal-500 text-white rounded ${
+        className={`p-1 bg-teal-500 text-white rounded ${
           activePage === 1 ? "opacity-50 cursor-not-allowed" : ""
         }`}
         onClick={() => handlePageChange(activePage - 1)}
@@ -67,7 +67,7 @@ function Pagination({ currentPage, onPageChange, totalPages }) {
 
       {/* Next Button */}
       <button
-        className={`p-2 bg-teal-500 text-white rounded ${
+        className={`p-1 bg-teal-500 text-white rounded ${
           activePage === totalPages ? "opacity-50 cursor-not-allowed" : ""
         }`}
         onClick={() => handlePageChange(activePage + 1)}

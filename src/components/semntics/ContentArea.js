@@ -19,6 +19,7 @@ import Login from "../pages/Login";
 import Judges from "../pages/judges";
 import Participants from "../pages/participants";
 import Questions from "../pages/Questions";
+import Bundles from "../pages/Bundles";
 
 function ContentArea() {
   return (
@@ -30,6 +31,7 @@ function ContentArea() {
       <Route path="/judges" element={<Judges />} />
       <Route path="/participants" element={<Participants />} />
       <Route path="/questions" element={<Questions />} />
+      <Route path="/bundles" element={<Bundles />} />
       <Route path="/attendence" element={<Attendence />} />
       <Route path="/shiftsandschedules" element={<ShiftAndSchedule />} />
       <Route path="/clientsdetails" element={<ClientDetails />} />

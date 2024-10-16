@@ -170,10 +170,10 @@ function Sidebar({ isOpen, setIsOpen }) {
                     Questions
                   </li>
                   <li
-                    onClick={() => navigate("/designation")}
-                    className="cursor-pointertext-[#909294] hover:text-[#75eed2]"
+                    onClick={() => navigate("/Bundles")}
+                    className="cursor-pointer text-[#909294] hover:text-[#75eed2]"
                   >
-                    Bundless
+                    Bundles
                   </li>
                 </ul>
               </Disclosure.Panel>
