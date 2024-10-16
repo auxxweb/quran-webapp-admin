@@ -124,7 +124,7 @@ const Participants = () => {
           <Modal
             isVisible={isModalVisible}
             onClose={handleModalClose}
-            modalHeader={"Add judge"}
+            modalHeader={"Add Participant"}
           >
             <form onSubmit={onSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">

@@ -5,6 +5,7 @@ import { BiSolidDownArrow } from "react-icons/bi";
 
 import {
   useAddJudgeMutation,
+  useBlockJudgeMutation,
   useDeleteJudgeMutation,
   useEditJudgeMutation,
   useGetJudgesQuery,
@@ -28,7 +29,7 @@ const Judges = () => {
   const [addJudge, { isLoading: isLoadingMutation }] = useAddJudgeMutation({});
   const [deleteJudge, { isLoading: isLoadingDelete }] = useDeleteJudgeMutation();
   const [EditJudge, { isLoading: isLoadingEdit }] = useEditJudgeMutation();
-  const [blockJudge, { isLoading: isLoadingBlock }] = useEditJudgeMutation();
+  const [blockJudge, { isLoading: isLoadingBlock }] = useBlockJudgeMutation();
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -114,6 +115,8 @@ const Judges = () => {
     }
   };
   const handleBlockJudge = async (id) => {
+    console.log(id,"idddddddddddd");
+    
     try {
       const body = {
         judgeId: id,
@@ -403,10 +406,10 @@ const Judges = () => {
                 <td className="px-4 py-2">{judge?.email}</td>
                 <td className="px-4 py-2">{judge?.password}</td>
                 <td className="px-4 py-2 ">
-                  <button className={`py-2 px-5 flex space-x-2 items-center ${judge?.isBlocked? " text-[#FF0404] border-[#FF0404]":"  border-[#1DB290] text-[#1DB290]"} rounded-full  border `}> <span>{judge?.isBlocked ? "Blocked" : "Unblocked"}</span><BiSolidDownArrow className="text-black"/></button>
+                  <button onClick={()=>handleBlockJudge(judge?._id)} className={`py-2 px-5 flex space-x-2 items-center ${judge?.isBlocked? " text-[#FF0404] border-[#FF0404]":"  border-[#1DB290] text-[#1DB290]"} rounded-full  border `}> <span>{judge?.isBlocked ? "Blocked" : "Unblocked"}</span><BiSolidDownArrow className="text-black"/></button>
                 </td>
                 <td className="px-4 py-2 text-right">
-                  <button onClick={() => handleEditClick(judge)}>
+                  <button disabled={isLoadingBlock} onClick={() => handleEditClick(judge)}>
                     <img
                       alt="pics"
                       src="/icons/edit.svg"

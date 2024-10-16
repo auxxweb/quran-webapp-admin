@@ -43,9 +43,9 @@ export const judgesApi = tagInjection.injectEndpoints({
       },
     }),
     blockJudge: builder.mutation({
-      query: (body) => {
+      query: (params) => {
         return {
-          body,
+          params,
           url: "/api/admin/judge/blockOrUnblock",
           method: "patch",
         };
