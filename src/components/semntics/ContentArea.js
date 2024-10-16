@@ -9,7 +9,7 @@ import ProjetsPage from "../pages/ProjetsPage";
 import PaymentPage from "../pages/PaymentPage";
 import PaySlip from "../PaySlip";
 import Subscription from "../Subscription";
-import Department from "../pages/Department";
+// import Department from "../pages/Questions";
 import Designation from "../pages/Designation";
 import SettingAndConfi from "../pages/SettingAndConfi";
 import DeveloperDetails from "../pages/DeveloperDetails";
@@ -18,6 +18,7 @@ import Zones from "../pages/Zones";
 import Login from "../pages/Login";
 import Judges from "../pages/judges";
 import Participants from "../pages/participants";
+import Questions from "../pages/Questions";
 
 function ContentArea() {
   return (
@@ -28,6 +29,7 @@ function ContentArea() {
       <Route path="/zones" element={<Zones />} />
       <Route path="/judges" element={<Judges />} />
       <Route path="/participants" element={<Participants />} />
+      <Route path="/questions" element={<Questions />} />
       <Route path="/attendence" element={<Attendence />} />
       <Route path="/shiftsandschedules" element={<ShiftAndSchedule />} />
       <Route path="/clientsdetails" element={<ClientDetails />} />
@@ -36,7 +38,6 @@ function ContentArea() {
       <Route path="/paymentpage" element={<PaymentPage />} />
       <Route path="/payslip" element={<PaySlip />} />
       <Route path="/subscription" element={<Subscription />} />
-      <Route path="/department" element={<Department />} />
       <Route path="/designation" element={<Designation />} />
       <Route path="/settingandconfi" element={<SettingAndConfi />} />
       <Route path="/developerdetails" element={<DeveloperDetails />} />

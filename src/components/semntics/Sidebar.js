@@ -164,7 +164,7 @@ function Sidebar({ isOpen, setIsOpen }) {
               <Disclosure.Panel className="bg-[#373b3e] text-custom-16 rounded-md px-4 py-2">
                 <ul className="list-disc list-inside">
                   <li
-                    onClick={() => navigate("/department")}
+                    onClick={() => navigate("/questions")}
                     className="cursor-pointer text-[#1DB290] hover:text-[#75eed2]"
                   >
                     Questions

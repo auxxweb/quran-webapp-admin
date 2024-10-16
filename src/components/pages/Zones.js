@@ -116,7 +116,7 @@ const Zones = () => {
     500
   );
   const handlePageChange = (page) => {
-    setCurrentPage(page)
+    setCurrentPage(page);
   };
   return (
     <>
@@ -434,7 +434,7 @@ const Zones = () => {
         </span>
       </div>
 
-      <table className="min-w-full table-auto border-separate border-spacing-y-2">
+      <table className="min-w-full table-auto">
         <thead className="bg-white">
           <tr>
             <th className="px-4 py-4 text-left">Sl No</th>
@@ -445,12 +445,15 @@ const Zones = () => {
             <th className="px-4 py-4 text-left">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="border-[2px] border-opacity-50 border-[#969696]">
           {isLoading ? (
             <>Loading...</>
           ) : (
             data?.zones?.map((zone, index) => (
-              <tr className="bg-teal-100" key={index}>
+              <tr
+                className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
+                key={index}
+              >
                 <td className="px-4 py-2">{index}</td>
                 <td className="px-4 py-2">{zone?.name}</td>
                 <td className="px-4 py-2 flex items-center">

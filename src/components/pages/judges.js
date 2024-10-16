@@ -115,7 +115,6 @@ const Judges = () => {
     }
   };
   const handleBlockJudge = async (id) => {
-    console.log(id,"idddddddddddd");
     
     try {
       const body = {
@@ -148,8 +147,6 @@ const Judges = () => {
     },
     500
   );
-  const totalItems = 100;
-  const itemsPerPage = 10;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -390,7 +387,7 @@ const Judges = () => {
           ) : (
             data?.judge?.map((judge, index) => (
               <tr
-                className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
+                className="odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}
               >
                 <td className="px-4 py-2">{index}</td>
