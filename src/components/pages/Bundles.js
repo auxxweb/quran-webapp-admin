@@ -1,10 +1,23 @@
 import React, { useState } from "react";
+import Select from "react-select";
 
 import Modal from "../reUsableCmponent/modal/Modal";
 import { useDebouncedCallback } from "use-debounce";
 import Pagination from "../Pagination";
-import { useAddBundleMutation, useDeleteBundleMutation, useEditBundleMutation, useGetBundlesQuery } from "../../api/bundle";
+import { IoIosClose } from "react-icons/io";
 
+import {
+  useAddBundleMutation,
+  useDeleteBundleMutation,
+  useEditBundleMutation,
+  useGetBundlesQuery,
+} from "../../api/bundle";
+const options = [
+  { value: "Question 1", label: "Question 1" },
+  { value: "Question 2", label: "Question 2" },
+  { value: "Question 3", label: "Question 3" },
+  { value: "Question 4", label: "Java" },
+];
 const Bundles = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -12,6 +25,8 @@ const Bundles = () => {
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedBundleId, setSelectedBundleId] = useState(null);
+  const [questions, setQuestions] = useState([]);
+
   const limit = 3;
   const { data, isLoading, refetch } = useGetBundlesQuery({
     limit,
@@ -19,12 +34,10 @@ const Bundles = () => {
     search: searchValue,
   });
   console.log("data", data, isLoading);
-  const [addBundle, { isLoading: isLoadingMutation }] =
-  useAddBundleMutation();
+  const [addBundle, { isLoading: isLoadingMutation }] = useAddBundleMutation();
   const [deleteBundle, { isLoading: isLoadingDelete }] =
-  useDeleteBundleMutation();
-  const [editBundle, { isLoading: isLoadingEdit }] =
-  useEditBundleMutation();
+    useDeleteBundleMutation();
+  const [editBundle, { isLoading: isLoadingEdit }] = useEditBundleMutation();
 
   console.log("isLoading", isLoadingMutation, isLoadingEdit, isLoadingDelete);
 
@@ -46,12 +59,12 @@ const Bundles = () => {
     const formData = new FormData(event.target); // Make sure event.target is the form
     const title = formData.get("title");
     // const questions = formData.get("question"); // Get email input value
-    const questions = ["670fdca599bae2a31ac29c54","670fdcb399bae2a31ac29c5b"] // Get email input value
+    const questions = ["670fdca599bae2a31ac29c54", "670fdcb399bae2a31ac29c5b"]; // Get email input value
 
     try {
       if (editPopupData) {
         const body = {
-          questionId: editPopupData?._id,
+          bundleId: editPopupData?._id,
           questions,
           title,
         };
@@ -93,9 +106,16 @@ const Bundles = () => {
     setCurrentPage(page);
   };
 
-  const handleEditClick = (question) => {
+  const handleEditClick = (bundle) => {
     toggleModal();
-    setEditPopupData(question);
+    setEditPopupData(bundle);
+  };
+  const handleChange = (selectedOptions) => {
+    setQuestions(selectedOptions || []);
+  };
+
+  const handleRemoveQuestion = (questionToRemove) => {
+    setQuestions(questions.filter((question) => question.value !== questionToRemove.value));
   };
 
   const handleDeleteClick = (id) => {
@@ -181,12 +201,14 @@ const Bundles = () => {
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto">
-        <thead className="bg-white ">
+          <thead className="bg-white ">
             <tr className="">
               <th className="px-4 py-2 text-left font-medium">No</th>
               <th className="px-4 py-2 text-center font-medium">Image</th>
               <th className="px-4 py-2 text-center font-medium">Title</th>
-              <th className="px-4 py-2 text-center font-medium">No of Questions</th>
+              <th className="px-4 py-2 text-center font-medium">
+                No of Questions
+              </th>
               <th className="px-4 py-2 text-left font-medium">Bundle Id</th>
               <th className="px-4 py-2 font-medium text-center">Action</th>
             </tr>
@@ -205,10 +227,10 @@ const Bundles = () => {
                     className="w-8 h-8 rounded-full mr-2"
                   />
                 </td>
+                <td className="px-4 py-2 text-center">{bundle?.title}</td>
                 <td className="px-4 py-2 text-center">
-                  {bundle?.title}
+                  {bundle?.questions?.length}
                 </td>
-                <td className="px-4 py-2 text-center">{bundle?.questions?.length}</td>
                 <td className="px-4 py-2 ">{bundle?.bundleId}</td>
                 <td className="px-4 py-2 text-center">
                   <button onClick={() => handleEditClick(bundle)}>
@@ -231,14 +253,13 @@ const Bundles = () => {
           </tbody>
         </table>
         <div className="w-full flex justify-end">
-              <Pagination
-          itemsPerPage={limit}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-          totalPages={data?.totalPages}
-        />
+          <Pagination
+            itemsPerPage={limit}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            totalPages={data?.totalPages}
+          />
         </div>
-    
       </div>
 
       <Modal
@@ -273,15 +294,35 @@ const Bundles = () => {
               >
                 Question
               </label>
-              <input
-                type="text"
-                name="question"
-                id="question"
-                className="p-2 mt-1 block h-24 w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                defaultValue={
-                  editPopupData?.question ? editPopupData?.question : ""
-                }
+              <Select
+                className="border-2  border-gray-400"
+                options={options}
+                onChange={handleChange}
+                value={questions}
+                isMulti
+                hideSelectedOptions
+                closeMenuOnSelect={false} // Keep the dropdown open for multiple selections
+                placeholder="Select Questions"
+                components={{ MultiValue: () => null }} // Hide selected options in input
               />
+              <div className="pt-2">
+                {questions.length > 0 && (
+                  <ul className="flex flex-wrap gap-1">
+                    {questions.map((question) => (
+                      <li key={question.value} className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light">
+                        <span>{question.label}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveQuestion(question)}
+                          className="ml-2"
+                        >
+                          <IoIosClose className="text-lg"/>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
 
