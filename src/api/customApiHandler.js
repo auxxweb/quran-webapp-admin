@@ -5,7 +5,7 @@ const BE_API_KEY = "http://localhost:5000";
 
 const customApiHandler =
   () =>
-  async ({ url, method, body, params, needError, successCode }) => {
+  async ({ url, method, body, params, headers }) => {
     console.log("BE", BE_API_KEY + url);
 
     try {
@@ -21,13 +21,14 @@ const customApiHandler =
           Promise.reject(error);
         }
       );
-
-      const result = await axios({
+      let payload = {
         url: BE_API_KEY + url,
         method,
         data: body,
         params,
-      });
+      };
+      if (headers) payload = { ...payload, headers, formData: true };
+      const result = await axios(payload);
       //  successCode &&
       //  successMessage(successCode && isNumber(successCode) ? successCode : result?.data?.message);
       return { data: result.data };

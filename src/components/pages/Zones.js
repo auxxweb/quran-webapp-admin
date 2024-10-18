@@ -8,7 +8,6 @@ import {
   useGetZonesQuery,
 } from "../../api/zones";
 import Pagination from "../Pagination";
-// import EmpCard from "../reUsableCmponent/EmpCard";
 
 const Zones = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -34,19 +33,10 @@ const Zones = () => {
   const onSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
     const formData = new FormData(event.target); // Make sure event.target is the form
-    const name = formData.get("name"); // Get email input value
-    const description = formData.get("description");
-    const image =
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Duser&psig=AOvVaw1ktqYCunJV8n85eGc6eIR2&ust=1729073699253000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJjg186TkIkDFQAAAAAdAAAAABAE";
     try {
       if (editPopupData) {
-        const body = {
-          zoneId: editPopupData?._id,
-          name,
-          description,
-          image,
-        };
-        const res = await EditZone?.(body);
+        formData.append("zoneId", editPopupData?._id);
+        const res = await EditZone?.(formData);
         if (res?.data?.success) {
           refetch({ page: 1 });
           toggleModal();
@@ -55,12 +45,7 @@ const Zones = () => {
           alert(res.data.message);
         }
       } else {
-        const body = {
-          name,
-          description,
-          image,
-        };
-        const res = await addZone?.(body);
+        const res = await addZone?.(formData);
         if (res?.data?.success) {
           refetch();
           toggleModal();
@@ -137,128 +122,6 @@ const Zones = () => {
               modalHeader={"Add Zone"}
             >
               <form onSubmit={onSubmit} className="space-y-4">
-                {/* <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="firstName"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      name="firstName"
-                      id="firstName"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="First Name"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="lastName"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      name="lastName"
-                      id="lastName"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Last Name"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="username"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Username
-                    </label>
-                    <input
-                      type="text"
-                      name="username"
-                      id="username"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Username"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Email"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Password"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="confirmPassword"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Confirm Password
-                    </label>
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      id="confirmPassword"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Confirm Password"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="clientId"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Client ID
-                  </label>
-                  <input
-                    type="text"
-                    name="clientId"
-                    id="clientId"
-                    className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Client ID"
-                    required
-                  />
-                </div> */}
-
                 <div>
                   <label
                     htmlFor="zoneName"
@@ -308,77 +171,6 @@ const Zones = () => {
                     required
                   />
                 </div>
-
-                {/* <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="address"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      name="address"
-                      id="address"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Address"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="location"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Location
-                    </label>
-                    <input
-                      type="text"
-                      name="location"
-                      id="location"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Location"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="companyName"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      name="companyName"
-                      id="companyName"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Company Name"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="designation"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Designation
-                    </label>
-                    <input
-                      type="text"
-                      name="designation"
-                      id="designation"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Designation"
-                      required
-                    />
-                  </div>
-                </div> */}
-
                 <div className="flex justify-center p-6">
                   <button
                     disabled={isLoadingMutation || isLoadingEdit}
@@ -434,7 +226,7 @@ const Zones = () => {
         </span>
       </div>
 
-      <table className="min-w-full table-auto">
+      <table className="min-w-full table-auto mt-6">
         <thead className="bg-white">
           <tr>
             <th className="px-4 py-4 text-left">Sl No</th>
@@ -456,18 +248,18 @@ const Zones = () => {
               >
                 <td className="px-4 py-2">{index}</td>
                 <td className="px-4 py-2">{zone?.name}</td>
-                <td className="px-4 py-2 flex items-center">
+                <td className="px-3 py-2 flex items-center">
                   <img
                     alt="img"
                     src={zone?.image}
-                    className="w-8 h-8 rounded-full mr-2"
+                    className="w-14 h-14 rounded-full mr-2 mt-2"
                   />
                 </td>
                 <td className="px-4 py-2">Competition Link</td>
                 <td className="px-4 py-2">
                   <div className="flex -space-x-2">{zone?.description}</div>
                 </td>
-                <td className="px-4 py-2 text-right">
+                <td>
                   <button onClick={() => handleEditClick(zone)}>
                     <img
                       alt="pics"
@@ -488,20 +280,14 @@ const Zones = () => {
           )}
         </tbody>
       </table>
-      <Pagination
-        itemsPerPage={limit}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-        totalPages={data?.totalPages}
-      />
-
-      {/* <div className="flex flex-wrap justify-center mt-4">
-        <EmpCard
-          selectedRole={''}
-          selectedDesignation={'client'}
-          isGrid={true}
+      <div className="m-auto flex justify-end">
+        <Pagination
+          itemsPerPage={limit}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          totalPages={data?.totalPages}
         />
-      </div> */}
+      </div>
     </>
   );
 };

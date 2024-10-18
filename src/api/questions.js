@@ -42,6 +42,14 @@ export const questionsApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    getQuestionDetail: builder.query({
+      query: (id) => {
+        return {
+          url: `/api/admin/question/${id}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
@@ -52,4 +60,5 @@ export const {
   useAddQuestionMutation,
   useEditQuestionMutation,
   useDeleteQuestionMutation,
+  useGetQuestionDetailQuery,
 } = questionsApi;

@@ -8,15 +8,17 @@ import {
 import Modal from "../reUsableCmponent/modal/Modal";
 import { useDebouncedCallback } from "use-debounce";
 import Pagination from "../Pagination";
+import { useNavigate } from "react-router-dom";
 
 const Questions = () => {
+  const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
-  const limit = 3;
+  const limit = 10;
   const { data, isLoading, refetch } = useGetQuestionsQuery({
     limit,
     page: currentPage,
@@ -195,6 +197,7 @@ const Questions = () => {
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
             {data?.questions?.map((question, index) => (
               <tr
+                onClick={() => navigate(`/questions/${question?._id}`)}
                 className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}
               >

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Select from "react-select";
+import { useNavigate } from "react-router-dom";
+import { useDebouncedCallback } from "use-debounce";
 import Modal from "../reUsableCmponent/modal/Modal";
 import Pagination from "../Pagination";
 import { BiSolidDownArrow } from "react-icons/bi";
@@ -10,24 +13,32 @@ import {
   useEditJudgeMutation,
   useGetJudgesQuery,
 } from "../../api/judges";
-import { useDebouncedCallback } from "use-debounce";
+import { useGetZonesListQuery } from "../../api/common";
+import { IoIosClose } from "react-icons/io";
+import FilterPopup from "../reUsableCmponent/filterPopup";
 
 const Judges = () => {
+  const navigate = useNavigate();
+  const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedJudgeId, setSelectedJudgeId] = useState(null);
+  const [zonesList, setZonesList] = useState({});
+  const [filterZonesList, setFilterZonesList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 2;
+  const limit = 10;
 
   const { data, isLoading, refetch } = useGetJudgesQuery({
     limit,
     page: currentPage,
     search: searchValue,
   });
+  const { data: zoneList, refetch: ZoneListsRefetch } = useGetZonesListQuery();
   const [addJudge, { isLoading: isLoadingMutation }] = useAddJudgeMutation({});
-  const [deleteJudge, { isLoading: isLoadingDelete }] = useDeleteJudgeMutation();
+  const [deleteJudge, { isLoading: isLoadingDelete }] =
+    useDeleteJudgeMutation();
   const [EditJudge, { isLoading: isLoadingEdit }] = useEditJudgeMutation();
   const [blockJudge, { isLoading: isLoadingBlock }] = useBlockJudgeMutation();
 
@@ -37,47 +48,31 @@ const Judges = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
-    const formData = new FormData(event.target); // Make sure event.target is the form
-    const name = formData.get("fullName"); // Get email input value
-    const email = formData.get("email");
-    const phone = formData.get("phoneNumber");
-    const address = formData.get("address");
-    const gender = formData.get("gender");
-    // const zone = formData.get("zone");
-    const isMain = !!formData.get("isMain");
+    const formData = new FormData(event.target);
+    const isMain = !!formData?.get("isMain");
+
+    formData?.append("zone", zonesList?.value);
+    formData?.set("isMain", isMain);
 
     try {
       if (editPopupData) {
-        const body = {
-          name,
-          email,
-          phone,
-          address,
-          gender,
-          zone: ["670e5df063e12ac02509fc9b"],
-          isMain,
-        };
-        const res = await EditJudge?.(body);
+        formData?.append("judgeId", editPopupData?._id);
+        const res = await EditJudge?.(formData);
         if (res?.data?.success) {
           refetch();
+          ZoneListsRefetch();
+          setZonesList({});
           toggleModal();
           setEditPopupData(null);
         } else {
           alert(res.data.message);
         }
       } else {
-        const body = {
-          name,
-          email,
-          phone,
-          address,
-          gender,
-          zone: ["670e5df063e12ac02509fc9b"],
-          isMain,
-        };
-        const res = await addJudge?.(body);
+        const res = await addJudge?.(formData);
         if (res?.data?.success) {
           refetch();
+          ZoneListsRefetch();
+          setZonesList({});
           toggleModal();
         } else {
           alert(res.data.message);
@@ -114,8 +109,15 @@ const Judges = () => {
       console.log("error", error);
     }
   };
+
+  const handleChange = (selectedOptions) => {
+    setZonesList(selectedOptions || {});
+  };
+  const handleFilterChange = (selectedOptions) => {
+    setFilterZonesList(selectedOptions || {});
+  };
+
   const handleBlockJudge = async (id) => {
-    
     try {
       const body = {
         judgeId: id,
@@ -132,6 +134,7 @@ const Judges = () => {
   };
 
   const handleModalClose = () => {
+    setZonesList({});
     toggleModal();
     setEditPopupData(null);
   };
@@ -152,12 +155,24 @@ const Judges = () => {
     setCurrentPage(page);
   };
 
+  const selectOption = zoneList?.zones?.map((zone) => {
+    return { value: zone?._id, label: zone?.name };
+  });
+
+  const toggleFilterPopup = () => {
+    setIsFilterPopupOpen(!isFilterPopupOpen);
+  };
+  const handleRemoveZone = (zonesToRemove) => {
+    setFilterZonesList(
+      filterZonesList.filter((zone) => zone.value !== zonesToRemove.value)
+    );
+  };
+
   return (
     <>
       <div className="flex rounded-lg p-4">
         <h2 className="text-2xl font-semibold text-gray-700">Judges</h2>
         <div className="ml-auto flex items-center space-x-4">
-          {" "}
           <span className="flex items-center">
             <span
               className="bg-[#0EB599] text-white rounded-full p-3 cursor-pointer"
@@ -175,18 +190,21 @@ const Judges = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label
-                      htmlFor="fullName"
+                      htmlFor="name"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Full Name
                     </label>
                     <input
                       type="text"
-                      name="fullName"
-                      id="fullName"
+                      name="name"
+                      id="name"
                       className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="Full Name"
                       required
+                      defaultValue={
+                        editPopupData?.name ? editPopupData?.name : ""
+                      }
                     />
                   </div>
                   <div>
@@ -196,14 +214,38 @@ const Judges = () => {
                     >
                       Zone
                     </label>
-                    <input
-                      type="text"
-                      name="zone"
-                      id="zone"
-                      className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Zone"
-                      required
+                    <Select
+                      className="border-gray-400"
+                      options={selectOption}
+                      onChange={handleChange}
+                      value={zonesList}
+                      isMulti={false}
+                      // hideSelectedOptions
+                      closeMenuOnSelect={false} // Keep the dropdown open for multiple selections
+                      placeholder="Select Zones"
+                      components={{ MultiValue: () => null }} // Hide selected options in input
                     />
+                    {/* <div className="pt-2">
+                      {zonesList.length > 0 && (
+                        <ul className="flex flex-wrap gap-1">
+                          {zonesList.map((zone) => (
+                            <li
+                              key={zone.value}
+                              className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light"
+                            >
+                              <span>{zone.label}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveZone(zone)}
+                                className="ml-2"
+                              >
+                                <IoIosClose className="text-lg" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div> */}
                   </div>
                 </div>
 
@@ -222,22 +264,28 @@ const Judges = () => {
                       className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="email"
                       required
+                      defaultValue={
+                        editPopupData?.email ? editPopupData?.email : ""
+                      }
                     />
                   </div>
                   <div>
                     <label
-                      htmlFor="phoneNumber"
+                      htmlFor="phone"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Phone Number
                     </label>
                     <input
                       type="number"
-                      name="phoneNumber"
-                      id="phoneNumber"
+                      name="phone"
+                      id="phone"
                       className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="Phone Number"
                       required
+                      defaultValue={
+                        editPopupData?.phone ? editPopupData?.phone : ""
+                      }
                     />
                   </div>
                 </div>
@@ -254,9 +302,12 @@ const Judges = () => {
                       type="text"
                       name="address"
                       id="address"
-                      className="mt-1 h-24 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className="mt-1 h-28 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="Address"
                       required
+                      defaultValue={
+                        editPopupData?.address ? editPopupData?.address : ""
+                      }
                     />
                   </div>
                   <div>
@@ -271,26 +322,31 @@ const Judges = () => {
                         name="gender"
                         id="gender"
                         className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        defaultValue={
+                          editPopupData?.gender ? editPopupData?.gender : ""
+                        }
                       >
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                       </select>
                     </div>
-                    <div className="mt-3">
-                      <label
-                        htmlFor="main"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Image
-                      </label>
-                      <input
-                        type="file"
-                        name="image"
-                        id="image"
-                        className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                      />
-                    </div>
+                    {!editPopupData && (
+                      <div className="mt-5">
+                        <label
+                          htmlFor="main"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Image
+                        </label>
+                        <input
+                          type="file"
+                          name="image"
+                          id="image"
+                          className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          required
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex flex-row">
@@ -299,6 +355,7 @@ const Judges = () => {
                     name="isMain"
                     id="isMain"
                     className="mr-2 border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    defaultValue={editPopupData?.isMain ? true : "off"}
                   />
                   <label
                     htmlFor="image"
@@ -344,27 +401,83 @@ const Judges = () => {
           </span>
         </div>
       </div>
-
-      <div className="flex rounded-lg p-4 pt-0">
-        <div className="ml-auto flex items-center space-x-4">
-          {/* Parent div for span elements */}
-          <span className="flex items-center justify-center">
-            <input
-              onChange={(e) => {
-                handleSearchChange(e.target.value);
-              }}
-              className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-500"
-              placeholder="Search by name"
-            />
-          </span>
-          <span className="flex items-center">
-            <span
-              // onClick={selectRole} // Call selectRole when the Search button is clicked
-              className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[260px] text-center"
-            >
-              Search
+      <div>
+        <div className="flex rounded-lg p-4 pt-0">
+          <FilterPopup
+            filterHeader="Zone"
+            isOpen={isFilterPopupOpen}
+            togglePopup={toggleFilterPopup}
+          >
+            <div className="space-y-4">
+              {/* Example Filter Option 1 */}
+              {selectOption && (
+                <div className="m-4 w-60">
+                  <Select
+                    className="border-gray-400"
+                    options={selectOption}
+                    onChange={handleFilterChange}
+                    value={filterZonesList}
+                    isMulti
+                    hideSelectedOptions
+                    closeMenuOnSelect={false} // Keep the dropdown open for multiple selections
+                    placeholder="Select Zones"
+                    components={{ MultiValue: () => null }} // Hide selected options in input
+                  />
+                  <div className="pt-2">
+                    {filterZonesList.length > 0 && (
+                      <ul className="flex flex-wrap gap-1">
+                        {filterZonesList.map((zone) => (
+                          <li
+                            key={zone.value}
+                            className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light"
+                          >
+                            <span>{zone.label}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveZone(zone)}
+                              className="ml-2"
+                            >
+                              <IoIosClose className="text-lg" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
+              {/* Apply Filters Button */}
+              <div className="flex justify-center">
+                <button
+                  onClick={toggleFilterPopup}
+                  type="submit"
+                  className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl"
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+          </FilterPopup>
+          <div className="ml-auto flex items-center space-x-4">
+            {/* Parent div for span elements */}
+            <span className="flex items-center justify-center">
+              <input
+                onChange={(e) => {
+                  handleSearchChange(e.target.value);
+                }}
+                className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-500"
+                placeholder="Search by name"
+              />
             </span>
-          </span>
+            <span className="flex items-center">
+              <span
+                // onClick={selectRole} // Call selectRole when the Search button is clicked
+                className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[260px] text-center"
+              >
+                Search
+              </span>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -390,23 +503,65 @@ const Judges = () => {
                 className="odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}
               >
-                <td className="px-4 py-2">{index}</td>
-                <td className="px-4 py-2 flex items-center">
+                <td
+                  onClick={() => navigate(`/judges/${judge?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {index + 1}
+                </td>
+                <td
+                  onClick={() => navigate(`/judges/${judge?._id}`)}
+                  className="px-4 py-2 flex items-center"
+                >
                   <img
                     alt="img"
                     src={judge?.image}
-                    className="w-8 h-8 rounded-full mr-2"
+                    className="w-14 h-14 rounded-full mr-2 mt-2"
                   />
                 </td>
-                <td className="px-4 py-2">{judge?.name}</td>
-                <td className="px-4 py-2">{judge?.zone?.name}</td>
-                <td className="px-4 py-2">{judge?.email}</td>
-                <td className="px-4 py-2">{judge?.password}</td>
+                <td
+                  onClick={() => navigate(`/judges/${judge?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {judge?.name}
+                </td>
+                <td
+                  onClick={() => navigate(`/judges/${judge?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {judge?.zone?.name}
+                </td>
+                <td
+                  onClick={() => navigate(`/judges/${judge?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {judge?.email}
+                </td>
+                <td
+                  onClick={() => navigate(`/judges/${judge?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {judge?.password}
+                </td>
                 <td className="px-4 py-2 ">
-                  <button onClick={()=>handleBlockJudge(judge?._id)} className={`py-2 px-5 flex space-x-2 items-center ${judge?.isBlocked? " text-[#FF0404] border-[#FF0404]":"  border-[#1DB290] text-[#1DB290]"} rounded-full  border `}> <span>{judge?.isBlocked ? "Blocked" : "Unblocked"}</span><BiSolidDownArrow className="text-black"/></button>
+                  <button
+                    onClick={() => handleBlockJudge(judge?._id)}
+                    className={`py-2 px-5 flex space-x-2 items-center ${
+                      judge?.isBlocked
+                        ? " text-[#FF0404] border-[#FF0404]"
+                        : "  border-[#1DB290] text-[#1DB290]"
+                    } rounded-full  border `}
+                  >
+                    {" "}
+                    <span>{judge?.isBlocked ? "Blocked" : "Unblocked"}</span>
+                    <BiSolidDownArrow className="text-black" />
+                  </button>
                 </td>
                 <td className="px-4 py-2 text-right">
-                  <button disabled={isLoadingBlock} onClick={() => handleEditClick(judge)}>
+                  <button
+                    disabled={isLoadingBlock}
+                    onClick={() => handleEditClick(judge)}
+                  >
                     <img
                       alt="pics"
                       src="/icons/edit.svg"

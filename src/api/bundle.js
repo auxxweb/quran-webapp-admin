@@ -42,6 +42,14 @@ export const bundlesApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    getBundleDetail: builder.query({
+      query: (id) => {
+        return {
+          url: `/api/admin/bundle/${id}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
@@ -52,4 +60,5 @@ export const {
   useAddBundleMutation,
   useEditBundleMutation,
   useDeleteBundleMutation,
+  useGetBundleDetailQuery,
 } = bundlesApi;

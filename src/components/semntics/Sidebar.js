@@ -182,7 +182,7 @@ function Sidebar({ isOpen, setIsOpen }) {
         </Disclosure>
 
         <div
-          onClick={() => navigate("/settingandconfi")}
+          onClick={() => navigate("/result")}
           className="cursor-pointer flex items-center text-[#909294] hover:text-[#75eed2]"
         >
           <span className="flex items-center ml-2">

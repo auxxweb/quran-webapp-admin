@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Select from "react-select";
 import { useDebouncedCallback } from "use-debounce";
 import Pagination from "../Pagination";
 import EmpCard from "../reUsableCmponent/EmpCard";
@@ -9,18 +10,21 @@ import {
   useEditParticipantMutation,
   useGetParticipantQuery,
 } from "../../api/participants";
+import { useGetZonesListQuery } from "../../api/common";
 
 const Participants = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [zonesList, setZonesList] = useState({});
   const [editPopupData, setEditPopupData] = useState(null);
   const [currentPage, setCurrentPage] = useState(null);
   const [searchValue, setSearchValue] = useState("");
-  const limit = 2;
+  const limit = 10;
   const { data, isLoading, refetch } = useGetParticipantQuery({
     limit,
     page: currentPage,
     search: searchValue,
   });
+  const { data: zoneList, refetch: ZoneListsRefetch } = useGetZonesListQuery();
   const [addParticipant, { isLoading: isLoadingMutation }] =
     useAddParticipantMutation();
   //   const [deleteParticipant, { isLoading: isLoadingDelete }] =
@@ -43,46 +47,23 @@ const Participants = () => {
   const onSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
     const formData = new FormData(event.target); // Make sure event.target is the form
-    const name = formData.get("fullName"); // Get email input value
-    const email = formData.get("email");
-    const phone = formData.get("phoneNumber");
-    const address = formData.get("address");
-    const gender = formData.get("gender");
-    // const zone = formData.get("zone");
-    const age = formData.get("age");
-
+    formData?.append("zone", zonesList?.value);
     try {
       if (editPopupData) {
-        const body = {
-          name,
-          email,
-          phone,
-          address,
-          gender,
-          zone: ["670e5df063e12ac02509fc9b"],
-          age,
-        };
-        const res = await editParticipant?.(body);
+        const res = await editParticipant?.(formData);
         if (res?.data?.success) {
           refetch();
+          ZoneListsRefetch();
           toggleModal();
           setEditPopupData(null);
         } else {
           alert(res.data.message);
         }
       } else {
-        const body = {
-          name,
-          email,
-          phone,
-          address,
-          gender,
-          zone: ["670e5df063e12ac02509fc9b"],
-          age,
-        };
-        const res = await addParticipant?.(body);
+        const res = await addParticipant?.(formData);
         if (res?.data?.success) {
           refetch();
+          ZoneListsRefetch();
           toggleModal();
         } else {
           alert(res.data.message);
@@ -104,9 +85,19 @@ const Participants = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
   const handleModalClose = () => {
     toggleModal();
   };
+
+  const handleChange = (selectedOptions) => {
+    setZonesList(selectedOptions || {});
+  };
+
+  const selectOption = zoneList?.zones?.map((zone) => {
+    return { value: zone?._id, label: zone?.name };
+  });
+
   return (
     <>
       <div className="flex rounded-lg p-4">
@@ -130,15 +121,15 @@ const Participants = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label
-                    htmlFor="fullName"
+                    htmlFor="name"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Full Name
                   </label>
                   <input
                     type="text"
-                    name="fullName"
-                    id="fullName"
+                    name="name"
+                    id="name"
                     className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     placeholder="Full Name"
                     required
@@ -151,13 +142,16 @@ const Participants = () => {
                   >
                     Zone
                   </label>
-                  <input
-                    type="text"
-                    name="zone"
-                    id="zone"
-                    className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Zone"
-                    required
+                  <Select
+                    className="border-gray-400"
+                    options={selectOption}
+                    onChange={handleChange}
+                    value={zonesList}
+                    isMulti={false}
+                    // hideSelectedOptions
+                    closeMenuOnSelect={false} // Keep the dropdown open for multiple selections
+                    placeholder="Select Zones"
+                    components={{ MultiValue: () => null }} // Hide selected options in input
                   />
                 </div>
               </div>
@@ -181,15 +175,15 @@ const Participants = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="phoneNumber"
+                    htmlFor="phone"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Phone Number
                   </label>
                   <input
                     type="number"
-                    name="phoneNumber"
-                    id="phoneNumber"
+                    name="phone"
+                    id="phone"
                     className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     placeholder="Phone Number"
                     required
@@ -249,6 +243,21 @@ const Participants = () => {
                   </div>
                 </div>
               </div>
+              <div>
+                <label
+                  htmlFor="main"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Image
+                </label>
+                <input
+                  type="file"
+                  name="image"
+                  id="image"
+                  className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  required
+                />
+              </div>
               <div className="flex justify-center p-6">
                 <button
                   //   disabled={isLoadingMutation || isLoadingEdit}
@@ -288,12 +297,14 @@ const Participants = () => {
           isGrid={true}
         />
       </div>
-      <Pagination
-        itemsPerPage={limit}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-        totalPages={data?.totalPages}
-      />
+      <div className="m-auto flex justify-end ">
+        <Pagination
+          itemsPerPage={limit}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          totalPages={data?.totalPages}
+        />
+      </div>
     </>
   );
 };

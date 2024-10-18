@@ -42,6 +42,14 @@ export const participantApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    getParticipantDetail: builder.query({
+      query: (id) => {
+        return {
+          url: `/api/admin/participant/${id}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
@@ -52,4 +60,5 @@ export const {
   useGetParticipantQuery,
   useDeleteParticipantMutation,
   useEditParticipantMutation,
+  useGetParticipantDetailQuery,
 } = participantApi;

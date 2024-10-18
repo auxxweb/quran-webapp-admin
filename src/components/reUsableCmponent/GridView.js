@@ -12,10 +12,11 @@ const GridView = ({ cardArray, selectedDesignation, selectedRole }) => {
   return (
     <div className="flex flex-wrap justify-center cursor-pointer">
       {/* Parent wrapper for the grid layout */}
-      {cardArray?.map((cardData) => (
+      {cardArray?.map((cardData, index) => (
         <div
+          key={index}
           className="m-2 bg-white shadow-md rounded-[40px] rounded-tr-none p-4 sm:p-6 md:p-4 w-[227px] h-[210px]"
-          onClick={() => navigate("/developerdetails")}
+          onClick={() => navigate(`/participants/${cardData?._id}`)}
         >
           <div className="text-center items-center sm:flex-col md:flex-row">
             <img

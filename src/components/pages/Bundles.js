@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Select from "react-select";
 
@@ -19,6 +20,7 @@ const options = [
   { value: "Question 4", label: "Java" },
 ];
 const Bundles = () => {
+  const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -115,7 +117,9 @@ const Bundles = () => {
   };
 
   const handleRemoveQuestion = (questionToRemove) => {
-    setQuestions(questions.filter((question) => question.value !== questionToRemove.value));
+    setQuestions(
+      questions.filter((question) => question.value !== questionToRemove.value)
+    );
   };
 
   const handleDeleteClick = (id) => {
@@ -216,6 +220,7 @@ const Bundles = () => {
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
             {data?.bundles?.map((bundle, index) => (
               <tr
+                onClick={() => navigate(`/bundles/${bundle?._id}`)}
                 className=" font-light odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}
               >
@@ -309,14 +314,17 @@ const Bundles = () => {
                 {questions.length > 0 && (
                   <ul className="flex flex-wrap gap-1">
                     {questions.map((question) => (
-                      <li key={question.value} className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light">
+                      <li
+                        key={question.value}
+                        className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light"
+                      >
                         <span>{question.label}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveQuestion(question)}
                           className="ml-2"
                         >
-                          <IoIosClose className="text-lg"/>
+                          <IoIosClose className="text-lg" />
                         </button>
                       </li>
                     ))}
