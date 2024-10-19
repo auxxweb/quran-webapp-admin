@@ -5,9 +5,7 @@ const BundleDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const bundleId = location.pathname?.split("/")[2];
-  console.log("bundleId", bundleId);
-  const { data, isLoading } = useGetBundleDetailQuery(bundleId);
-  console.log("data", data, isLoading);
+  const { data } = useGetBundleDetailQuery(bundleId);
   return (
     <>
       <svg

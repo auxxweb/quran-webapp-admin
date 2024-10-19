@@ -19,20 +19,17 @@ const Questions = () => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const limit = 10;
-  const { data, isLoading, refetch } = useGetQuestionsQuery({
+  const { data, refetch } = useGetQuestionsQuery({
     limit,
     page: currentPage,
     search: searchValue,
   });
-  console.log("data", data, isLoading);
   const [addQuestion, { isLoading: isLoadingMutation }] =
     useAddQuestionMutation();
   const [deleteQuestion, { isLoading: isLoadingDelete }] =
     useDeleteQuestionMutation();
   const [editQuestion, { isLoading: isLoadingEdit }] =
     useEditQuestionMutation();
-
-  console.log("isLoading", isLoadingMutation, isLoadingEdit, isLoadingDelete);
 
   // const [selectedDesignation, setSelectedDesignation] =
   //   useState("Total Project : 3");
@@ -207,7 +204,7 @@ const Questions = () => {
                   {question?.answer}
                 </td>
                 <td className="px-4 py-2">{question?.questionId}</td>
-                <td className="px-4 py-2 text-right">
+                <td className="px-4 py-2 text-right w-[10%]">
                   <button onClick={() => handleEditClick(question)}>
                     <img
                       alt="pics"
@@ -283,6 +280,7 @@ const Questions = () => {
 
           <div className="flex justify-end">
             <button
+              disabled={isLoadingMutation || isLoadingEdit}
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >

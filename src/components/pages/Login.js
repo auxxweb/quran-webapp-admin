@@ -10,8 +10,6 @@ const Login = () => {
   const userData = getUserCredential();
   const [login, { isLoading }] = useLoginMutation();
 
-  console.log("user", userData);
-
   if (userData) return <>Loading</>;
 
   const onSubmit = async (event) => {
@@ -120,7 +118,10 @@ const Login = () => {
                     Remember me
                   </span>
                 </span>
-                <span className="hover:underline cursor-pointer">
+                <span
+                  onClick={() => navigate("/forgotPassword")}
+                  className="hover:underline cursor-pointer"
+                >
                   Forgot Password?
                 </span>
               </div>

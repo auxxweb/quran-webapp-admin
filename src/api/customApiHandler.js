@@ -6,8 +6,6 @@ const BE_API_KEY = "http://localhost:5000";
 const customApiHandler =
   () =>
   async ({ url, method, body, params, headers }) => {
-    console.log("BE", BE_API_KEY + url);
-
     try {
       axios.interceptors.request.use(
         (config) => {
@@ -33,10 +31,7 @@ const customApiHandler =
       //  successMessage(successCode && isNumber(successCode) ? successCode : result?.data?.message);
       return { data: result.data };
     } catch (error) {
-      const showError =
-        error?.response?.data?.response?.validationerrors?.[0]?.value ??
-        error?.response?.data?.response?.message;
-      console.log("error", showError);
+      alert(error);
 
       //  needError && errorMessage(needError && isNumber(needError) ? needError : showError);
 

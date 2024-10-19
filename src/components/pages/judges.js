@@ -27,6 +27,7 @@ const Judges = () => {
   const [selectedJudgeId, setSelectedJudgeId] = useState(null);
   const [zonesList, setZonesList] = useState({});
   const [filterZonesList, setFilterZonesList] = useState([]);
+  const [selectedZones, setSelectedZones] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
 
@@ -34,6 +35,7 @@ const Judges = () => {
     limit,
     page: currentPage,
     search: searchValue,
+    zones: selectedZones,
   });
   const { data: zoneList, refetch: ZoneListsRefetch } = useGetZonesListQuery();
   const [addJudge, { isLoading: isLoadingMutation }] = useAddJudgeMutation({});
@@ -166,6 +168,11 @@ const Judges = () => {
     setFilterZonesList(
       filterZonesList.filter((zone) => zone.value !== zonesToRemove.value)
     );
+  };
+
+  const handleFilterClick = () => {
+    setSelectedZones(filterZonesList?.map((zone) => zone?.value));
+    toggleFilterPopup();
   };
 
   return (
@@ -449,7 +456,7 @@ const Judges = () => {
               {/* Apply Filters Button */}
               <div className="flex justify-center">
                 <button
-                  onClick={toggleFilterPopup}
+                  onClick={handleFilterClick}
                   type="submit"
                   className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl"
                 >

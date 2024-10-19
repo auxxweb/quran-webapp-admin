@@ -9,12 +9,11 @@ const ResponseAndResult = () => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 3;
-  const { data, isLoading } = useGetResultsQuery({
+  const { data } = useGetResultsQuery({
     limit,
     page: currentPage,
     search: searchValue,
   });
-  console.log("data", data, isLoading);
 
   const handleSearchChange = useDebouncedCallback(
     // function

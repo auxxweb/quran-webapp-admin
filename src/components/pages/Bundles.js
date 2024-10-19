@@ -13,6 +13,7 @@ import {
   useEditBundleMutation,
   useGetBundlesQuery,
 } from "../../api/bundle";
+import { useGetQuestionsListQuery } from "../../api/common";
 const options = [
   { value: "Question 1", label: "Question 1" },
   { value: "Question 2", label: "Question 2" },
@@ -27,21 +28,21 @@ const Bundles = () => {
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedBundleId, setSelectedBundleId] = useState(null);
+  const { data: questionList } = useGetQuestionsListQuery();
+  console.log("d", questionList);
+
   const [questions, setQuestions] = useState([]);
 
   const limit = 3;
-  const { data, isLoading, refetch } = useGetBundlesQuery({
+  const { data, refetch } = useGetBundlesQuery({
     limit,
     page: currentPage,
     search: searchValue,
   });
-  console.log("data", data, isLoading);
   const [addBundle, { isLoading: isLoadingMutation }] = useAddBundleMutation();
   const [deleteBundle, { isLoading: isLoadingDelete }] =
     useDeleteBundleMutation();
   const [editBundle, { isLoading: isLoadingEdit }] = useEditBundleMutation();
-
-  console.log("isLoading", isLoadingMutation, isLoadingEdit, isLoadingDelete);
 
   // const [selectedDesignation, setSelectedDesignation] =
   //   useState("Total Project : 3");
@@ -220,23 +221,43 @@ const Bundles = () => {
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
             {data?.bundles?.map((bundle, index) => (
               <tr
-                onClick={() => navigate(`/bundles/${bundle?._id}`)}
                 className=" font-light odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}
               >
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2 flex justify-center items-center">
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {index + 1}
+                </td>
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2 flex justify-center items-center"
+                >
                   <img
                     alt="img"
                     src={bundle?.image}
                     className="w-8 h-8 rounded-full mr-2"
                   />
                 </td>
-                <td className="px-4 py-2 text-center">{bundle?.title}</td>
-                <td className="px-4 py-2 text-center">
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2 text-center"
+                >
+                  {bundle?.title}
+                </td>
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2 text-center"
+                >
                   {bundle?.questions?.length}
                 </td>
-                <td className="px-4 py-2 ">{bundle?.bundleId}</td>
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2 "
+                >
+                  {bundle?.bundleId}
+                </td>
                 <td className="px-4 py-2 text-center">
                   <button onClick={() => handleEditClick(bundle)}>
                     <img
@@ -336,6 +357,7 @@ const Bundles = () => {
 
           <div className="flex justify-end">
             <button
+              disabled={isLoadingEdit || isLoadingMutation}
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >

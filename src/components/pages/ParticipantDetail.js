@@ -5,9 +5,7 @@ const ParticipantDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const participantId = location.pathname?.split("/")[2];
-  console.log("participantId", participantId);
-  const { data, isLoading } = useGetParticipantDetailQuery(participantId);
-  console.log("data", data, isLoading);
+  const { data } = useGetParticipantDetailQuery(participantId);
   return (
     <>
       <svg
@@ -27,11 +25,12 @@ const ParticipantDetails = () => {
         />
       </svg>
       <div className="m-4 mx-auto bg-white shadow-md rounded-lg p-6 mt-6 border border-gray-200">
-        <div className="flex items-start">
-          <div className="flex">
+        <div className="flex flex-col lg:flex-row items-start w-full">
+          {/* Left Section: Profile Image & User Info */}
+          <div className="flex lg:w-1/2">
             <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-300">
               <img
-                src="https://www.hollywoodreporter.com/wp-content/uploads/2024/02/Avatar__The_Last_Airbender_n_S1_00_13_15_10RC.jpgAvatar__The_Last_Airbender_n_S1_00_13_15_10RC-H-2024.jpg?w=1296&h=730&crop=1&resize=681%2C383"
+                src={data?.participant?.image}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
@@ -43,46 +42,61 @@ const ParticipantDetails = () => {
                 {data?.participant?.name}
               </h2>
               <p className="text-gray-500 mt-1 flex items-center">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M12.293 2.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-10 10a1 1 0 01-.581.293l-5 1a1 1 0 01-1.212-1.212l1-5a1 1 0 01.293-.581l10-10zM16 4l-3 3-1-1 3-3 1 1z" />
-                </svg>
+                <img
+                  src="/icons/zoneIcon.svg"
+                  alt="Profile"
+                  className="w-6 h-6 mr-3 object-cover"
+                />
                 {data?.participant?.zone?.name}
               </p>
             </div>
           </div>
-          {/* Profile Picture */}
 
-          {/* Contact Details */}
-          <div className="flex flex-col flex-end">
-            <div className="mt-4 space-y-2">
-              <div>
-                <span className="font-semibold text-gray-600">Phone: </span>
-                <a href="tel:9876543210" className="text-green-500">
-                  {data?.participant?.phone}
-                </a>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">Email: </span>
-                <a href="mailto:hari@example.com" className="text-green-500">
-                  {data?.participant?.email}
-                </a>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">Age: </span>
-                <p>{data?.participant?.age}</p>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">Gender: </span>
-                <p>{data?.participant?.gender}</p>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">Address: </span>
-                <p>{data?.participant?.address}</p>
-              </div>
+          {/* Right Section: Contact Details */}
+          <div className="flex flex-col lg:w-1/2">
+            <div className="mt-4 lg:mt-0">
+              <table className="w-full">
+                <tbody className="space-y-2">
+                  <tr className="mt-4">
+                    <td className="font-semibold text-gray-600 w-1/4">Phone</td>
+                    <td>
+                      <a
+                        href={`tel:${data?.participant?.phone}`}
+                        className="text-green-500"
+                      >
+                        {data?.participant?.phone}
+                      </a>
+                    </td>
+                  </tr>
+                  <tr className="mt-4">
+                    <td className="font-semibold text-gray-600 w-1/4">Email</td>
+                    <td>
+                      <a
+                        href={`mailto:${data?.participant?.email}`}
+                        className="text-green-500"
+                      >
+                        {data?.participant?.email}
+                      </a>
+                    </td>
+                  </tr>
+                  <tr className="mt-4">
+                    <td className="font-semibold text-gray-600 w-1/4">Age</td>
+                    <td>{data?.participant?.age}</td>
+                  </tr>
+                  <tr className="mt-4">
+                    <td className="font-semibold text-gray-600 w-1/4">
+                      Gender
+                    </td>
+                    <td>{data?.participant?.gender}</td>
+                  </tr>
+                  <tr className="mt-4">
+                    <td className="font-semibold text-gray-600 w-1/4">
+                      Address
+                    </td>
+                    <td>{data?.participant?.address}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -119,7 +133,7 @@ const ParticipantDetails = () => {
             </p>
             <p className="flex text-gray-500 mt-3">
               <span className="font-semibold text-gray-600">Mark: </span>
-              <div className="ml-3 text-white font-semibold text-xl">
+              <div className="ml-3 tex  text-white font-semibold text-xl">
                 <span className="px-4 py-2 bg-green-600 rounded-full">9.4</span>
               </div>
             </p>

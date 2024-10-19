@@ -13,13 +13,11 @@ const QuestionDetails = () => {
   const questionId = location.pathname?.split("/")[2];
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-  console.log("questionId", questionId);
-  const { data, isLoading, refetch } = useGetQuestionDetailQuery(questionId);
+  const { data, refetch } = useGetQuestionDetailQuery(questionId);
   const [deleteQuestion, { isLoading: isLoadingDelete }] =
     useDeleteQuestionMutation();
   const [editQuestion, { isLoading: isLoadingEdit }] =
     useEditQuestionMutation();
-  console.log("data", data, isLoading, isLoadingEdit, isLoadingDelete);
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -56,7 +54,7 @@ const QuestionDetails = () => {
       const deleteres = await deleteQuestion?.(body);
       if (deleteres?.data?.success) {
         setShowDeletePopup(false);
-        navigate('/questions')
+        navigate("/questions");
       } else {
         alert(deleteres.data.message);
       }
@@ -170,6 +168,7 @@ const QuestionDetails = () => {
 
           <div className="flex justify-center">
             <button
+              disabled={isLoadingEdit}
               type="submit"
               className="bg-[#0EB599] hover:bg-blue-[#1ae69b] text-white font-bold py-2 px-4 rounded"
             >

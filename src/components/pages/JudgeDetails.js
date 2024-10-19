@@ -13,12 +13,10 @@ const JudgeDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const judgeId = location.pathname?.split("/")[2];
-  console.log("judgeId", judgeId);
   const { data, refetch, isLoading } = useGetJudgeDetailQuery(judgeId);
   const [blockJudge, { isLoading: isLoadingBlock }] = useBlockJudgeMutation();
   const [updatePassword, { isLoading: isLoadingUpdatePassword }] =
     useUpdateJudgePasswordMutation();
-  console.log("data", data);
   const handleModalClose = () => {
     setIsModalVisible(false);
   };
@@ -80,10 +78,10 @@ const JudgeDetails = () => {
           fill="black"
         />
       </svg>
-      <div className="m-4 mx-auto bg-white shadow-md rounded-lg p-6 mt-6 border border-gray-200">
-        <div className="flex items-start">
-          <div>
-            <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-300">
+      <div className="m-4 h-[400px] mx-auto bg-white shadow-md rounded-lg p-6 mt-6 border border-gray-200">
+        <div className="flex items-center h-full">
+          <div className="w-1/3 m-6">
+            <div className="w-48 h-48 flex  rounded-full overflow-hidden border-2 border-gray-300">
               <img
                 src="https://www.hollywoodreporter.com/wp-content/uploads/2024/02/Avatar__The_Last_Airbender_n_S1_00_13_15_10RC.jpgAvatar__The_Last_Airbender_n_S1_00_13_15_10RC-H-2024.jpg?w=1296&h=730&crop=1&resize=681%2C383"
                 alt="Profile"
@@ -92,18 +90,16 @@ const JudgeDetails = () => {
             </div>
 
             {/* User Info */}
-            <div className="ml-6 flex-1">
+            <div className="mt-6  flex  flex-col justify-center">
               <h2 className="text-2xl font-semibold text-gray-800">
                 {data?.judge?.name}
               </h2>
-              <p className="text-gray-500 mt-1 flex items-center">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M12.293 2.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-10 10a1 1 0 01-.581.293l-5 1a1 1 0 01-1.212-1.212l1-5a1 1 0 01.293-.581l10-10zM16 4l-3 3-1-1 3-3 1 1z" />
-                </svg>
+              <p className="mt-3 text-gray-500 flex items-center">
+                <img
+                  src="/icons/zoneIcon.svg"
+                  alt="Profile"
+                  className="w-6 h-6 mr-3 object-cover"
+                />
                 {data?.judge?.zone?.name}
               </p>
             </div>
@@ -111,36 +107,57 @@ const JudgeDetails = () => {
           {/* Profile Picture */}
 
           {/* Contact Details */}
-          <div className="flex flex-col flex-end">
-            <div className="mt-4 space-y-2">
-              <div>
-                <span className="font-semibold text-gray-600">Phone: </span>
-                <a href="tel:9876543210" className="text-green-500">
-                  {data?.judge?.phone}
-                </a>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">Email: </span>
-                <a href="mailto:hari@example.com" className="text-green-500">
-                  {data?.judge?.email}
-                </a>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">Address: </span>
-                <p>{data?.judge?.address}</p>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">Gender: </span>
-                <p>{data?.judge?.gender}</p>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">Password: </span>
-                <p>{data?.judge?.password}</p>
-              </div>
-            </div>
-
+          <div className="flex flex-col justify-between flex-end w-full h-full">
+            <table className="w-full mt-12">
+              <tbody className="space-y-2">
+                <tr className="align-top leading-none">
+                  <td className="font-semibold text-gray-600 pr-2 pb-2 w-1/4">
+                    Phone:
+                  </td>
+                  <td className="pb-4 ">
+                    <a
+                      href={`tel:${data?.judge?.phone}`}
+                      className="text-green-500"
+                    >
+                      {data?.judge?.phone}
+                    </a>
+                  </td>
+                </tr>
+                <tr className="align-top leading-none">
+                  <td className="font-semibold text-gray-600 pr-2 pb-2">
+                    Email:
+                  </td>
+                  <td className="pb-4">
+                    <a
+                      href={`mailto:${data?.judge?.email}`}
+                      className="text-green-500"
+                    >
+                      {data?.judge?.email}
+                    </a>
+                  </td>
+                </tr>
+                <tr className="align-top leading-none">
+                  <td className="font-semibold text-gray-600 pr-2 pb-2">
+                    Address:
+                  </td>
+                  <td className="pb-4">{data?.judge?.address}</td>
+                </tr>
+                <tr className="align-top leading-none">
+                  <td className="font-semibold text-gray-600 pr-2 pb-2">
+                    Gender:
+                  </td>
+                  <td className="pb-4">{data?.judge?.gender}</td>
+                </tr>
+                <tr className="align-top leading-none">
+                  <td className="font-semibold text-gray-600 pr-2 pb-2">
+                    Password:
+                  </td>
+                  <td className="pb-4">{data?.judge?.password}</td>
+                </tr>
+              </tbody>
+            </table>
             {/* Status and Update Password */}
-            <div className="ml-6 mt-6 flex flex-end">
+            <div className="flex justify-end">
               {/* Status Dropdown */}
               <button
                 disabled={isLoadingBlock || isLoading}

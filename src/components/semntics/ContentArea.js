@@ -24,6 +24,9 @@ import ParticipantDetails from "../pages/ParticipantDetail";
 import QuestionDetails from "../pages/questionDetails";
 import BundleDetails from "../pages/BundleDetails";
 import ResponseAndResult from "../pages/ResponseAndResult";
+import ForgotPassword from "../pages/forgotPassword";
+import ChangePassword from "../pages/changePassword";
+import ResultDetails from "../pages/resultDetails";
 
 function ContentArea() {
   return (
@@ -31,6 +34,8 @@ function ContentArea() {
       {/* Use Routes to define all your app routes */}
       <Route path="/" element={<DashBoard />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/changePassword" element={<ChangePassword />} />
       <Route path="/zones" element={<Zones />} />
       <Route path="/judges" element={<Judges />} />
       <Route path="/judges/:id" element={<JudgeDetails />} />
@@ -41,6 +46,7 @@ function ContentArea() {
       <Route path="/bundles" element={<Bundles />} />
       <Route path="/bundles/:id" element={<BundleDetails />} />
       <Route path="/result" element={<ResponseAndResult />} />
+      <Route path="/result/:id" element={<ResultDetails />} />
     </Routes>
   );
 }

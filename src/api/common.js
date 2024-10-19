@@ -15,9 +15,18 @@ export const commonApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    getQuestionsList: builder.query({
+      query: (params) => {
+        return {
+          params,
+          url: "/api/admin/question/all",
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetZonesListQuery } = commonApi;
+export const { useGetZonesListQuery, useGetQuestionsListQuery } = commonApi;
