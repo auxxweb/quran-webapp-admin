@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getUserCredential } from "../common/utils";
 
-const BE_API_KEY = "https://gedexoquizserver.auxxweb.in";
+const BE_API_KEY = "http://localhost:5000";
 
 const customApiHandler =
   () =>

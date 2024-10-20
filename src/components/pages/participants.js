@@ -43,7 +43,6 @@ const Participants = () => {
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
-  
 
   const toggleFilterPopup = () => {
     setIsFilterPopupOpen(!isFilterPopupOpen);
@@ -55,6 +54,7 @@ const Participants = () => {
     formData?.append("zone", zonesList?.value);
     try {
       if (editPopupData) {
+        formData?.append("participantId", editPopupData?._id);
         const res = await editParticipant?.(formData);
         if (res?.data?.success) {
           refetch();
@@ -157,6 +157,9 @@ const Participants = () => {
                     className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     placeholder="Full Name"
                     required
+                    defaultValue={
+                      editPopupData?.name ? editPopupData?.name : ""
+                    }
                   />
                 </div>
                 <div>
@@ -195,6 +198,9 @@ const Participants = () => {
                     className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     placeholder="email"
                     required
+                    defaultValue={
+                      editPopupData?.email ? editPopupData?.email : ""
+                    }
                   />
                 </div>
                 <div>
@@ -211,6 +217,9 @@ const Participants = () => {
                     className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     placeholder="Phone Number"
                     required
+                    defaultValue={
+                      editPopupData?.phone ? editPopupData?.phone : ""
+                    }
                   />
                 </div>
               </div>
@@ -218,7 +227,7 @@ const Participants = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label
-                    htmlFor="password"
+                    htmlFor="address"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Address
@@ -230,6 +239,9 @@ const Participants = () => {
                     className="mt-1 h-24 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     placeholder="Address"
                     required
+                    defaultValue={
+                      editPopupData?.address ? editPopupData?.address : ""
+                    }
                   />
                 </div>
                 <div>
@@ -247,11 +259,14 @@ const Participants = () => {
                       className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="Age"
                       required
+                      defaultValue={
+                        editPopupData?.age ? editPopupData?.age : ""
+                      }
                     />
                   </div>
                   <div>
                     <label
-                      htmlFor="confirmPassword"
+                      htmlFor="gender"
                       className="block text-sm font-medium text-gray-700 mt-3"
                     >
                       Gender
@@ -259,6 +274,9 @@ const Participants = () => {
                     <select
                       name="gender"
                       id="gender"
+                      defaultValue={
+                        editPopupData?.gender ? editPopupData?.gender : ""
+                      }
                       className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     >
                       <option value="male">Male</option>
@@ -284,7 +302,7 @@ const Participants = () => {
               </div>
               <div className="flex justify-center p-6">
                 <button
-                    disabled={isLoadingMutation || isLoadingEdit}
+                  disabled={isLoadingMutation || isLoadingEdit}
                   type="submit"
                   className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl"
                 >
