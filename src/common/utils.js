@@ -14,4 +14,4 @@ export const getUserCredential = () => {
   return null;
 };
 
-export const publicRoutes = ["/login"];
+export const publicRoutes = ["/login", "/forgotPassword", "/changePassword"];

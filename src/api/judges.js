@@ -51,6 +51,23 @@ export const judgesApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    updateJudgePassword: builder.mutation({
+      query: (params) => {
+        return {
+          params,
+          url: "/api/admin/judge/updatePassword",
+          method: "patch",
+        };
+      },
+    }),
+    getJudgeDetail: builder.query({
+      query: (id) => {
+        return {
+          url: `/api/admin/judge/${id}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
@@ -62,4 +79,6 @@ export const {
   useEditJudgeMutation,
   useDeleteJudgeMutation,
   useBlockJudgeMutation,
+  useGetJudgeDetailQuery,
+  useUpdateJudgePasswordMutation,
 } = judgesApi;

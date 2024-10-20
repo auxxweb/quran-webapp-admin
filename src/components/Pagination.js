@@ -23,7 +23,7 @@ function Pagination({ currentPage, onPageChange, totalPages }) {
           key={i}
           className={`pagination-button  px-0.5 rounded ${
             activePage === i
-              ? " text-black"
+              ? " text-black text-lg"
               : " text-[#4D5154] text-sm"
           }`}
           onClick={() => handlePageChange(i)}

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Select from "react-select";
 
@@ -12,6 +13,7 @@ import {
   useEditBundleMutation,
   useGetBundlesQuery,
 } from "../../api/bundle";
+import { useGetQuestionsListQuery } from "../../api/common";
 const options = [
   { value: "Question 1", label: "Question 1" },
   { value: "Question 2", label: "Question 2" },
@@ -19,27 +21,28 @@ const options = [
   { value: "Question 4", label: "Java" },
 ];
 const Bundles = () => {
+  const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedBundleId, setSelectedBundleId] = useState(null);
+  const { data: questionList } = useGetQuestionsListQuery();
+  console.log("d", questionList);
+
   const [questions, setQuestions] = useState([]);
 
   const limit = 3;
-  const { data, isLoading, refetch } = useGetBundlesQuery({
+  const { data, refetch } = useGetBundlesQuery({
     limit,
     page: currentPage,
     search: searchValue,
   });
-  console.log("data", data, isLoading);
   const [addBundle, { isLoading: isLoadingMutation }] = useAddBundleMutation();
   const [deleteBundle, { isLoading: isLoadingDelete }] =
     useDeleteBundleMutation();
   const [editBundle, { isLoading: isLoadingEdit }] = useEditBundleMutation();
-
-  console.log("isLoading", isLoadingMutation, isLoadingEdit, isLoadingDelete);
 
   // const [selectedDesignation, setSelectedDesignation] =
   //   useState("Total Project : 3");
@@ -115,7 +118,9 @@ const Bundles = () => {
   };
 
   const handleRemoveQuestion = (questionToRemove) => {
-    setQuestions(questions.filter((question) => question.value !== questionToRemove.value));
+    setQuestions(
+      questions.filter((question) => question.value !== questionToRemove.value)
+    );
   };
 
   const handleDeleteClick = (id) => {
@@ -219,19 +224,40 @@ const Bundles = () => {
                 className=" font-light odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}
               >
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2 flex justify-center items-center">
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {index + 1}
+                </td>
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2 flex justify-center items-center"
+                >
                   <img
                     alt="img"
                     src={bundle?.image}
                     className="w-8 h-8 rounded-full mr-2"
                   />
                 </td>
-                <td className="px-4 py-2 text-center">{bundle?.title}</td>
-                <td className="px-4 py-2 text-center">
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2 text-center"
+                >
+                  {bundle?.title}
+                </td>
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2 text-center"
+                >
                   {bundle?.questions?.length}
                 </td>
-                <td className="px-4 py-2 ">{bundle?.bundleId}</td>
+                <td
+                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
+                  className="px-4 py-2 "
+                >
+                  {bundle?.bundleId}
+                </td>
                 <td className="px-4 py-2 text-center">
                   <button onClick={() => handleEditClick(bundle)}>
                     <img
@@ -309,14 +335,17 @@ const Bundles = () => {
                 {questions.length > 0 && (
                   <ul className="flex flex-wrap gap-1">
                     {questions.map((question) => (
-                      <li key={question.value} className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light">
+                      <li
+                        key={question.value}
+                        className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light"
+                      >
                         <span>{question.label}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveQuestion(question)}
                           className="ml-2"
                         >
-                          <IoIosClose className="text-lg"/>
+                          <IoIosClose className="text-lg" />
                         </button>
                       </li>
                     ))}
@@ -328,6 +357,7 @@ const Bundles = () => {
 
           <div className="flex justify-end">
             <button
+              disabled={isLoadingEdit || isLoadingMutation}
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
