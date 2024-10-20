@@ -35,7 +35,7 @@ function ContentArea() {
       <Route path="/" element={<DashBoard />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
-      <Route path="/changePassword" element={<ChangePassword />} />
+      <Route path="/changePassword/:forgotId" element={<ChangePassword />} />
       <Route path="/zones" element={<Zones />} />
       <Route path="/judges" element={<Judges />} />
       <Route path="/judges/:id" element={<JudgeDetails />} />

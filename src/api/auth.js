@@ -15,9 +15,27 @@ export const authApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    forgotPassword: builder.mutation({
+      query: (body) => {
+        return {
+          body,
+          url: "/api/admin/auth/forgetPassword",
+          method: "post",
+        };
+      },
+    }),
+    changePassword: builder.mutation({
+      query: (body) => {
+        return {
+          body,
+          url: "/api/admin/auth/changePassword",
+          method: "post",
+        };
+      },
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation,useForgotPasswordMutation ,useChangePasswordMutation} = authApi;

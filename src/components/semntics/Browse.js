@@ -10,13 +10,17 @@ function Browse() {
   const location = useLocation();
   const navigate = useNavigate();
   const userData = getUserCredential();
-
+  const getBasePath = (pathname) => {
+    const pathParts = pathname.split("/").filter(Boolean);
+    return `/${pathParts[0]}`; 
+  };
+  const basePath = getBasePath(location.pathname); 
   useEffect(() => {
-    if (publicRoutes.includes(location.pathname)) {
+    if (publicRoutes.includes(basePath)) {
       if (userData) {
         navigate("/");
       } else {
-        navigate("/login");
+        navigate(location.pathname);
       }
     } else {
       if (!userData) {
@@ -26,7 +30,7 @@ function Browse() {
     //eslint-disable-next-line
   }, []);
 
-  if (publicRoutes.includes(location.pathname)) {
+  if (publicRoutes.includes(basePath)) {
     return (
       <div className="flex-1 flex flex-col">
         <ContentArea /> {/* ContentArea now gets the router context */}

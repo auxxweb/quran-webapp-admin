@@ -1,9 +1,40 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PiEyeFill, PiEyeSlashFill } from "react-icons/pi";
+import { useChangePasswordMutation } from "../../api/auth";
+import { toast } from "sonner";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ChangePassword = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
+  const { forgotId } = useParams();
+  const formRef = useRef();
 
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const password = formData.get("newPassword");
+    const confirmPassword = formData.get("confirmPassword");
+    if (password !== confirmPassword) {
+      toast.error("Password and confirm password do not match");
+      return;
+    }
+
+    try {
+      const body = {
+        password,
+        forgotId,
+      };
+      const res = await changePassword?.(body);
+      toast.success(res?.data?.msg);
+      formRef.current.reset();
+      navigate("/login");
+    } catch (error) {
+      console.log("error", error);
+      toast.error(error?.response?.data?.message);
+    }
+  };
   return (
     <>
       <div
@@ -21,6 +52,8 @@ const ChangePassword = () => {
           </div>
           <div className="w-full max-w-lg ">
             <form
+              ref={formRef}
+              onSubmit={onSubmit}
               className="bg-white border space-y-10 sm:space-y-4 border-[#C19D5C] shadow-lg rounded-lg text-center py-8 sm:py-10 px-3 sm:px-8  w-full"
             >
               <h1 className=" text-4xl sm:text-5xl text-[#C19D5C] font-semibold">
@@ -30,15 +63,13 @@ const ChangePassword = () => {
                 Enter your New Password and Login!
               </h3>
 
-              
-
               {/* Password Input Field */}
               <div className="relative  group  space-y-1">
                 <label
                   className=" px-2 sm:px-3 py-1 text-base sm:text-lg font-medium text-[#C19D5C] bg-transparent m-auto" // Increased padding and adjusted label positioning
                   htmlFor="newPassword"
                 >
-                 New Password
+                  New Password
                 </label>
                 <div className="relative">
                   <input
@@ -87,6 +118,7 @@ const ChangePassword = () => {
               {/* Sign In Button */}
               <div className="pt-3">
                 <button
+                  disabled={isLoading}
                   className="w-full  py-3 max-w-[217px] hover:-translate-y-1 transform transition rounded-lg bg-gradient-to-r from-[#C19D5C] to-[#5F4D2D]  text-white  "
                   type="submit"
                 >

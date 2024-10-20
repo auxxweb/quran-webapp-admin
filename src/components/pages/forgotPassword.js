@@ -1,7 +1,31 @@
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
+import { useForgotPasswordMutation } from "../../api/auth";
+import { useRef } from "react";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const formRef = useRef();
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const email = formData.get("email");
+    try {
+      const body = {
+        email,
+      };
+      const res = await forgotPassword?.(body);
+      toast.success(res?.data?.msg);
+      formRef.current.reset();
+    } catch (error) {
+      console.log("error", error);
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
   return (
     <>
       <div
@@ -18,7 +42,11 @@ const ForgotPassword = () => {
             />
           </div>
           <div className="w-full max-w-lg ">
-            <form className="bg-white border space-y-3 sm:space-y-4 border-[#C19D5C] shadow-lg rounded-lg text-center py-8 sm:py-10 px-3 sm:px-8  w-full">
+            <form
+              ref={formRef}
+              onSubmit={onSubmit}
+              className="bg-white border space-y-3 sm:space-y-4 border-[#C19D5C] shadow-lg rounded-lg text-center py-8 sm:py-10 px-3 sm:px-8  w-full"
+            >
               <h3 className=" text-2xl sm:text-5xl text-[#C19D5C] font-semibold">
                 Forgot Password
               </h3>
@@ -45,11 +73,19 @@ const ForgotPassword = () => {
                 />
               </div>
               {/* Sign In Button */}
+              <div className="flex justify-end mb-8 text-sm text-[#C19D5C] ">
+                <span
+                  onClick={() => navigate("/forgotPassword")}
+                  className="hover:underline cursor-pointer"
+                >
+                  Back to Login?
+                </span>
+              </div>
               <div className="pt-3">
                 <button
-                  onClick={() => navigate("/changePassword")}
                   className="w-full  py-3 max-w-[217px] hover:-translate-y-1 transform transition rounded-lg bg-gradient-to-r from-[#C19D5C] to-[#5F4D2D]  text-white  "
                   type="submit"
+                  disabled={isLoading}
                 >
                   Reset Password
                 </button>
