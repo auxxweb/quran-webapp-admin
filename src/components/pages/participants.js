@@ -445,6 +445,7 @@ const Participants = () => {
             <th className="px-4 py-4 text-left">Image</th>
             <th className="px-4 py-4 text-left">Zone</th>
             <th className="px-4 py-4 text-left">Email</th>
+            <th className="py-4 text-left">Main Judge</th>
             <th className="px-4 py-4 text-left">Action</th>
           </tr>
         </thead>
@@ -490,6 +491,9 @@ const Participants = () => {
                   className="px-4 py-2"
                 >
                   <div className="flex -space-x-2">{participant?.email}</div>
+                </td>
+                <td>
+                <div className="flex ml-3 -space-x-2">{participant?.isMain ? "YES" : "NO"}</div>
                 </td>
                 <td>
                   <button onClick={() => handleEditClick(participant)}>
