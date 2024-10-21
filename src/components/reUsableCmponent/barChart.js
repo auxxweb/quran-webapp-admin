@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useGetDashboardDetailQuery } from "../../api/dashboard";
 
 ChartJS.register(
   CategoryScale,
@@ -21,12 +22,14 @@ ChartJS.register(
 );
 
 const BarChart = () => {
-  const data = {
-    labels: ["Kozhikode", "Trissur", "Malappuram", "Kochi", "Wayanad"],
+  const { data, refetch, isLoading } = useGetDashboardDetailQuery();
+
+  const barData = {
+    labels: data?.data?.zoneBasedParticipants?.map((data) => data?.label),
     datasets: [
       {
         label: "Participants",
-        data: [60, 25, 55, 35, 10],
+        data: data?.data?.zoneBasedParticipants?.map((data) => data?.count),
         backgroundColor: "#058A55",
       },
     ],
@@ -57,7 +60,7 @@ const BarChart = () => {
     borderColor: "#058A55",
   };
 
-  return <Bar data={data} options={options} />;
+  return <Bar data={barData} options={options} />;
 };
 
 export default BarChart;
