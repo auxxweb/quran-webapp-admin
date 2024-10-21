@@ -3,6 +3,7 @@ import { useDebouncedCallback } from "use-debounce";
 import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 import { useGetResultsQuery } from "../../api/responseAndResult";
+import { dateFormater, timeFormater } from "../../common/utils";
 
 const ResponseAndResult = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const ResponseAndResult = () => {
     page: currentPage,
     search: searchValue,
   });
+  
 
   const handleSearchChange = useDebouncedCallback(
     // function
@@ -55,6 +57,7 @@ const ResponseAndResult = () => {
         <table className="min-w-full table-auto">
           <thead className="bg-teal-50">
             <tr>
+            <th className="px-4 py-4 text-left">Sl No</th>
               <th className="px-4 py-2 text-left">Participant Name</th>
               <th className="px-4 py-2 text-left">Image</th>
               <th className="px-4 py-2 text-left">Zone</th>
@@ -65,18 +68,28 @@ const ResponseAndResult = () => {
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
-            {data?.questions?.map((question, index) => (
+            {data?.results?.map((result, index) => (
               <tr
-                onClick={() => navigate(`/questions/${question?._id}`)}
+                // onClick={() => navigate(`/questions/${question?._id}`)}
                 className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}
               >
                 <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">{question?.question}</td>
-                <td className="px-4 py-2 flex items-center">
-                  {question?.answer}
+                <td className="px-4 py-2">{result?.participant_id?.name}</td>
+                <td
+                  className="px-4 py-2 flex items-center"
+                >
+                  <img
+                    alt="img"
+                    src={result?.participant_id?.image}
+                    className="w-14 h-14 rounded-full mr-2 mt-2"
+                  />
                 </td>
-                <td className="px-4 py-2">{question?.questionId}</td>
+                <td className="px-4 py-2">{result?.zone?.name}</td>
+                <td className="px-4 py-2">{dateFormater(result?.startTime) }</td>
+                <td className="px-4 py-2">{timeFormater(result?.startTime) }</td>
+                <td className="px-4 py-2">{timeFormater(result?.endTime)}</td>
+                <td className="px-4 py-2">{result?.totalScore}</td>
               </tr>
             ))}
           </tbody>
