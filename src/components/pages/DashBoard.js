@@ -4,14 +4,14 @@ import DashBoard3Chart from "../DashBoard3Chart";
 
 const DashBoard = () => {
   return (
-    <>
+    <div className="bg-white">
         {/* <DashBoard1Top /> */}
-      <div className="p-4 w-50">
+      <div className="p-4 w-full">
         <DashBoardSection2 />
       </div>
       <DashBoard3Chart />
 
-    </>
+    </div>
   );
 };
 

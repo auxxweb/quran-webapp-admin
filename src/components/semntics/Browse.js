@@ -42,7 +42,7 @@ function Browse() {
         <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
         <div className="flex h-[100%] bg-[#212529] ">
           <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-          <main className="flex-1 overflow-y-auto p-4 bg-[#e9fffb]">
+          <main className={`flex-1 overflow-y-auto p-4 ${location.pathname=== "/" ?"bg-white" : "bg-[#e9fffb]"} `}>
             <ContentArea /> {/* ContentArea now gets the router context */}
           </main>
         </div>
