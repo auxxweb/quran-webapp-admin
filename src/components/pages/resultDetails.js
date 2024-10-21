@@ -1,12 +1,27 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetResultDetailQuery } from "../../api/responseAndResult";
+import { timeFormater } from "../../common/utils";
 
 function ResultDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const resultId = location.pathname?.split("/")[2];
   const { data } = useGetResultDetailQuery(resultId);
+
+  console.log(data);
+
+  const getTimeDifference = (date2, date1) => {
+    const startDate = new Date(date2);
+    const endDate = new Date(date1);
+
+    // Calculate the difference in milliseconds
+    const diffInMs = endDate - startDate;
+
+    // Convert milliseconds to minutes and seconds
+    const diffInSeconds = Math.floor(diffInMs / 1000);
+    return Math.floor(diffInSeconds / 60);
+  };
 
   return (
     <>
@@ -72,7 +87,8 @@ function ResultDetails() {
                   Quiz Time
                 </td>
                 <td className="text-2xl font-semibold mt-2 text-gray-600">
-                  11 AM - 12 PM
+                  {timeFormater(data?.result?.startTime)} -{" "}
+                  {timeFormater(data?.result?.endTime)}
                 </td>
               </tr>
               <tr>
@@ -80,7 +96,7 @@ function ResultDetails() {
                   TotalScore
                 </td>
                 <td className="text-2xl font-semibold mt-2 text-gray-600">
-                  00
+                  {data?.totalScore}
                 </td>
               </tr>
             </tbody>
@@ -95,8 +111,15 @@ function ResultDetails() {
               <div className="flex justify-between items-center">
                 <h1 className="text-xl font-bold">Question {index + 1}</h1>
                 <div className="text-lg text-black">
-                  <span className="font-bold"> Time Taken: 20 Mins</span>
-                  <span className="text-[#939393]">| 09:00 AM - 9:20 AM </span>
+                  <span className="font-bold">
+                    {" "}
+                    Time Taken:{" "}
+                    {getTimeDifference(question?.startTime, question?.endTime)} mins 
+                  </span>
+                  <span className="text-[#939393]">
+                    | {timeFormater(question?.startTime)} -{" "}
+                    {timeFormater(question?.endTime)}{" "}
+                  </span>
                 </div>
               </div>
             </div>
@@ -115,92 +138,41 @@ function ResultDetails() {
                     Participant Response
                   </h2>
                   <h2 className="font-bold text-lg mb-2 mr-2">
-                    Total Score: 00
+                    Total Score: {question?.totalScore}
                   </h2>
                 </div>
 
                 {/* Participant Response Card */}
-                <div className="bg-white border border-gray-200 mt-6 p-4 rounded-lg shadow-md mb-6">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-center">
-                      <div>
-                        <p className="font-semibold text-[#373B3E]">Judge: </p>
-                      </div>
-                      <img
-                        src="https://via.placeholder.com/40"
-                        alt="Judge"
-                        className="ml-3 w-10 h-10 rounded-full mr-3"
-                      />
-                      <div>
-                        <p className="font-bold text-[#373B3E]">Muhammed Ali</p>
-                      </div>
-                      <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
-                        <p>Score Given:</p>
-                        <p className="font-bold text-2xl ml-6">00</p>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-black mt-3">
-                    Answer: Competition where participants answer questions to
-                    test their knowledge on a topic or topics. Quizzes can be
-                    short and consist of a few questions, or they can be
-                    large-scale events with hundreds of participants.
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 mt-6 p-4 rounded-lg shadow-md mb-6">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-center">
-                      <div>
-                        <p className="font-semibold text-[#373B3E]">Judge: </p>
-                      </div>
-                      <img
-                        src="https://via.placeholder.com/40"
-                        alt="Judge"
-                        className="ml-3 w-10 h-10 rounded-full mr-3"
-                      />
-                      <div>
-                        <p className="font-bold text-[#373B3E]">Muhammed Ali</p>
-                      </div>
-                      <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
-                        <p>Score Given:</p>
-                        <p className="font-bold text-2xl ml-6">00</p>
+                {question?.answers?.map((answer) => (
+                  <div className="bg-white border border-gray-200 mt-6 p-4 rounded-lg shadow-md mb-6">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center">
+                        <div>
+                          <p className="font-semibold text-[#373B3E]">
+                            Judge:{" "}
+                          </p>
+                        </div>
+                        <img
+                          src="https://via.placeholder.com/40"
+                          alt="Judge"
+                          className="ml-3 w-10 h-10 rounded-full mr-3"
+                        />
+                        <div>
+                          <p className="font-bold text-[#373B3E]">
+                            {answer?.judge?.name}
+                          </p>
+                        </div>
+                        <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
+                          <p>Score Given:</p>
+                          <p className="font-bold text-2xl ml-6">
+                            {answer?.score ?? "00"}
+                          </p>
+                        </div>
                       </div>
                     </div>
+                    <p className="text-black mt-3">Answer: {answer?.answer}</p>
                   </div>
-                  <p className="text-black mt-3">
-                    Answer: Competition where participants answer questions to
-                    test their knowledge on a topic or topics. Quizzes can be
-                    short and consist of a few questions, or they can be
-                    large-scale events with hundreds of participants.
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 p-4 mt-6 rounded-lg shadow-md mb-6">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-center">
-                      <div>
-                        <p className="font-semibold text-[#373B3E]">Judge: </p>
-                      </div>
-                      <img
-                        src="https://via.placeholder.com/40"
-                        alt="Judge"
-                        className="ml-3 w-10 h-10 rounded-full mr-3"
-                      />
-                      <div>
-                        <p className="font-bold text-[#373B3E]">Muhammed Ali</p>
-                      </div>
-                      <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
-                        <p>Score Given:</p>
-                        <p className="font-bold text-2xl ml-6">00</p>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-black mt-3">
-                    Answer: Competition where participants answer questions to
-                    test their knowledge on a topic or topics. Quizzes can be
-                    short and consist of a few questions, or they can be
-                    large-scale events with hundreds of participants.
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
           </div>
