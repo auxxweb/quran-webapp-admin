@@ -101,52 +101,6 @@ const ParticipantDetails = () => {
           </div>
         </div>
       </div>
-      <div className="max-w-3xl mx-auto p-6 mt-8">
-        {/* Title */}
-        <h2 className="text-center text-2xl font-semibold text-gray-800 mb-6">
-          Competition History
-        </h2>
-
-        {/* Competition Card */}
-        <div className="flex bg-white items-center border border-[#1DB290] p-4 rounded-md">
-          {/* Competition Image */}
-          <div className="w-24 h-24 rounded-md overflow-hidden">
-            <img
-              src="https://via.placeholder.com/150"
-              alt="Competition"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Competition Info */}
-          <div className="ml-4 flex-1">
-            <h3 className="text-xl font-semibold text-gray-700">
-              {data?.participant?.zone?.name} Competition
-            </h3>
-            <p className="text-gray-500 mt-3">
-              <span className="font-semibold text-gray-600">Date: </span>
-              04/04/2024
-            </p>
-            <p className="text-gray-500 mt-3">
-              <span className="font-semibold text-gray-600">Time: </span>
-              09:00 AM - 12:00 PM
-            </p>
-            <p className="flex text-gray-500 mt-3">
-              <span className="font-semibold text-gray-600">Mark: </span>
-              <div className="ml-3 tex  text-white font-semibold text-xl">
-                <span className="px-4 py-2 bg-green-600 rounded-full">9.4</span>
-              </div>
-            </p>
-          </div>
-
-          {/* Mark and View Button */}
-          <div className="ml-4 flex flex-col items-center">
-            <button className="bg-green-600 text-white px-6 py-2 rounded-md mb-2 hover:bg-green-600">
-              View
-            </button>
-          </div>
-        </div>
-      </div>
     </>
   );
 };
