@@ -1,12 +1,17 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useGetResultDetailQuery } from "../../api/responseAndResult";
 
 function ResultDetails() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const resultId = location.pathname?.split("/")[2];
+  const { data } = useGetResultDetailQuery(resultId);
+
   return (
     <>
       <svg
-        onClick={() => navigate("/results")}
+        onClick={() => navigate("/result")}
         className="cursor-pointer mb-4"
         width="13"
         height="22"
@@ -21,7 +26,7 @@ function ResultDetails() {
           fill="black"
         />
       </svg>
-      <div className="m-6 bg-white shadow-md rounded-lg p-6 mt-6 border border-gray-200">
+      <div className="m-6 bg-white shadow-md rounded-lg p-6 mt-6 border border-gray-200 overflow-hidden">
         <div className="flex flex-col lg:flex-row items-start w-full">
           {/* Left Section: Profile Image & User Info */}
           <div className="flex lg:w-1/2">
@@ -36,74 +41,170 @@ function ResultDetails() {
             {/* User Info */}
             <div className="ml-6 flex-1">
               <h2 className="text-2xl font-semibold text-gray-800">
-                Mohammed Ali
+                {data?.result?.participant_id?.name}
               </h2>
               <p className="text-gray-500 mt-1 flex items-center">
-                Calicut zone
+                {data?.result?.zone?.name}
               </p>
               <p className="text-green-500 mt-1 flex items-center">
-                9876543210
+                {data?.result?.participant_id?.phone}
               </p>
               <p className="text-green-500 mt-1 flex items-center">
-                qwert@wert.com
+                {data?.result?.participant_id?.email}
               </p>
               <p className="text-gray-500 mt-1 flex items-center">
-                Calicut zone
+                {data?.result?.participant_id?.address}
               </p>
             </div>
           </div>
+          <table className="table-auto border-separate border-spacing-4">
+            <tbody>
+              <tr>
+                <td className="text-2xl font-semibold mt-2 text-gray-600">
+                  Date
+                </td>
+                <td className="text-2xl font-semibold mt-2 text-gray-600">
+                  12/1/1334
+                </td>
+              </tr>
+              <tr>
+                <td className="text-2xl font-semibold mt-2 text-gray-600">
+                  Quiz Time
+                </td>
+                <td className="text-2xl font-semibold mt-2 text-gray-600">
+                  11 AM - 12 PM
+                </td>
+              </tr>
+              <tr>
+                <td className="text-2xl font-semibold mt-2 text-gray-600">
+                  TotalScore
+                </td>
+                <td className="text-2xl font-semibold mt-2 text-gray-600">
+                  00
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div className="m-6 min-h-screen flex flex-col items-center">
-        <div className="bg-white w-full  p-6 rounded-lg shadow-lg">
-          {/* Question Section */}
-          <div className="bg-gray-50 p-4 rounded-lg shadow-inner mb-6">
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold">Question 1</h3>
-              <p>Time Taken: 20 Mins | 09:00 AM - 9:20 AM</p>
+      <div className="items-center m-6 justify-center">
+        {/* Main Container */}
+        {data?.questions?.map((question, index) => (
+          <div className="bg-white  align-center shadow-md rounded-lg mb-6 bg-[#D9D9D9] w-full">
+            <div className="border-b rounded-t-lg p-3 bg-white">
+              <div className="flex justify-between items-center">
+                <h1 className="text-xl font-bold">Question {index + 1}</h1>
+                <div className="text-lg text-black">
+                  <span className="font-bold"> Time Taken: 20 Mins</span>
+                  <span className="text-[#939393]">| 09:00 AM - 9:20 AM </span>
+                </div>
+              </div>
             </div>
-            <p className="mt-4 text-gray-700">
-              What are some other names for the Quran?
-            </p>
-            <div className="bg-white p-4 mt-4 rounded-lg shadow">
-              <p className="text-gray-500">
-                Answer: Competition where participants answer questions...
-              </p>
-            </div>
-          </div>
+            <div className="p-6">
+              <div className="bg-[#D9D9D9]  p-4 rounded-md">
+                <p className="text-lg font-semibold">{question?.question}</p>
+                <p className="mt-2 text-sm text-black">
+                  Answer: {question?.answer}
+                </p>
+              </div>
 
-          {/* Participant Response Section */}
-          <div className="bg-white p-4 rounded-lg shadow-lg">
-            <h3 className="text-lg font-semibold">Participant Response</h3>
-            <div className="mt-4 border-t pt-4">
-              {["Muhammed Ali", "Muhammed Ali", "Muhammed Ali"].map(
-                (judge, index) => (
-                  <div key={index} className="mb-4">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center">
-                        <img
-                          src="https://via.placeholder.com/40"
-                          alt="Judge"
-                          className="w-10 h-10 rounded-full mr-4"
-                        />
-                        <p className="font-semibold">{judge}</p>
+              {/* Participant Response Section */}
+              <div>
+                <div className="flex justify-between bg-white shadow-md rounded-lg p-3 mb-3 w-full">
+                  <h2 className="font-bold text-lg mb-2">
+                    Participant Response
+                  </h2>
+                  <h2 className="font-bold text-lg mb-2 mr-2">
+                    Total Score: 00
+                  </h2>
+                </div>
+
+                {/* Participant Response Card */}
+                <div className="bg-white border border-gray-200 mt-6 p-4 rounded-lg shadow-md mb-6">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center">
+                      <div>
+                        <p className="font-semibold text-[#373B3E]">Judge: </p>
                       </div>
-                      <p>
-                        Score Given: <strong>00</strong>
-                      </p>
-                    </div>
-                    <div className="bg-gray-50 p-4 mt-2 rounded-lg">
-                      <p className="text-gray-600">
-                        Answer: Competition where participants answer questions
-                        to test their knowledge...
-                      </p>
+                      <img
+                        src="https://via.placeholder.com/40"
+                        alt="Judge"
+                        className="ml-3 w-10 h-10 rounded-full mr-3"
+                      />
+                      <div>
+                        <p className="font-bold text-[#373B3E]">Muhammed Ali</p>
+                      </div>
+                      <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
+                        <p>Score Given:</p>
+                        <p className="font-bold text-2xl ml-6">00</p>
+                      </div>
                     </div>
                   </div>
-                )
-              )}
+                  <p className="text-black mt-3">
+                    Answer: Competition where participants answer questions to
+                    test their knowledge on a topic or topics. Quizzes can be
+                    short and consist of a few questions, or they can be
+                    large-scale events with hundreds of participants.
+                  </p>
+                </div>
+                <div className="bg-white border border-gray-200 mt-6 p-4 rounded-lg shadow-md mb-6">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center">
+                      <div>
+                        <p className="font-semibold text-[#373B3E]">Judge: </p>
+                      </div>
+                      <img
+                        src="https://via.placeholder.com/40"
+                        alt="Judge"
+                        className="ml-3 w-10 h-10 rounded-full mr-3"
+                      />
+                      <div>
+                        <p className="font-bold text-[#373B3E]">Muhammed Ali</p>
+                      </div>
+                      <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
+                        <p>Score Given:</p>
+                        <p className="font-bold text-2xl ml-6">00</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-black mt-3">
+                    Answer: Competition where participants answer questions to
+                    test their knowledge on a topic or topics. Quizzes can be
+                    short and consist of a few questions, or they can be
+                    large-scale events with hundreds of participants.
+                  </p>
+                </div>
+                <div className="bg-white border border-gray-200 p-4 mt-6 rounded-lg shadow-md mb-6">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center">
+                      <div>
+                        <p className="font-semibold text-[#373B3E]">Judge: </p>
+                      </div>
+                      <img
+                        src="https://via.placeholder.com/40"
+                        alt="Judge"
+                        className="ml-3 w-10 h-10 rounded-full mr-3"
+                      />
+                      <div>
+                        <p className="font-bold text-[#373B3E]">Muhammed Ali</p>
+                      </div>
+                      <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
+                        <p>Score Given:</p>
+                        <p className="font-bold text-2xl ml-6">00</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-black mt-3">
+                    Answer: Competition where participants answer questions to
+                    test their knowledge on a topic or topics. Quizzes can be
+                    short and consist of a few questions, or they can be
+                    large-scale events with hundreds of participants.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </>
   );

@@ -15,8 +15,8 @@ const ResponseAndResult = () => {
     page: currentPage,
     search: searchValue,
   });
-  
 
+  
   const handleSearchChange = useDebouncedCallback(
     // function
     (value) => {
@@ -57,7 +57,7 @@ const ResponseAndResult = () => {
         <table className="min-w-full table-auto">
           <thead className="bg-teal-50">
             <tr>
-            <th className="px-4 py-4 text-left">Sl No</th>
+              <th className="px-4 py-4 text-left">Sl No</th>
               <th className="px-4 py-2 text-left">Participant Name</th>
               <th className="px-4 py-2 text-left">Image</th>
               <th className="px-4 py-2 text-left">Zone</th>
@@ -70,13 +70,23 @@ const ResponseAndResult = () => {
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
             {data?.results?.map((result, index) => (
               <tr
-                // onClick={() => navigate(`/questions/${question?._id}`)}
                 className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}
               >
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">{result?.participant_id?.name}</td>
                 <td
+                  onClick={() => navigate(`/result/${result?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {index + 1}
+                </td>
+                <td
+                  onClick={() => navigate(`/result/${result?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {result?.participant_id?.name}
+                </td>
+                <td
+                  onClick={() => navigate(`/result/${result?._id}`)}
                   className="px-4 py-2 flex items-center"
                 >
                   <img
@@ -85,11 +95,36 @@ const ResponseAndResult = () => {
                     className="w-14 h-14 rounded-full mr-2 mt-2"
                   />
                 </td>
-                <td className="px-4 py-2">{result?.zone?.name}</td>
-                <td className="px-4 py-2">{dateFormater(result?.startTime) }</td>
-                <td className="px-4 py-2">{timeFormater(result?.startTime) }</td>
-                <td className="px-4 py-2">{timeFormater(result?.endTime)}</td>
-                <td className="px-4 py-2">{result?.totalScore}</td>
+                <td
+                  onClick={() => navigate(`/result/${result?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {result?.zone?.name}
+                </td>
+                <td
+                  onClick={() => navigate(`/result/${result?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {dateFormater(result?.startTime)}
+                </td>
+                <td
+                  onClick={() => navigate(`/result/${result?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {timeFormater(result?.startTime)}
+                </td>
+                <td
+                  onClick={() => navigate(`/result/${result?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {timeFormater(result?.endTime)}
+                </td>
+                <td
+                  onClick={() => navigate(`/result/${result?._id}`)}
+                  className="px-4 py-2"
+                >
+                  {result?.totalScore}
+                </td>
               </tr>
             ))}
           </tbody>

@@ -4,7 +4,7 @@ import { api } from ".";
 const tagInjection = api.enhanceEndpoints({ addTagTypes: [] });
 
 // Define a service using a base URL and expected endpoints
-export const questionsApi = tagInjection.injectEndpoints({
+export const resultssApi = tagInjection.injectEndpoints({
   endpoints: (builder) => ({
     getResults: builder.query({
       query: (params) => {
@@ -15,9 +15,17 @@ export const questionsApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    getResultDetail: builder.query({
+      query: (id) => {
+        return {
+          url: `/api/admin/result/${id}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetResultsQuery } = questionsApi;
+export const { useGetResultsQuery, useGetResultDetailQuery } = resultssApi;
