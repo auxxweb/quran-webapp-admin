@@ -19,6 +19,7 @@ const Participants = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [zonesList, setZonesList] = useState({});
+  const [imageUrl, setImageUrl] = useState(null);
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [filterZonesList, setFilterZonesList] = useState([]);
   const [selectedZones, setSelectedZones] = useState();
@@ -35,8 +36,6 @@ const Participants = () => {
   const { data: zoneList, refetch: ZoneListsRefetch } = useGetZonesListQuery();
   const [addParticipant, { isLoading: isLoadingMutation }] =
     useAddParticipantMutation();
-  //   const [deleteParticipant, { isLoading: isLoadingDelete }] =
-  //     useDeleteParticipantMutation();
   const [editParticipant, { isLoading: isLoadingEdit }] =
     useEditParticipantMutation();
 
@@ -93,6 +92,8 @@ const Participants = () => {
 
   const handleModalClose = () => {
     toggleModal();
+    setZonesList({});
+    setImageUrl(null);
   };
 
   const handleChange = (selectedOptions) => {
@@ -117,11 +118,19 @@ const Participants = () => {
     toggleFilterPopup();
   };
 
-  const handleEditClick = (zone) => {
+  const handleEditClick = (participant) => {
     toggleModal();
-    setEditPopupData(zone);
+    setEditPopupData(participant);
+    setZonesList({
+      value: participant?.zone?._id,
+      label: participant?.zone?.name,
+    });
+    setImageUrl(participant?.image);
   };
 
+  const handlePreviewImage = (e) => {
+    setImageUrl(URL.createObjectURL(e.target.files[0]));
+  };
   return (
     <>
       <div className="flex rounded-lg p-4">
@@ -139,7 +148,7 @@ const Participants = () => {
           <Modal
             isVisible={isModalVisible}
             onClose={handleModalClose}
-            modalHeader={"Add Participant"}
+            modalHeader={editPopupData ? "Edit Participant" : "Add Participant"}
           >
             <form onSubmit={onSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -298,7 +307,15 @@ const Participants = () => {
                   id="image"
                   className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   required
+                  onChange={handlePreviewImage}
                 />
+                {imageUrl && (
+                  <img
+                    className="mt-2 w-20 h-auto"
+                    src={imageUrl}
+                    alt="previewImage"
+                  />
+                )}
               </div>
               <div className="flex justify-center p-6">
                 <button
