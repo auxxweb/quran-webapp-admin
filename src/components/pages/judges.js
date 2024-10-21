@@ -16,14 +16,18 @@ import {
 import { useGetZonesListQuery } from "../../api/common";
 import { IoIosClose } from "react-icons/io";
 import FilterPopup from "../reUsableCmponent/filterPopup";
+import { PiEyeFill, PiEyeSlashFill } from "react-icons/pi";
 
 const Judges = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState([]);
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showBlockPopup, setShowBlockPopup] = useState(false);
   const [selectedJudgeId, setSelectedJudgeId] = useState(null);
   const [zonesList, setZonesList] = useState({});
   const [filterZonesList, setFilterZonesList] = useState([]);
@@ -85,9 +89,11 @@ const Judges = () => {
     }
   };
 
-  const handleEditClick = (zone) => {
+  const handleEditClick = (judge) => {
     toggleModal();
-    setEditPopupData(zone);
+    setEditPopupData(judge);
+    setZonesList({ value: judge?.zone?._id, label: judge?.zone?.name });
+    setImageUrl(judge?.image);
   };
 
   const handleDeleteClick = (id) => {
@@ -119,14 +125,20 @@ const Judges = () => {
     setFilterZonesList(selectedOptions || {});
   };
 
-  const handleBlockJudge = async (id) => {
+  const handleShowBlockJudgePopup = (id) => {
+    setSelectedJudgeId(id);
+    setShowBlockPopup(true);
+  };
+
+  const handleBlockJudge = async () => {
     try {
       const body = {
-        judgeId: id,
+        judgeId: selectedJudgeId,
       };
       const deleteres = await blockJudge?.(body);
       if (deleteres?.data?.success) {
         refetch();
+        setShowBlockPopup(false);
       } else {
         alert(deleteres.data.message);
       }
@@ -139,10 +151,14 @@ const Judges = () => {
     setZonesList({});
     toggleModal();
     setEditPopupData(null);
+    setImageUrl(null);
   };
 
   const handleDeleteModalClose = () => {
     setShowDeletePopup(false);
+  };
+  const handleBlockModalClose = () => {
+    setShowBlockPopup(false);
   };
 
   const handleSearchChange = useDebouncedCallback(
@@ -155,6 +171,10 @@ const Judges = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const handlePreviewImage = (e) => {
+    setImageUrl(URL.createObjectURL(e.target.files[0]));
   };
 
   const selectOption = zoneList?.zones?.map((zone) => {
@@ -175,6 +195,14 @@ const Judges = () => {
     toggleFilterPopup();
   };
 
+  const handleShowPassword = (id) => {
+    if (showPassword?.includes(id)) {
+      setShowPassword(showPassword?.filter((filterId) => filterId !== id));
+    } else {
+      setShowPassword([...showPassword, id]);
+    }
+  };
+
   return (
     <>
       <div className="flex rounded-lg p-4">
@@ -191,7 +219,7 @@ const Judges = () => {
             <Modal
               isVisible={isModalVisible}
               onClose={handleModalClose}
-              modalHeader={"Add judge"}
+              modalHeader={editPopupData ? "Edit judge" : "Add judge"}
             >
               <form onSubmit={onSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -300,7 +328,7 @@ const Judges = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label
-                      htmlFor="password"
+                      htmlFor="address"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Address
@@ -320,7 +348,7 @@ const Judges = () => {
                   <div>
                     <div>
                       <label
-                        htmlFor="confirmPassword"
+                        htmlFor="gender"
                         className="block text-sm font-medium text-gray-700"
                       >
                         Gender
@@ -337,23 +365,28 @@ const Judges = () => {
                         <option value="female">Female</option>
                       </select>
                     </div>
-                    {!editPopupData && (
-                      <div className="mt-5">
-                        <label
-                          htmlFor="main"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Image
-                        </label>
-                        <input
-                          type="file"
-                          name="image"
-                          id="image"
-                          className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          required
+                    <div className="mt-5">
+                      <label
+                        htmlFor="image"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Image
+                      </label>
+                      <input
+                        type="file"
+                        name="image"
+                        id="image"
+                        className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        onChange={handlePreviewImage}
+                      />
+                      {imageUrl && (
+                        <img
+                          className="mt-2 w-20 h-auto"
+                          src={imageUrl}
+                          alt="previewImage"
                         />
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-row">
@@ -362,7 +395,9 @@ const Judges = () => {
                     name="isMain"
                     id="isMain"
                     className="mr-2 border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    defaultValue={editPopupData?.isMain ? true : "off"}
+                    defaultChecked={
+                      editPopupData ? editPopupData?.isMain : false
+                    }
                   />
                   <label
                     htmlFor="image"
@@ -402,6 +437,28 @@ const Judges = () => {
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
                 >
                   YES
+                </button>
+              </div>
+            </Modal>
+            <Modal isVisible={showBlockPopup} onClose={handleBlockModalClose}>
+              <h3 className="flex self-center text-lg font-bold">
+                Are you sure want to Block/Unblock?
+              </h3>
+              <div className="flex justify-center p-6">
+                <button
+                  disabled={isLoadingBlock}
+                  onClick={handleBlockModalClose}
+                  type="submit"
+                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
+                >
+                  No
+                </button>
+                <button
+                  disabled={isLoadingBlock}
+                  onClick={handleBlockJudge}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
+                >
+                  {isLoadingBlock ? "loading" : "YES"}
                 </button>
               </div>
             </Modal>
@@ -544,15 +601,27 @@ const Judges = () => {
                 >
                   {judge?.email}
                 </td>
-                <td
-                  onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2"
-                >
-                  {judge?.password}
+                <td className="px-4 py-2">
+                  <button
+                    type="button"
+                    onClick={() => handleShowPassword(judge?._id)}
+                    class="flex"
+                  >
+                    {showPassword?.includes(judge?._id)
+                      ? judge?.password
+                      : "*".repeat(judge?.password.length)}
+                    <div className="ml-3 mt-1 w-2 h-2">
+                      {showPassword?.includes(judge?._id) ? (
+                        <PiEyeSlashFill />
+                      ) : (
+                        <PiEyeFill />
+                      )}
+                    </div>
+                  </button>
                 </td>
                 <td className="px-4 py-2 ">
                   <button
-                    onClick={() => handleBlockJudge(judge?._id)}
+                    onClick={() => handleShowBlockJudgePopup(judge?._id)}
                     className={`py-2 px-5 flex space-x-2 items-center ${
                       judge?.isBlocked
                         ? " text-[#FF0404] border-[#FF0404]"

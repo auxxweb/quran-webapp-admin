@@ -306,7 +306,6 @@ const Participants = () => {
                   name="image"
                   id="image"
                   className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  required
                   onChange={handlePreviewImage}
                 />
                 {imageUrl && (
@@ -411,8 +410,8 @@ const Participants = () => {
             <th className="px-4 py-4 text-left">Sl No</th>
             <th className="px-4 py-4 text-left">Name</th>
             <th className="px-4 py-4 text-left">Image</th>
-            <th className="px-4 py-4 text-left">zone</th>
-            <th className="px-4 py-4 text-left">email</th>
+            <th className="px-4 py-4 text-left">Zone</th>
+            <th className="px-4 py-4 text-left">Email</th>
             <th className="px-4 py-4 text-left">Action</th>
           </tr>
         </thead>
