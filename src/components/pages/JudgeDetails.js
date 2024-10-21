@@ -88,7 +88,7 @@ const JudgeDetails = () => {
           <div className="w-1/3 m-6">
             <div className="w-48 h-48 flex  rounded-full overflow-hidden border-2 border-gray-300">
               <img
-                src="https://www.hollywoodreporter.com/wp-content/uploads/2024/02/Avatar__The_Last_Airbender_n_S1_00_13_15_10RC.jpgAvatar__The_Last_Airbender_n_S1_00_13_15_10RC-H-2024.jpg?w=1296&h=730&crop=1&resize=681%2C383"
+                src={data?.judge?.image}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />

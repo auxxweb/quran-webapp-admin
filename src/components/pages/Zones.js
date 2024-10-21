@@ -119,7 +119,7 @@ const Zones = () => {
             <Modal
               isVisible={isModalVisible}
               onClose={handleModalClose}
-              modalHeader={"Add Zone"}
+              modalHeader={editPopupData ? "Edit Zone" : "Add Zone"}
             >
               <form onSubmit={onSubmit} className="space-y-4">
                 <div>
@@ -154,21 +154,6 @@ const Zones = () => {
                     defaultValue={
                       editPopupData ? editPopupData?.description : null
                     }
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="image"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Image
-                  </label>
-                  <input
-                    type="file"
-                    name="image"
-                    id="image"
-                    className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    required
                   />
                 </div>
                 <div className="flex justify-center p-6">
@@ -231,7 +216,6 @@ const Zones = () => {
           <tr>
             <th className="px-4 py-4 text-left">Sl No</th>
             <th className="px-4 py-4 text-left">Name</th>
-            <th className="px-4 py-4 text-left">Image</th>
             <th className="px-4 py-4 text-left">Link</th>
             <th className="px-4 py-4 text-left">Description</th>
             <th className="px-4 py-4 text-left">Action</th>
@@ -248,13 +232,6 @@ const Zones = () => {
               >
                 <td className="px-4 py-2">{index}</td>
                 <td className="px-4 py-2">{zone?.name}</td>
-                <td className="px-3 py-2 flex items-center">
-                  <img
-                    alt="img"
-                    src={zone?.image}
-                    className="w-14 h-14 rounded-full mr-2 mt-2"
-                  />
-                </td>
                 <td className="px-4 py-2">Competition Link</td>
                 <td className="px-4 py-2">
                   <div className="flex -space-x-2">{zone?.description}</div>
