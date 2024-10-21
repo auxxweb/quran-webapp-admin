@@ -29,7 +29,7 @@ const BundleDetails = () => {
           <div className="flex">
             <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-gray-300">
               <img
-                src="https://www.hollywoodreporter.com/wp-content/uploads/2024/02/Avatar__The_Last_Airbender_n_S1_00_13_15_10RC.jpgAvatar__The_Last_Airbender_n_S1_00_13_15_10RC-H-2024.jpg?w=1296&h=730&crop=1&resize=681%2C383"
+                src="/bundle.jpg"
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
