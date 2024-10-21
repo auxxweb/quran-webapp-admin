@@ -34,7 +34,15 @@ const customApiHandler =
       return { data: result.data };
     } catch (error) {
       // alert(error);
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message,{
+        position: "top-right",
+        duration: 2000,  
+        style: {
+          backgroundColor: "#fb0909", // Custom green color for success
+          color: "#FFFFFF", // Text color
+        },
+        dismissible: true,  
+      });
 
       //  needError && errorMessage(needError && isNumber(needError) ? needError : showError);
 
