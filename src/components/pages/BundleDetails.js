@@ -37,7 +37,7 @@ const BundleDetails = () => {
       <div className="m-4 mx-auto bg-white shadow-md rounded-lg p-6 mt-6 border border-gray-200">
         <div className="flex items-start">
           <div className="flex">
-            <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-gray-300">
+            <div className="w-40 h-40 rounded-[15px] overflow-hidden border-2 border-gray-300">
               <img
                 src="/bundle.jpg"
                 alt="Profile"
