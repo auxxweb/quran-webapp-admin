@@ -9,6 +9,7 @@ import Modal from "../reUsableCmponent/modal/Modal";
 import { useDebouncedCallback } from "use-debounce";
 import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Questions = () => {
   const navigate = useNavigate();
@@ -62,7 +63,15 @@ const Questions = () => {
           toggleModal();
           setEditPopupData(null);
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       } else {
         const body = {
@@ -74,7 +83,15 @@ const Questions = () => {
           refetch({ limit, page: currentPage, search: searchValue });
           toggleModal();
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       }
     } catch (error) {
@@ -114,7 +131,15 @@ const Questions = () => {
         setSelectedQuestionId(null);
         setShowDeletePopup(false);
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);

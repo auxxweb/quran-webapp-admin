@@ -6,6 +6,7 @@ import {
   useGetQuestionDetailQuery,
 } from "../../api/questions";
 import Modal from "../reUsableCmponent/modal/Modal";
+import { toast } from "sonner";
 
 const QuestionDetails = () => {
   const navigate = useNavigate();
@@ -39,7 +40,15 @@ const QuestionDetails = () => {
         refetch();
         toggleModal();
       } else {
-        alert(res.data.message);
+        toast.error(res.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);
@@ -56,7 +65,15 @@ const QuestionDetails = () => {
         setShowDeletePopup(false);
         navigate("/questions");
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);

@@ -14,6 +14,7 @@ import {
   useGetBundlesQuery,
 } from "../../api/bundle";
 import { useGetQuestionsListQuery } from "../../api/common";
+import { toast } from "sonner";
 const Bundles = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -75,7 +76,15 @@ const Bundles = () => {
           toggleModal();
           setEditPopupData(null);
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       } else {
         const body = {
@@ -87,7 +96,15 @@ const Bundles = () => {
           refetch({ limit, page: currentPage, search: searchValue });
           toggleModal();
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       }
     } catch (error) {
@@ -140,7 +157,15 @@ const Bundles = () => {
         setSelectedBundleId(null);
         setShowDeletePopup(false);
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);

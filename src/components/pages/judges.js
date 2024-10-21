@@ -18,6 +18,7 @@ import { IoIosClose } from "react-icons/io";
 import FilterPopup from "../reUsableCmponent/filterPopup";
 import { PiEyeFill, PiEyeSlashFill } from "react-icons/pi";
 import JudgeAvatar from "../../assets/images/person-placeholder.png"
+import { toast } from "sonner";
 
 const Judges = () => {
   const navigate = useNavigate();
@@ -72,7 +73,15 @@ const Judges = () => {
           toggleModal();
           setEditPopupData(null);
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       } else {
         const res = await addJudge?.(formData);
@@ -82,7 +91,15 @@ const Judges = () => {
           setZonesList({});
           toggleModal();
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       }
     } catch (error) {
@@ -112,7 +129,15 @@ const Judges = () => {
         setSelectedJudgeId(null);
         setShowDeletePopup(false);
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);
@@ -141,7 +166,15 @@ const Judges = () => {
         refetch();
         setShowBlockPopup(false);
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);

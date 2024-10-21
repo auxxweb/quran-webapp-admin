@@ -11,7 +11,8 @@ import {
   useGetZonesQuery,
 } from "../../api/zones";
 import Pagination from "../Pagination";
-import {  PUBLIC_USER_FRONTEND_URL } from "../../common/utils";
+import { PUBLIC_USER_FRONTEND_URL } from "../../common/utils";
+import { toast } from "sonner";
 
 const Zones = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -48,7 +49,15 @@ const Zones = () => {
           toggleModal();
           setEditPopupData(null);
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message, {
+            position: "top-right",
+            duration: 2000,
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,
+          });
         }
       } else {
         const res = await addZone?.(formData);
@@ -56,7 +65,15 @@ const Zones = () => {
           refetch();
           toggleModal();
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message, {
+            position: "top-right",
+            duration: 2000,
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,
+          });
         }
       }
     } catch (error) {
@@ -84,7 +101,15 @@ const Zones = () => {
         setSelectedZoneId(null);
         setShowDeletePopup(false);
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message, {
+          position: "top-right",
+          duration: 2000,
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,
+        });
       }
     } catch (error) {
       console.log("error", error);
@@ -111,9 +136,8 @@ const Zones = () => {
   };
 
   const handleCopy = async (value) => {
-    
     setCopied(value);
-    copy(PUBLIC_USER_FRONTEND_URL+"/participant/"+ value);
+    copy(PUBLIC_USER_FRONTEND_URL + "/participant/" + value);
     setTimeout(() => {
       setCopied("");
     }, 2000);
@@ -249,14 +273,17 @@ const Zones = () => {
                 <td className="px-4 py-2">{zone?.name}</td>
                 <td className="px-4 py-2 ">
                   {" "}
-                  <button className="flex text-black items-center space-x-1" onClick={()=>handleCopy(zone?._id)}>
-                    {copied===zone?._id ? (
+                  <button
+                    className="flex text-black items-center space-x-1"
+                    onClick={() => handleCopy(zone?._id)}
+                  >
+                    {copied === zone?._id ? (
                       <LuCopyCheck title="Copied" className="h-6 w-6" />
                     ) : (
                       <IoMdCopy title="Copy" className="h-6 w-6" />
-                    )}{" "}<span className="text-[#1F5EE7]"> Competition Link</span>
+                    )}{" "}
+                    <span className="text-[#1F5EE7]"> Competition Link</span>
                   </button>
-                 
                 </td>
                 <td className="px-4 py-2">
                   <div className="flex -space-x-2">{zone?.description}</div>

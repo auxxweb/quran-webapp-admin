@@ -33,7 +33,6 @@ const customApiHandler =
       //  successMessage(successCode && isNumber(successCode) ? successCode : result?.data?.message);
       return { data: result.data };
     } catch (error) {
-      // alert(error);
       toast.error(error?.response?.data?.message,{
         position: "top-right",
         duration: 2000,  
