@@ -14,12 +14,6 @@ import {
   useGetBundlesQuery,
 } from "../../api/bundle";
 import { useGetQuestionsListQuery } from "../../api/common";
-const options = [
-  { value: "Question 1", label: "Question 1" },
-  { value: "Question 2", label: "Question 2" },
-  { value: "Question 3", label: "Question 3" },
-  { value: "Question 4", label: "Java" },
-];
 const Bundles = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -29,11 +23,13 @@ const Bundles = () => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedBundleId, setSelectedBundleId] = useState(null);
   const { data: questionList } = useGetQuestionsListQuery();
-  console.log("d", questionList);
+  const options = questionList?.questions?.map((question) => {
+    return { value: question?._id, label: question?.question };
+  });
 
   const [questions, setQuestions] = useState([]);
 
-  const limit = 3;
+  const limit = 10;
   const { data, refetch } = useGetBundlesQuery({
     limit,
     page: currentPage,
@@ -52,6 +48,8 @@ const Bundles = () => {
   // };
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
+    setQuestions([]);
+    setEditPopupData(null);
   };
   // const selectProfession = (event) => {
   //   setSelectedDesignation(event.target.value);
@@ -62,13 +60,13 @@ const Bundles = () => {
     const formData = new FormData(event.target); // Make sure event.target is the form
     const title = formData.get("title");
     // const questions = formData.get("question"); // Get email input value
-    const questions = ["670fdca599bae2a31ac29c54", "670fdcb399bae2a31ac29c5b"]; // Get email input value
+    const selectedQuestions = questions?.map((option) => option?.value); // Get email input value
 
     try {
       if (editPopupData) {
         const body = {
           bundleId: editPopupData?._id,
-          questions,
+          questions: selectedQuestions,
           title,
         };
         const res = await editBundle?.(body);
@@ -81,7 +79,7 @@ const Bundles = () => {
         }
       } else {
         const body = {
-          questions,
+          questions: selectedQuestions,
           title,
         };
         const res = await addBundle?.(body);
@@ -112,6 +110,10 @@ const Bundles = () => {
   const handleEditClick = (bundle) => {
     toggleModal();
     setEditPopupData(bundle);
+    const selectedQuestions = bundle?.questions?.map((question) => {
+      return { value: question?._id, label: question?.question };
+    });
+    setQuestions(selectedQuestions);
   };
   const handleChange = (selectedOptions) => {
     setQuestions(selectedOptions || []);
@@ -154,7 +156,6 @@ const Bundles = () => {
       <div className="flex rounded-lg p-4">
         <h2 className="text-2xl font-semibold text-[#212529]">Bundles</h2>
         <div className="ml-auto flex items-center space-x-4">
-          {" "}
           <span className="flex items-center">
             <span
               className="bg-[#0EB599] hover:bg-[#1ae69b] text-white rounded-full py-1.5 px-10 cursor-pointer"
@@ -209,7 +210,6 @@ const Bundles = () => {
           <thead className="bg-white ">
             <tr className="">
               <th className="px-4 py-2 text-left font-medium">No</th>
-              <th className="px-4 py-2 text-center font-medium">Image</th>
               <th className="px-4 py-2 text-center font-medium">Title</th>
               <th className="px-4 py-2 text-center font-medium">
                 No of Questions
@@ -229,16 +229,6 @@ const Bundles = () => {
                   className="px-4 py-2"
                 >
                   {index + 1}
-                </td>
-                <td
-                  onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 flex justify-center items-center"
-                >
-                  <img
-                    alt="img"
-                    src={bundle?.image}
-                    className="w-8 h-8 rounded-full mr-2"
-                  />
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
@@ -291,7 +281,7 @@ const Bundles = () => {
       <Modal
         isVisible={isModalVisible}
         onClose={toggleModal}
-        modalHeader={"Add Bundle"}
+        modalHeader={editPopupData ? "Edit Bundle" : "Add Bundle"}
       >
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
@@ -359,7 +349,7 @@ const Bundles = () => {
             <button
               disabled={isLoadingEdit || isLoadingMutation}
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-[#0EB599] hover:bg-[#1ae69b] text-white font-bold py-2 px-4 rounded"
             >
               Submit
             </button>
