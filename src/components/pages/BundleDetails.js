@@ -1,11 +1,22 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetBundleDetailQuery } from "../../api/bundle";
+import Modal from "../reUsableCmponent/modal/Modal";
+import { useState } from "react";
 
 const BundleDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const bundleId = location.pathname?.split("/")[2];
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
   const { data } = useGetBundleDetailQuery(bundleId);
+  const handleDeleteClick = (id) => {
+    setShowDeletePopup(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setShowDeletePopup(false);
+  };
+
   return (
     <>
       <svg
@@ -15,8 +26,7 @@ const BundleDetails = () => {
         height="22"
         viewBox="0 0 13 22"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -52,8 +62,7 @@ const BundleDetails = () => {
                 </span>
                 <a
                   href="mailto:hari@example.com"
-                  className="text-green-500 ml-6"
-                >
+                  className="text-green-500 ml-6">
                   {data?.bundle?.questions?.length}
                 </a>
               </div>
@@ -67,25 +76,53 @@ const BundleDetails = () => {
             <tr className="">
               <th className="px-4 py-2 text-left font-medium">Qs ID</th>
               <th className="px-4 py-2 text-center font-medium">Question</th>
-              <th className="px-4 py-2 text-center font-medium">Answer</th>
+              <th className="px-4 py-2 text-center font-medium">Answers</th>
+              <th className="px-4 py-2 text-center font-medium">Actions</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
             {data?.bundle?.questions?.map((question, index) => (
               <tr
                 className="font-light odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
-                key={index}
-              >
+                key={index}>
                 <td className="w-6 px-4 py-2">{question?.questionId}</td>
                 <td className="px-4 py-2 flex justify-center items-center">
                   {question?.question}
                 </td>
                 <td className="px-4 py-2 text-center">{question?.answer}</td>
+                <td className="px-4 py-2 text-center">
+                  <button onClick={() => handleDeleteClick(question?._id)}>
+                    <img
+                      alt="pics"
+                      src="/icons/delete.svg"
+                      className="w-6 h-6 rounded-full mr-2"
+                    />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <Modal isVisible={showDeletePopup} onClose={handleDeleteModalClose}>
+        <h3 className="flex self-center text-lg font-bold">
+          Are you sure want to Delete?
+        </h3>
+        <div className="flex justify-center p-6">
+          <button
+            onClick={handleDeleteModalClose}
+            type="submit"
+            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
+            No
+          </button>
+          <button
+            // disabled={isLoadingDelete}
+            // onClick={handleDelete}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
+            YES
+          </button>
+        </div>
+      </Modal>
     </>
   );
 };
