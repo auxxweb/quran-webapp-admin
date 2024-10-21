@@ -33,7 +33,14 @@ function Header({ toggleSidebar }) {
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword"); 
     if (password !== confirmPassword) {
-      toast.error("Password and confirm password do not match");
+      toast.error("Password and confirm password do not match",{
+        position: "top-right",
+        duration: 2000,  
+        style: {
+          backgroundColor: "#fb0909", // Custom green color for success
+          color: "#FFFFFF", // Text color
+        },
+      });
       return;
     }
     try {
@@ -43,9 +50,24 @@ function Header({ toggleSidebar }) {
       };
       const updateres = await updatePassword?.(body);
       if (updateres?.data?.success) {
+        toast.success("Password changed successfully",{
+          position: "top-right", 
+          duration: 2000,  
+          style: {
+            backgroundColor: "#4CAF50", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        })
         handleModalClose();
       } else {
-        alert(updateres.data.message);
+        // toast.error(updateres?.data?.message,{
+        //   position: "top-right",
+        //   style: {
+        //     backgroundColor: "#fb0909", // Custom green color for success
+        //     color: "#FFFFFF", // Text color
+        //   },
+        // })
       }
     } catch (error) {
       console.log("error", error);
