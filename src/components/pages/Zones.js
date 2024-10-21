@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import copy from "copy-to-clipboard";
 import { useDebouncedCallback } from "use-debounce";
+import { LuCopyCheck } from "react-icons/lu";
+import { IoMdCopy } from "react-icons/io";
 import Modal from "../reUsableCmponent/modal/Modal";
 import {
   useAddZoneMutation,
@@ -8,6 +11,7 @@ import {
   useGetZonesQuery,
 } from "../../api/zones";
 import Pagination from "../Pagination";
+import {  PUBLIC_USER_FRONTEND_URL } from "../../common/utils";
 
 const Zones = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,6 +27,8 @@ const Zones = () => {
     search: searchValue,
   });
   const [addZone, { isLoading: isLoadingMutation }] = useAddZoneMutation();
+  const [copied, setCopied] = useState("");
+
   const [deleteZone, { isLoading: isLoadingDelete }] = useDeleteZoneMutation();
   const [EditZone, { isLoading: isLoadingEdit }] = useEditZoneMutation();
 
@@ -102,6 +108,15 @@ const Zones = () => {
   );
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const handleCopy = async (value) => {
+    
+    setCopied(value);
+    copy(PUBLIC_USER_FRONTEND_URL+"/participant/"+ value);
+    setTimeout(() => {
+      setCopied("");
+    }, 2000);
   };
   return (
     <>
@@ -232,7 +247,17 @@ const Zones = () => {
               >
                 <td className="px-4 py-2">{index}</td>
                 <td className="px-4 py-2">{zone?.name}</td>
-                <td className="px-4 py-2">Competition Link</td>
+                <td className="px-4 py-2 ">
+                  {" "}
+                  <button className="flex text-black items-center space-x-1" onClick={()=>handleCopy(zone?._id)}>
+                    {copied===zone?._id ? (
+                      <LuCopyCheck title="Copied" className="h-6 w-6" />
+                    ) : (
+                      <IoMdCopy title="Copy" className="h-6 w-6" />
+                    )}{" "}<span className="text-[#1F5EE7]"> Competition Link</span>
+                  </button>
+                 
+                </td>
                 <td className="px-4 py-2">
                   <div className="flex -space-x-2">{zone?.description}</div>
                 </td>
