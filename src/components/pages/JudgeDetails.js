@@ -7,6 +7,7 @@ import {
 import { BiSolidDownArrow } from "react-icons/bi";
 import Modal from "../reUsableCmponent/modal/Modal";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const JudgeDetails = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -42,6 +43,10 @@ const JudgeDetails = () => {
     const formData = new FormData(event.target);
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
+    if (password !== confirmPassword) {
+      toast.error("Password and confirm password do not match");
+      return;
+    }
     try {
       const body = {
         judgeId: data?.judge?._id,

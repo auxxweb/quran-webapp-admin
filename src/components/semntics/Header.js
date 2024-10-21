@@ -1,15 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { LiaEdit } from "react-icons/lia";
 
 import avatar from "../../assets/images/avatar.png";
 import { PiSignOut } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import Modal from "../reUsableCmponent/modal/Modal";
+import { useUpdatePasswordMutation } from "../../api/auth";
+import { toast } from "sonner";
 function Header({ toggleSidebar }) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [updatePassword, { isLoading: isLoadingUpdatePassword }] =
+    useUpdatePasswordMutation();
   const navigate = useNavigate();
   const handleSignout = () => {
     window.localStorage.removeItem("userCredential");
     navigate("/login");
+  };
+
+  const handleChangePasswordClick = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const onSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    const formData = new FormData(event.target);
+    const oldPassword = formData.get("oldPassword"); 
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword"); 
+    if (password !== confirmPassword) {
+      toast.error("Password and confirm password do not match");
+      return;
+    }
+    try {
+      const body = {
+        oldPassword,
+        password,
+      };
+      const updateres = await updatePassword?.(body);
+      if (updateres?.data?.success) {
+        handleModalClose();
+      } else {
+        alert(updateres.data.message);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   return (
     <header
@@ -58,7 +98,10 @@ function Header({ toggleSidebar }) {
           </div>
           <div className="hidden cursor-default w-max max-w-xs group-hover:block absolute right-1 ">
             <div className="p-2  space-y-3  bg-white  rounded-md border border-slate-100 mt-2 shadow-lg  dark:border-slate-50/10 dark:bg-gray-800 dark:text-slate-200">
-              <div className="border-b  p-1 sm:p-2 hover:bg-slate-100 cursor-pointer flex flex-row space-x-1 items-center dark:border-slate-50/25 ">
+              <div
+                onClick={() => handleChangePasswordClick()}
+                className="border-b  p-1 sm:p-2 hover:bg-slate-100 cursor-pointer flex flex-row space-x-1 items-center dark:border-slate-50/25 "
+              >
                 <LiaEdit className="text-black h-5 w-5 dark:text-white" />{" "}
                 <span>Change Password</span>
               </div>
@@ -73,6 +116,70 @@ function Header({ toggleSidebar }) {
           </div>
         </div>
       </div>
+      <Modal
+        isVisible={isModalVisible}
+        onClose={handleModalClose}
+        modalHeader={"Update Password"}
+      >
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <div>
+              <label
+                htmlFor="oldPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Old Password
+              </label>
+              <input
+                type="text"
+                name="oldPassword"
+                id="oldPassword"
+                className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                New Password
+              </label>
+              <input
+                type="text"
+                name="password"
+                id="password"
+                className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="text"
+                name="confirmPassword"
+                id="confirmPassword"
+                className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              />
+            </div>
+          </div>
+          <div className="flex justify-center p-6">
+            <button
+              disabled={isLoadingUpdatePassword}
+              type="submit"
+              className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl"
+            >
+              {isLoadingUpdatePassword ? "loading..." : "Update"}
+            </button>
+          </div>
+        </form>
+      </Modal>
     </header>
   );
 }
