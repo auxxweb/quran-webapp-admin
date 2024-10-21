@@ -8,6 +8,7 @@ import Pagination from "../Pagination";
 import Modal from "../reUsableCmponent/modal/Modal";
 import {
   useAddParticipantMutation,
+  useDeleteParticipantMutation,
   //   useDeleteParticipantMutation,
   useEditParticipantMutation,
   useGetParticipantQuery,
@@ -22,11 +23,15 @@ const Participants = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [filterZonesList, setFilterZonesList] = useState([]);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [selectedParticipantId, setSelectedParticipantId] = useState(null);
   const [selectedZones, setSelectedZones] = useState();
   const [editPopupData, setEditPopupData] = useState(null);
   const [currentPage, setCurrentPage] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const limit = 10;
+  const [deleteParticipant, { isLoading: isLoadingDelete }] =
+    useDeleteParticipantMutation();
   const { data, isLoading, refetch } = useGetParticipantQuery({
     limit,
     page: currentPage,
@@ -118,6 +123,11 @@ const Participants = () => {
     toggleFilterPopup();
   };
 
+  const handleDeleteClick = (id) => {
+    setShowDeletePopup(true);
+    setSelectedParticipantId(id);
+  };
+
   const handleEditClick = (participant) => {
     toggleModal();
     setEditPopupData(participant);
@@ -131,6 +141,29 @@ const Participants = () => {
   const handlePreviewImage = (e) => {
     setImageUrl(URL.createObjectURL(e.target.files[0]));
   };
+
+  const handleDeleteModalClose = () => {
+    setShowDeletePopup(false);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const body = {
+        participantId: selectedParticipantId,
+      };
+      const deleteres = await deleteParticipant?.(body);
+      if (deleteres?.data?.success) {
+        refetch();
+        setSelectedParticipantId(null);
+        setShowDeletePopup(false);
+      } else {
+        alert(deleteres.data.message);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   return (
     <>
       <div className="flex rounded-lg p-4">
@@ -466,6 +499,13 @@ const Participants = () => {
                       className="w-8 h-8 rounded-full mr-2"
                     />
                   </button>
+                  <button onClick={() => handleDeleteClick(participant?._id)}>
+                    <img
+                      alt="pics"
+                      src="/icons/delete.svg"
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                  </button>
                 </td>
               </tr>
             ))
@@ -488,6 +528,27 @@ const Participants = () => {
           totalPages={data?.totalPages}
         />
       </div>
+      <Modal isVisible={showDeletePopup} onClose={handleDeleteModalClose}>
+        <h3 className="flex self-center text-lg font-bold">
+          Are you sure want to Delete?
+        </h3>
+        <div className="flex justify-center p-6">
+          <button
+            onClick={handleDeleteModalClose}
+            type="submit"
+            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
+          >
+            No
+          </button>
+          <button
+            disabled={isLoadingDelete}
+            onClick={handleDelete}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
+          >
+            YES
+          </button>
+        </div>
+      </Modal>
     </>
   );
 };
