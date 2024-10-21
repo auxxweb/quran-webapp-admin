@@ -17,6 +17,7 @@ import { useGetZonesListQuery } from "../../api/common";
 import { IoIosClose } from "react-icons/io";
 import FilterPopup from "../reUsableCmponent/filterPopup";
 import { PiEyeFill, PiEyeSlashFill } from "react-icons/pi";
+import JudgeAvatar from "../../assets/images/person-placeholder.png"
 
 const Judges = () => {
   const navigate = useNavigate();
@@ -579,7 +580,7 @@ const Judges = () => {
                 >
                   <img
                     alt="img"
-                    src={judge?.image}
+                    src={judge?.image ?? JudgeAvatar}
                     className="w-14 h-14 rounded-full mr-2 mt-2"
                   />
                 </td>

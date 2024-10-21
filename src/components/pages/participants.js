@@ -15,6 +15,7 @@ import {
 } from "../../api/participants";
 import { useGetZonesListQuery } from "../../api/common";
 import FilterPopup from "../reUsableCmponent/filterPopup";
+import ParticipantAvatar from "../../assets/images/person-placeholder.png"
 
 const Participants = () => {
   const navigate = useNavigate();
@@ -475,7 +476,7 @@ const Participants = () => {
                 >
                   <img
                     alt="img"
-                    src={participant?.image}
+                    src={participant?.image ?? ParticipantAvatar}
                     className="w-14 h-14 rounded-full mr-2 mt-2"
                   />
                 </td>

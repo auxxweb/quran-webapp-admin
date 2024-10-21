@@ -4,6 +4,7 @@ import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 import { useGetResultsQuery } from "../../api/responseAndResult";
 import { dateFormater, timeFormater } from "../../common/utils";
+import placeholder from "../../assets/images/person-placeholder.png"
 
 const ResponseAndResult = () => {
   const navigate = useNavigate();
@@ -91,7 +92,7 @@ const ResponseAndResult = () => {
                 >
                   <img
                     alt="img"
-                    src={result?.participant_id?.image}
+                    src={result?.participant_id?.image ?? placeholder}
                     className="w-14 h-14 rounded-full mr-2 mt-2"
                   />
                 </td>
