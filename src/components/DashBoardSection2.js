@@ -47,9 +47,9 @@ const DashBoardSection2 = () => {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex flex-col space-y-4 sm:flex-row md:space-y-0">
         {/* Left Column (Large Section) */}
-        <div className=" w-96 px-2 py-5 text-left bg-white shadow-md border border-gray-300 gap-4  mr-4 flex flex-col items-center justify-center rounded-2xl">
+        <div className="w-full sm:w-96 px-2 py-5 text-left bg-white shadow-md border border-gray-300 gap-4  mr-4 flex flex-col items-center justify-center rounded-2xl">
           <div className="text-gray-500 text-3xl font-light pl-7 ">
             {formattedTime}
           </div>
@@ -70,7 +70,7 @@ const DashBoardSection2 = () => {
         </div>
 
         {/* Right Column (Grid of 6 items in 2 rows, 3 columns) */}
-        <div className="w-full grid grid-cols-3 gap-4">
+        <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div className="bg-white p-6 rounded-2xl flex items-center space-x-3 justify-between shadow-md border border-gray-300">
             <div className="flex flex-col ">
               <h2 className="text-3xl font-semibold">
