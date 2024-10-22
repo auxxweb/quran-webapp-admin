@@ -38,12 +38,23 @@ const Zones = () => {
   };
 
   const onSubmit = async (event) => {
+    
     event.preventDefault(); // Prevent the default form submission
     const formData = new FormData(event.target); // Make sure event.target is the form
+    const name = formData.get("name"); // Get email input value
+    const description = formData.get("description");
+    const body ={
+      name,
+      description
+    }
     try {
       if (editPopupData) {
         formData.append("zoneId", editPopupData?._id);
-        const res = await EditZone?.(formData);
+      const editBody={
+        ...body,
+        zoneId:editPopupData?._id
+      }
+        const res = await EditZone?.(editBody);
         if (res?.data?.success) {
           refetch({ page: 1 });
           toggleModal();
@@ -60,7 +71,9 @@ const Zones = () => {
           });
         }
       } else {
-        const res = await addZone?.(formData);
+
+        
+        const res = await addZone?.(body);
         if (res?.data?.success) {
           refetch();
           toggleModal();
