@@ -14,9 +14,11 @@ import {
   useGetJudgesQuery,
 } from "../../api/judges";
 import { useGetZonesListQuery } from "../../api/common";
-import { IoIosClose } from "react-icons/io";
+import { IoIosClose, IoMdCopy } from "react-icons/io";
 import FilterPopup from "../reUsableCmponent/filterPopup";
 import { PiEyeFill, PiEyeSlashFill } from "react-icons/pi";
+import copy from "copy-to-clipboard";
+import { LuCopyCheck } from "react-icons/lu";
 
 const Judges = () => {
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ const Judges = () => {
   const [filterZonesList, setFilterZonesList] = useState([]);
   const [selectedZones, setSelectedZones] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [copied, setCopied] = useState("");
   const limit = 10;
 
   const { data, isLoading, refetch } = useGetJudgesQuery({
@@ -201,6 +204,14 @@ const Judges = () => {
     } else {
       setShowPassword([...showPassword, id]);
     }
+  };
+
+  const handleCopy = async (value) => {
+    setCopied(value);
+    copy(value);
+    setTimeout(() => {
+      setCopied("");
+    }, 2000);
   };
 
   return (
@@ -553,6 +564,7 @@ const Judges = () => {
             <th className="px-4 py-4 text-left">Name</th>
             <th className="px-4 py-4 text-left">Zone</th>
             <th className="px-4 py-4 text-left">Email</th>
+            <th className="py-4 text-left">Main Judge</th>
             <th className="px-4 py-4 text-left">Password</th>
             <th className="px-4 py-4 text-left">Status</th>
             <th className="px-4 py-4 text-left">Action</th>
@@ -601,23 +613,39 @@ const Judges = () => {
                 >
                   {judge?.email}
                 </td>
-                <td className="px-4 py-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShowPassword(judge?._id)}
-                    class="flex"
-                  >
-                    {showPassword?.includes(judge?._id)
-                      ? judge?.password
-                      : "*".repeat(judge?.password.length)}
-                    <div className="ml-3 mt-1 w-2 h-2">
-                      {showPassword?.includes(judge?._id) ? (
-                        <PiEyeSlashFill />
+                <td>
+                  <div className="flex ml-3 -space-x-2">
+                    {judge?.isMain ? "YES" : "NO"}
+                  </div>
+                </td>
+                <td>
+                  <div className="flex">
+                    <button
+                      className="flex mb-4 text-black"
+                      onClick={() => handleCopy(judge?.password)}
+                    >
+                      {copied === judge?.password ? (
+                        <LuCopyCheck title="Copied" className="h-6 w-6 mr-3" />
                       ) : (
-                        <PiEyeFill />
-                      )}
-                    </div>
-                  </button>
+                        <IoMdCopy title="Copy" className="h-6 w-6 mr-3" />
+                      )}{" "}
+                      {showPassword?.includes(judge?._id)
+                        ? judge?.password
+                        : "*".repeat(judge?.password.length)}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleShowPassword(judge?._id)}
+                    >
+                      <div className="ml-3 mb-6 w-2 h-2">
+                        {showPassword?.includes(judge?._id) ? (
+                          <PiEyeSlashFill />
+                        ) : (
+                          <PiEyeFill />
+                        )}
+                      </div>
+                    </button>
+                  </div>
                 </td>
                 <td className="px-4 py-2 ">
                   <button
