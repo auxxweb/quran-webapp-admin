@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../api/auth";
 import { getUserCredential } from "../../common/utils";
 import { PiEyeFill, PiEyeSlashFill } from "react-icons/pi";
+import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,7 +31,15 @@ const Login = () => {
         );
         navigate("/"); // Redirect after form submission
       } else {
-        alert(res.data.message);
+        toast.error(res.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);

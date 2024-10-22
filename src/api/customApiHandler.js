@@ -2,8 +2,8 @@ import axios from "axios";
 import { getUserCredential } from "../common/utils";
 import { toast } from "sonner";
 
- const BE_API_KEY = "http://localhost:5000";
-// const BE_API_KEY = "https://gedexoquizserver.auxxweb.in";
+//  const BE_API_KEY = "http://localhost:5000";
+const BE_API_KEY = "https://gedexoquizserver.auxxweb.in";
 
 const customApiHandler =
   () =>
@@ -33,7 +33,6 @@ const customApiHandler =
       //  successMessage(successCode && isNumber(successCode) ? successCode : result?.data?.message);
       return { data: result.data };
     } catch (error) {
-      // alert(error);
       toast.error(error?.response?.data?.message,{
         position: "top-right",
         duration: 2000,  

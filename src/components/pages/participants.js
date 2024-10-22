@@ -15,6 +15,8 @@ import {
 } from "../../api/participants";
 import { useGetZonesListQuery } from "../../api/common";
 import FilterPopup from "../reUsableCmponent/filterPopup";
+import ParticipantAvatar from "../../assets/images/person-placeholder.png"
+import { toast } from "sonner";
 
 const Participants = () => {
   const navigate = useNavigate();
@@ -66,7 +68,15 @@ const Participants = () => {
           toggleModal();
           setEditPopupData(null);
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       } else {
         const res = await addParticipant?.(formData);
@@ -75,7 +85,15 @@ const Participants = () => {
           ZoneListsRefetch();
           toggleModal();
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       }
     } catch (error) {
@@ -157,7 +175,15 @@ const Participants = () => {
         setSelectedParticipantId(null);
         setShowDeletePopup(false);
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);
@@ -475,7 +501,7 @@ const Participants = () => {
                 >
                   <img
                     alt="img"
-                    src={participant?.image}
+                    src={participant?.image ?? ParticipantAvatar}
                     className="w-14 h-14 rounded-full mr-2 mt-2"
                   />
                 </td>

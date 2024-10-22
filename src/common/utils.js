@@ -2,6 +2,8 @@
 // export const PUBLIC_USER_FRONTEND_URL = "http://localhost:3000"
 export const PUBLIC_USER_FRONTEND_URL = "https://gedexoquiz.auxxweb.in"
 
+
+
 export const getUserCredential = () => {
   if (typeof window === "undefined") {
     return null;

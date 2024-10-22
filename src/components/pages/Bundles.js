@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 import Modal from "../reUsableCmponent/modal/Modal";
@@ -14,6 +14,7 @@ import {
   useGetBundlesQuery,
 } from "../../api/bundle";
 import { useGetQuestionsListQuery } from "../../api/common";
+import { toast } from "sonner";
 const Bundles = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -22,7 +23,7 @@ const Bundles = () => {
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedBundleId, setSelectedBundleId] = useState(null);
-  const { data: questionList } = useGetQuestionsListQuery();
+  const { data: questionList,refetch:refetchQuestions } = useGetQuestionsListQuery();
   const options = questionList?.questions?.map((question) => {
     return { value: question?._id, label: question?.question };
   });
@@ -39,6 +40,10 @@ const Bundles = () => {
   const [deleteBundle, { isLoading: isLoadingDelete }] =
     useDeleteBundleMutation();
   const [editBundle, { isLoading: isLoadingEdit }] = useEditBundleMutation();
+
+  useEffect(()=>{
+refetchQuestions()
+  },[])
 
   // const [selectedDesignation, setSelectedDesignation] =
   //   useState("Total Project : 3");
@@ -75,7 +80,15 @@ const Bundles = () => {
           toggleModal();
           setEditPopupData(null);
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       } else {
         const body = {
@@ -87,7 +100,15 @@ const Bundles = () => {
           refetch({ limit, page: currentPage, search: searchValue });
           toggleModal();
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message,{
+            position: "top-right",
+            duration: 2000,  
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,  
+          });
         }
       }
     } catch (error) {
@@ -140,7 +161,15 @@ const Bundles = () => {
         setSelectedBundleId(null);
         setShowDeletePopup(false);
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);

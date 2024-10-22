@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useGetResultDetailQuery } from "../../api/responseAndResult";
 import { timeFormater } from "../../common/utils";
 
+import placeholder from "../../assets/images/person-placeholder.png"
+
 function ResultDetails() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,7 +49,7 @@ function ResultDetails() {
           <div className="flex lg:w-1/2">
             <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-300">
               <img
-                src="/quranLogo.svg"
+                src={data?.result?.participant_id?.image ?? placeholder}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
@@ -153,8 +155,7 @@ function ResultDetails() {
                           </p>
                         </div>
                         <img
-                          src="https://via.placeholder.com/40"
-                          alt="Judge"
+                          src= {answer?.judge?.image ?? placeholder  }                        alt="Judge"
                           className="ml-3 w-10 h-10 rounded-full mr-3"
                         />
                         <div>

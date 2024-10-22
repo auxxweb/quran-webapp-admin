@@ -31,7 +31,15 @@ const JudgeDetails = () => {
       if (deleteres?.data?.success) {
         refetch();
       } else {
-        alert(deleteres.data.message);
+        toast.error(deleteres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);
@@ -58,7 +66,15 @@ const JudgeDetails = () => {
         refetch();
         handleModalClose();
       } else {
-        alert(updateres.data.message);
+        toast.error(updateres.data.message,{
+          position: "top-right",
+          duration: 2000,  
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,  
+        });
       }
     } catch (error) {
       console.log("error", error);

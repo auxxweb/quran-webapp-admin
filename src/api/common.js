@@ -23,6 +23,7 @@ export const commonApi = tagInjection.injectEndpoints({
           method: "get",
         };
       },
+      refetchOnMountOrArgChange: true,
     }),
   }),
 });

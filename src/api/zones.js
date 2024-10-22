@@ -21,9 +21,6 @@ export const zonesApi = tagInjection.injectEndpoints({
           body,
           url: "/api/admin/zone",
           method: "post",
-          headers: {
-            "Content-Type": "multipart/form-data;",
-          },
         };
       },
     }),
@@ -33,9 +30,6 @@ export const zonesApi = tagInjection.injectEndpoints({
           body,
           url: "/api/admin/zone",
           method: "patch",
-          headers: {
-            "Content-Type": "multipart/form-data;",
-          },
         };
       },
     }),
