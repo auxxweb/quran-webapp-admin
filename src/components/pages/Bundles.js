@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 import Modal from "../reUsableCmponent/modal/Modal";
@@ -23,7 +23,7 @@ const Bundles = () => {
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedBundleId, setSelectedBundleId] = useState(null);
-  const { data: questionList } = useGetQuestionsListQuery();
+  const { data: questionList,refetch:refetchQuestions } = useGetQuestionsListQuery();
   const options = questionList?.questions?.map((question) => {
     return { value: question?._id, label: question?.question };
   });
@@ -40,6 +40,10 @@ const Bundles = () => {
   const [deleteBundle, { isLoading: isLoadingDelete }] =
     useDeleteBundleMutation();
   const [editBundle, { isLoading: isLoadingEdit }] = useEditBundleMutation();
+
+  useEffect(()=>{
+refetchQuestions()
+  },[])
 
   // const [selectedDesignation, setSelectedDesignation] =
   //   useState("Total Project : 3");

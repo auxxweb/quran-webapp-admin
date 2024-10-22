@@ -77,7 +77,7 @@ const BundleDetails = () => {
               <th className="px-4 py-2 text-left font-medium">Qs ID</th>
               <th className="px-4 py-2 text-center font-medium">Question</th>
               <th className="px-4 py-2 text-center font-medium">Answers</th>
-              <th className="px-4 py-2 text-center font-medium">Actions</th>
+              {/* <th className="px-4 py-2 text-center font-medium">Actions</th> */}
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
@@ -90,7 +90,7 @@ const BundleDetails = () => {
                   {question?.question}
                 </td>
                 <td className="px-4 py-2 text-center">{question?.answer}</td>
-                <td className="px-4 py-2 text-center">
+                {/* <td className="px-4 py-2 text-center">
                   <button onClick={() => handleDeleteClick(question?._id)}>
                     <img
                       alt="pics"
@@ -98,7 +98,7 @@ const BundleDetails = () => {
                       className="w-6 h-6 rounded-full mr-2"
                     />
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

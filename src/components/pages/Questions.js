@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useAddQuestionMutation,
   useDeleteQuestionMutation,
@@ -25,6 +25,10 @@ const Questions = () => {
     page: currentPage,
     search: searchValue,
   });
+
+  useEffect(()=>{
+    refetch({ limit, page: currentPage, search: searchValue });
+  },[])
   const [addQuestion, { isLoading: isLoadingMutation }] =
     useAddQuestionMutation();
   const [deleteQuestion, { isLoading: isLoadingDelete }] =
