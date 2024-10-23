@@ -218,7 +218,7 @@ function ResultDetails() {
                         </div>
                         <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
                           <p>Score Given:</p>
-                          {showEdit && selectedId === answer ? (
+                          {showEdit && selectedId === answer?._id ? (
                             <input
                               type="text"
                               name="mark"
@@ -235,7 +235,7 @@ function ResultDetails() {
                               {answer?.score ?? "00"}
                             </p>
                           )}
-                          {showEdit && selectedId === answer ? (
+                          {showEdit && selectedId === answer?._id ? (
                             <>
                               <button
                                 className="w-10 mt-3 h-10 mr-2 ml-4"
