@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   useEditMarkMutation,
-  useGetResultDetailQuery,
+  useGetResultDetailQuery
 } from "../../api/responseAndResult";
 import { timeFormater } from "../../common/utils";
 
@@ -25,23 +25,33 @@ function ResultDetails() {
   const handleEdit = async () => {
     const body = {
       answerId: selectedId,
-      score: edittedMark,
+      score: edittedMark
     };
     try {
       const res = await EditMark?.(body);
       if (res?.data?.success) {
         refetch();
+
         setShowEdit(false);
         setSelectedId(null);
+        toast.success(res.data.msg ?? "Mark updated successfully", {
+          position: "top-right",
+          duration: 2000,
+          style: {
+            backgroundColor: "green", // Custom green color for success
+            color: "#FFFFFF" // Text color
+          },
+          dismissible: true
+        });
       } else {
         toast.error(res.data.message, {
           position: "top-right",
           duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF", // Text color
+            color: "#FFFFFF" // Text color
           },
-          dismissible: true,
+          dismissible: true
         });
       }
     } catch (error) {
@@ -82,8 +92,7 @@ function ResultDetails() {
         height="22"
         viewBox="0 0 13 22"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -239,21 +248,18 @@ function ResultDetails() {
                             <>
                               <button
                                 className="w-10 mt-3 h-10 mr-2 ml-4"
-                                onClick={() => setShowEdit(false)}
-                              >
+                                onClick={() => setShowEdit(false)}>
                                 <LuX />
                               </button>
                               <button
                                 className="w-10 mt-3 h-10 mr-2 ml-4"
-                                onClick={() => handleEdit()}
-                              >
+                                onClick={() => handleEdit()}>
                                 <LuCheck />
                               </button>
                             </>
                           ) : (
                             <button
-                              onClick={() => handleEditclick(answer?._id)}
-                            >
+                              onClick={() => handleEditclick(answer?._id)}>
                               <img
                                 alt="pics"
                                 src="/icons/edit.svg"
