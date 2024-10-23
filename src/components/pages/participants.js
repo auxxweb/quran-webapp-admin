@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import Select from "react-select";
@@ -41,6 +41,9 @@ const Participants = () => {
     zones: selectedZones,
   });
   const { data: zoneList, refetch: ZoneListsRefetch } = useGetZonesListQuery();
+  useEffect(() => {
+    ZoneListsRefetch();
+  }, [])
   const [addParticipant, { isLoading: isLoadingMutation }] =
     useAddParticipantMutation();
   const [editParticipant, { isLoading: isLoadingEdit }] =

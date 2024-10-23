@@ -23,9 +23,22 @@ export const resultssApi = tagInjection.injectEndpoints({
         };
       },
     }),
+    editMark: builder.mutation({
+      query: (body) => {
+        return {
+          body,
+          url: "/api/admin/result/updateAnswer",
+          method: "patch",
+        };
+      },
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetResultsQuery, useGetResultDetailQuery } = resultssApi;
+export const {
+  useGetResultsQuery,
+  useGetResultDetailQuery,
+  useEditMarkMutation,
+} = resultssApi;

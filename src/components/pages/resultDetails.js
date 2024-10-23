@@ -1,17 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useGetResultDetailQuery } from "../../api/responseAndResult";
+import {
+  useEditMarkMutation,
+  useGetResultDetailQuery,
+} from "../../api/responseAndResult";
 import { timeFormater } from "../../common/utils";
 
-import placeholder from "../../assets/images/person-placeholder.png"
+import placeholder from "../../assets/images/person-placeholder.png";
+import { toast } from "sonner";
+import { LuCheck, LuX } from "react-icons/lu";
 
 function ResultDetails() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [showEdit, setShowEdit] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [edittedMark, setEdittedMark] = useState(null);
   const resultId = location.pathname?.split("/")[2];
-  const { data } = useGetResultDetailQuery(resultId);
+  const [EditMark, { isLoading: isLoadingEdit }] = useEditMarkMutation();
+  const { data, refetch } = useGetResultDetailQuery(resultId);
 
   console.log(data);
+
+  const handleEdit = async () => {
+    const body = {
+      answerId: selectedId,
+      score: edittedMark,
+    };
+    try {
+      const res = await EditMark?.(body);
+      if (res?.data?.success) {
+        refetch();
+        setShowEdit(false);
+        setSelectedId(null);
+      } else {
+        toast.error(res.data.message, {
+          position: "top-right",
+          duration: 2000,
+          style: {
+            backgroundColor: "#fb0909", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   const getTimeDifference = (date2, date1) => {
     const startDate = new Date(date2);
@@ -23,6 +59,18 @@ function ResultDetails() {
     // Convert milliseconds to minutes and seconds
     const diffInSeconds = Math.floor(diffInMs / 1000);
     return Math.floor(diffInSeconds / 60);
+  };
+
+  const handleEditclick = (id) => {
+    console.log(id);
+
+    console.log(id);
+    setSelectedId(id);
+    setShowEdit(true);
+  };
+
+  const handleChange = (e) => {
+    setEdittedMark(e?.target?.value);
   };
 
   return (
@@ -116,7 +164,11 @@ function ResultDetails() {
                   <span className="font-bold">
                     {" "}
                     Time Taken:{" "}
-                    {getTimeDifference(question?.startTime, question?.endTime)} mins 
+                    {getTimeDifference(
+                      question?.startTime,
+                      question?.endTime
+                    )}{" "}
+                    mins
                   </span>
                   <span className="text-[#939393]">
                     | {timeFormater(question?.startTime)} -{" "}
@@ -155,7 +207,8 @@ function ResultDetails() {
                           </p>
                         </div>
                         <img
-                          src= {answer?.judge?.image ?? placeholder  }                        alt="Judge"
+                          src={answer?.judge?.image ?? placeholder}
+                          alt="Judge"
                           className="ml-3 w-10 h-10 rounded-full mr-3"
                         />
                         <div>
@@ -165,9 +218,49 @@ function ResultDetails() {
                         </div>
                         <div className="flex text-lg font-bold ml-10 text-[#373B3E]">
                           <p>Score Given:</p>
-                          <p className="font-bold text-2xl ml-6">
-                            {answer?.score ?? "00"}
-                          </p>
+                          {showEdit && selectedId === answer ? (
+                            <input
+                              type="text"
+                              name="mark"
+                              id="mark"
+                              className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                              required
+                              onChange={(e) => handleChange(e)}
+                              defaultValue={
+                                answer?.score ? answer?.score : null
+                              }
+                            />
+                          ) : (
+                            <p className="font-bold text-2xl ml-6">
+                              {answer?.score ?? "00"}
+                            </p>
+                          )}
+                          {showEdit && selectedId === answer ? (
+                            <>
+                              <button
+                                className="w-10 mt-3 h-10 mr-2 ml-4"
+                                onClick={() => setShowEdit(false)}
+                              >
+                                <LuX />
+                              </button>
+                              <button
+                                className="w-10 mt-3 h-10 mr-2 ml-4"
+                                onClick={() => handleEdit()}
+                              >
+                                <LuCheck />
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() => handleEditclick(answer?._id)}
+                            >
+                              <img
+                                alt="pics"
+                                src="/icons/edit.svg"
+                                className="w-6 h-6 rounded-full mr-2 ml-4"
+                              />
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>

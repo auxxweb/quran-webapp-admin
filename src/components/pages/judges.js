@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
@@ -56,6 +56,10 @@ const Judges = () => {
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
+
+  useEffect(() => {
+    ZoneListsRefetch();
+  }, [])
 
   const onSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
