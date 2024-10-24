@@ -275,7 +275,7 @@ const Questions = () => {
               >
                 Question
               </label>
-              <input
+              <textarea
                 type="text"
                 name="question"
                 id="question"
@@ -295,7 +295,7 @@ const Questions = () => {
               >
                 Answer
               </label>
-              <input
+              <textarea
                 type="text"
                 name="answer"
                 id="answer"
