@@ -297,21 +297,21 @@ const Judges = () => {
             <Modal
               isVisible={isModalVisible}
               onClose={handleModalClose}
-              modalHeader={editPopupData ? "Edit judge" : "Add judge"}>
+              modalHeader={editPopupData ? "Edit Judge" : "Add Judge"}>
               <form onSubmit={onSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label
                       htmlFor="name"
                       className="block text-sm font-medium text-gray-700">
-                      Full Name
+                      Full name
                     </label>
                     <input
                       type="text"
                       name="name"
                       id="name"
                       className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Full Name"
+                      placeholder="Full name"
                       required
                       defaultValue={
                         editPopupData?.name ? editPopupData?.name : ""
@@ -331,7 +331,7 @@ const Judges = () => {
                       value={zonesList}
                       isMulti={false}
                       // hideSelectedOptions
-                      closeMenuOnSelect={false} // Keep the dropdown open for multiple selections
+                      closeMenuOnSelect={true} // Keep the dropdown open for multiple selections
                       placeholder="Select Zones"
                       components={{ MultiValue: () => null }} // Hide selected options in input
                     />
@@ -364,14 +364,14 @@ const Judges = () => {
                     <label
                       htmlFor="email"
                       className="block text-sm font-medium text-gray-700">
-                      Email
+                      Email address
                     </label>
                     <input
                       type="email"
                       name="email"
                       id="email"
                       className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="email"
+                      placeholder="Email address"
                       required
                       defaultValue={
                         editPopupData?.email ? editPopupData?.email : ""
@@ -382,14 +382,14 @@ const Judges = () => {
                     <label
                       htmlFor="phone"
                       className="block text-sm font-medium text-gray-700">
-                      Phone Number
+                      Phone number
                     </label>
                     <input
                       type="number"
                       name="phone"
                       id="phone"
                       className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Phone Number"
+                      placeholder="Phone number"
                       required
                       defaultValue={
                         editPopupData?.phone ? editPopupData?.phone : ""
@@ -476,7 +476,7 @@ const Judges = () => {
                   <button
                     disabled={isLoadingMutation || isLoadingEdit}
                     type="submit"
-                    className="bg-[#0EB599] hover:#0EB599 text-white font-bold py-2 px-6 rounded-3xl">
+                    className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl">
                     {isLoadingMutation || isLoadingEdit
                       ? "loading..."
                       : "Submit"}

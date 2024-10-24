@@ -267,7 +267,7 @@ const Questions = () => {
       <Modal
         isVisible={isModalVisible}
         onClose={toggleModal}
-        modalHeader={"Add Qs and Ans"}
+        modalHeader={"Add Question & Answer"}
         isScrollable={true}>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className=" grid grid-cols-1 gap-4">
@@ -309,11 +309,11 @@ const Questions = () => {
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-center">
             <button
               disabled={isLoadingMutation || isLoadingEdit}
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl">
               Submit
             </button>
           </div>

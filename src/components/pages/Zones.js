@@ -212,7 +212,7 @@ const Zones = () => {
                   <button
                     disabled={isLoadingMutation || isLoadingEdit}
                     type="submit"
-                    className="bg-[#0EB599] text-white font-bold py-2 px-6 rounded-3xl"
+                    className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
                   >
                     {isLoadingMutation || isLoadingEdit
                       ? "loading..."

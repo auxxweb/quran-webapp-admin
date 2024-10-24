@@ -374,11 +374,11 @@ refetchQuestions()
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-center">
             <button
               disabled={isLoadingEdit || isLoadingMutation}
               type="submit"
-              className="bg-[#0EB599] hover:bg-[#1ae69b] text-white font-bold py-2 px-4 rounded"
+              className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
             >
               Submit
             </button>
