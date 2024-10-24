@@ -204,7 +204,7 @@ const JudgeDetails = () => {
               {/* Update Password Button */}
               <button
                 onClick={() => setIsModalVisible(true)}
-                className="ml-2 bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-600"
+                className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
               >
                 UPDATE PASSWORD
               </button>
@@ -239,7 +239,7 @@ const JudgeDetails = () => {
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-gray-700"
               >
-                Confirm Password
+                Confirm password
               </label>
               <input
                 type="text"
@@ -254,7 +254,7 @@ const JudgeDetails = () => {
             <button
               disabled={isLoadingUpdatePassword}
               type="submit"
-              className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl"
+              className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
             >
               {isLoadingUpdatePassword ? "loading..." : "Update"}
             </button>

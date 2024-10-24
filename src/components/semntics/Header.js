@@ -112,7 +112,7 @@ function Header({ toggleSidebar }) {
             <div className="p-2  space-y-3  bg-white  rounded-md border border-slate-100 mt-2 shadow-lg  dark:border-slate-50/10 dark:bg-gray-800 dark:text-slate-200">
               <div
                 onClick={() => handleChangePasswordClick()}
-                className="border-b  p-1 sm:p-2 hover:bg-slate-100 cursor-pointer flex flex-row space-x-1 items-center dark:border-slate-50/25 "
+                className="  p-1 sm:p-2  hover:bg-slate-100 cursor-pointer flex flex-row space-x-1 items-center dark:hover:bg-slate-50/25 "
               >
                 <LiaEdit className="text-black h-5 w-5 dark:text-white" />{" "}
                 <span>Change Password</span>
@@ -140,7 +140,7 @@ function Header({ toggleSidebar }) {
                 htmlFor="oldPassword"
                 className="block text-sm font-medium text-gray-700"
               >
-                Old Password
+                Old password
               </label>
               <input
                 type="text"
@@ -155,7 +155,7 @@ function Header({ toggleSidebar }) {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                New Password
+                New password
               </label>
               <input
                 type="text"
@@ -170,7 +170,7 @@ function Header({ toggleSidebar }) {
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-gray-700"
               >
-                Confirm Password
+                Confirm password
               </label>
               <input
                 type="text"
@@ -185,7 +185,7 @@ function Header({ toggleSidebar }) {
             <button
               disabled={isLoadingUpdatePassword}
               type="submit"
-              className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl"
+              className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
             >
               {isLoadingUpdatePassword ? "loading..." : "Update"}
             </button>
