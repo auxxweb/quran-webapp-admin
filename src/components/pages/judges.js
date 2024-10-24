@@ -11,7 +11,7 @@ import {
   useBlockJudgeMutation,
   useDeleteJudgeMutation,
   useEditJudgeMutation,
-  useGetJudgesQuery,
+  useGetJudgesQuery
 } from "../../api/judges";
 import { useGetZonesListQuery } from "../../api/common";
 import { IoIosClose, IoMdCopy } from "react-icons/io";
@@ -19,7 +19,7 @@ import FilterPopup from "../reUsableCmponent/filterPopup";
 import { PiEyeFill, PiEyeSlashFill } from "react-icons/pi";
 import copy from "copy-to-clipboard";
 import { LuCopyCheck } from "react-icons/lu";
-import JudgeAvatar from "../../assets/images/person-placeholder.png"
+import JudgeAvatar from "../../assets/images/person-placeholder.png";
 import { toast } from "sonner";
 
 const Judges = () => {
@@ -44,7 +44,7 @@ const Judges = () => {
     limit,
     page: currentPage,
     search: searchValue,
-    zones: selectedZones,
+    zones: selectedZones
   });
   const { data: zoneList, refetch: ZoneListsRefetch } = useGetZonesListQuery();
   const [addJudge, { isLoading: isLoadingMutation }] = useAddJudgeMutation({});
@@ -59,7 +59,7 @@ const Judges = () => {
 
   useEffect(() => {
     ZoneListsRefetch();
-  }, [])
+  }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
@@ -68,7 +68,7 @@ const Judges = () => {
 
     formData?.append("zone", zonesList?.value);
     formData?.set("isMain", isMain);
-
+ 
     try {
       if (editPopupData) {
         formData?.append("judgeId", editPopupData?._id);
@@ -80,14 +80,14 @@ const Judges = () => {
           toggleModal();
           setEditPopupData(null);
         } else {
-          toast.error(res.data.message,{
+          toast.error(res.data.message, {
             position: "top-right",
-            duration: 2000,  
+            duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF", // Text color
+              color: "#FFFFFF" // Text color
             },
-            dismissible: true,  
+            dismissible: true
           });
         }
       } else {
@@ -98,14 +98,14 @@ const Judges = () => {
           setZonesList({});
           toggleModal();
         } else {
-          toast.error(res.data.message,{
+          toast.error(res.data.message, {
             position: "top-right",
-            duration: 2000,  
+            duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF", // Text color
+              color: "#FFFFFF" // Text color
             },
-            dismissible: true,  
+            dismissible: true
           });
         }
       }
@@ -128,7 +128,7 @@ const Judges = () => {
   const handleDelete = async () => {
     try {
       const body = {
-        judgeId: selectedJudgeId,
+        judgeId: selectedJudgeId
       };
       const deleteres = await deleteJudge?.(body);
       if (deleteres?.data?.success) {
@@ -136,14 +136,14 @@ const Judges = () => {
         setSelectedJudgeId(null);
         setShowDeletePopup(false);
       } else {
-        toast.error(deleteres.data.message,{
+        toast.error(deleteres.data.message, {
           position: "top-right",
-          duration: 2000,  
+          duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF", // Text color
+            color: "#FFFFFF" // Text color
           },
-          dismissible: true,  
+          dismissible: true
         });
       }
     } catch (error) {
@@ -166,21 +166,21 @@ const Judges = () => {
   const handleBlockJudge = async () => {
     try {
       const body = {
-        judgeId: selectedJudgeId,
+        judgeId: selectedJudgeId
       };
       const deleteres = await blockJudge?.(body);
       if (deleteres?.data?.success) {
         refetch();
         setShowBlockPopup(false);
       } else {
-        toast.error(deleteres.data.message,{
+        toast.error(deleteres.data.message, {
           position: "top-right",
-          duration: 2000,  
+          duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF", // Text color
+            color: "#FFFFFF" // Text color
           },
-          dismissible: true,  
+          dismissible: true
         });
       }
     } catch (error) {
@@ -189,10 +189,10 @@ const Judges = () => {
   };
 
   const handleModalClose = () => {
+    setImageUrl(null);
     setZonesList({});
     toggleModal();
     setEditPopupData(null);
-    setImageUrl(null);
   };
 
   const handleDeleteModalClose = () => {
@@ -215,7 +215,25 @@ const Judges = () => {
   };
 
   const handlePreviewImage = (e) => {
-    setImageUrl(URL.createObjectURL(e.target.files[0]));
+        // Handle image upload if the image file is selected
+        const imageFile = e.target.files[0]; // Access the selected image file
+        if (imageFile && imageFile.size <= 5 * 1024 * 1024) {
+          // Check if it's valid
+          setImageUrl(URL.createObjectURL(e.target.files[0]));
+        } else {
+          // Optionally, you could show an error toast here
+          toast.warning("Please select a valid image file (less than 5 MB).", {
+            position: "top-right",
+            duration: 2000,
+            style: {
+              backgroundColor: "#e5cc0e", // Custom red color for error
+              color: "#FFFFFF" // Text color
+            },
+            dismissible: true
+          });
+          return; // Exit the function if there's no valid image
+        }
+   
   };
 
   const selectOption = zoneList?.zones?.map((zone) => {
@@ -260,23 +278,20 @@ const Judges = () => {
           <span className="flex items-center">
             <span
               className="bg-[#0EB599] text-white rounded-full p-3 cursor-pointer"
-              onClick={toggleModal}
-            >
+              onClick={toggleModal}>
               + Add New Judges
             </span>
 
             <Modal
               isVisible={isModalVisible}
               onClose={handleModalClose}
-              modalHeader={editPopupData ? "Edit judge" : "Add judge"}
-            >
+              modalHeader={editPopupData ? "Edit judge" : "Add judge"}>
               <form onSubmit={onSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                      className="block text-sm font-medium text-gray-700">
                       Full Name
                     </label>
                     <input
@@ -294,8 +309,7 @@ const Judges = () => {
                   <div>
                     <label
                       htmlFor="zone"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                      className="block text-sm font-medium text-gray-700">
                       Zone
                     </label>
                     <Select
@@ -337,8 +351,7 @@ const Judges = () => {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                      className="block text-sm font-medium text-gray-700">
                       Email
                     </label>
                     <input
@@ -356,8 +369,7 @@ const Judges = () => {
                   <div>
                     <label
                       htmlFor="phone"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                      className="block text-sm font-medium text-gray-700">
                       Phone Number
                     </label>
                     <input
@@ -378,8 +390,7 @@ const Judges = () => {
                   <div>
                     <label
                       htmlFor="address"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                      className="block text-sm font-medium text-gray-700">
                       Address
                     </label>
                     <input
@@ -398,8 +409,7 @@ const Judges = () => {
                     <div>
                       <label
                         htmlFor="gender"
-                        className="block text-sm font-medium text-gray-700"
-                      >
+                        className="block text-sm font-medium text-gray-700">
                         Gender
                       </label>
                       <select
@@ -408,8 +418,7 @@ const Judges = () => {
                         className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         defaultValue={
                           editPopupData?.gender ? editPopupData?.gender : ""
-                        }
-                      >
+                        }>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                       </select>
@@ -417,8 +426,7 @@ const Judges = () => {
                     <div className="mt-5">
                       <label
                         htmlFor="image"
-                        className="block text-sm font-medium text-gray-700"
-                      >
+                        className="block text-sm font-medium text-gray-700">
                         Image
                       </label>
                       <input
@@ -448,10 +456,7 @@ const Judges = () => {
                       editPopupData ? editPopupData?.isMain : false
                     }
                   />
-                  <label
-                   
-                    className="block text-m font-medium text-gray-700"
-                  >
+                  <label className="block text-m font-medium text-gray-700">
                     Main Judge
                   </label>
                 </div>
@@ -459,8 +464,7 @@ const Judges = () => {
                   <button
                     disabled={isLoadingMutation || isLoadingEdit}
                     type="submit"
-                    className="bg-[#0EB599] hover:#0EB599 text-white font-bold py-2 px-6 rounded-3xl"
-                  >
+                    className="bg-[#0EB599] hover:#0EB599 text-white font-bold py-2 px-6 rounded-3xl">
                     {isLoadingMutation || isLoadingEdit
                       ? "loading..."
                       : "Submit"}
@@ -476,15 +480,13 @@ const Judges = () => {
                 <button
                   onClick={handleDeleteModalClose}
                   type="submit"
-                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
-                >
+                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
                   No
                 </button>
                 <button
                   disabled={isLoadingDelete}
                   onClick={handleDelete}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
-                >
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
                   YES
                 </button>
               </div>
@@ -498,15 +500,13 @@ const Judges = () => {
                   disabled={isLoadingBlock}
                   onClick={handleBlockModalClose}
                   type="submit"
-                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
-                >
+                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
                   No
                 </button>
                 <button
                   disabled={isLoadingBlock}
                   onClick={handleBlockJudge}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
-                >
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
                   {isLoadingBlock ? "loading" : "YES"}
                 </button>
               </div>
@@ -519,8 +519,7 @@ const Judges = () => {
           <FilterPopup
             filterHeader="Zone"
             isOpen={isFilterPopupOpen}
-            togglePopup={toggleFilterPopup}
-          >
+            togglePopup={toggleFilterPopup}>
             <div className="space-y-4">
               {/* Example Filter Option 1 */}
               {selectOption && (
@@ -542,14 +541,12 @@ const Judges = () => {
                         {filterZonesList.map((zone) => (
                           <li
                             key={zone.value}
-                            className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light"
-                          >
+                            className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light">
                             <span>{zone.label}</span>
                             <button
                               type="button"
                               onClick={() => handleRemoveZone(zone)}
-                              className="ml-2"
-                            >
+                              className="ml-2">
                               <IoIosClose className="text-lg" />
                             </button>
                           </li>
@@ -564,8 +561,7 @@ const Judges = () => {
                 <button
                   onClick={handleFilterClick}
                   type="submit"
-                  className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl"
-                >
+                  className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl">
                   Apply
                 </button>
               </div>
@@ -585,8 +581,7 @@ const Judges = () => {
             <span className="flex items-center">
               <span
                 // onClick={selectRole} // Call selectRole when the Search button is clicked
-                className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[260px] text-center"
-              >
+                className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[260px] text-center">
                 Search
               </span>
             </span>
@@ -615,18 +610,15 @@ const Judges = () => {
             data?.judge?.map((judge, index) => (
               <tr
                 className="odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
-                key={index}
-              >
+                key={index}>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2"
-                >
+                  className="px-4 py-2">
                   {index + 1}
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2 flex items-center"
-                >
+                  className="px-4 py-2 flex items-center">
                   <img
                     alt="img"
                     src={judge?.image ?? JudgeAvatar}
@@ -635,20 +627,17 @@ const Judges = () => {
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2"
-                >
+                  className="px-4 py-2">
                   {judge?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2"
-                >
+                  className="px-4 py-2">
                   {judge?.zone?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2"
-                >
+                  className="px-4 py-2">
                   {judge?.email}
                 </td>
                 <td>
@@ -660,8 +649,7 @@ const Judges = () => {
                   <div className="flex">
                     <button
                       className="flex mb-4 text-black"
-                      onClick={() => handleCopy(judge?.password)}
-                    >
+                      onClick={() => handleCopy(judge?.password)}>
                       {copied === judge?.password ? (
                         <LuCopyCheck title="Copied" className="h-6 w-6 mr-3" />
                       ) : (
@@ -673,8 +661,7 @@ const Judges = () => {
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleShowPassword(judge?._id)}
-                    >
+                      onClick={() => handleShowPassword(judge?._id)}>
                       <div className="ml-3 mb-6 w-2 h-2">
                         {showPassword?.includes(judge?._id) ? (
                           <PiEyeSlashFill />
@@ -692,8 +679,7 @@ const Judges = () => {
                       judge?.isBlocked
                         ? " text-[#FF0404] border-[#FF0404]"
                         : "  border-[#1DB290] text-[#1DB290]"
-                    } rounded-full  border `}
-                  >
+                    } rounded-full  border `}>
                     {" "}
                     <span>{judge?.isBlocked ? "Blocked" : "Unblocked"}</span>
                     <BiSolidDownArrow className="text-black" />
@@ -702,8 +688,7 @@ const Judges = () => {
                 <td className="px-4 py-2 text-right">
                   <button
                     disabled={isLoadingBlock}
-                    onClick={() => handleEditClick(judge)}
-                  >
+                    onClick={() => handleEditClick(judge)}>
                     <img
                       alt="pics"
                       src="/icons/edit.svg"
