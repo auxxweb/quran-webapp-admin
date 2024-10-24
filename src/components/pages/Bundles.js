@@ -187,10 +187,10 @@ refetchQuestions()
         <div className="ml-auto flex items-center space-x-4">
           <span className="flex items-center">
             <span
-              className="bg-[#0EB599] hover:bg-[#1ae69b] text-white rounded-full py-1.5 px-10 cursor-pointer"
+              className="bg-[#0EB599] hover:bg-[#068A55] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
               onClick={toggleModal}
             >
-              + Bundle
+              Add Bundle
             </span>
           </span>
         </div>
@@ -221,7 +221,7 @@ refetchQuestions()
         </span> */}
         <span className="flex items-center justify-center">
           <input
-            className="p-2 lg:w-[300px] w-full appearance-none rounded-md bg-white border border-gray-500"
+            className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
             placeholder="Bundle ID"
             onChange={(e) => {
               handleSearchChange(e.target.value);
@@ -229,55 +229,55 @@ refetchQuestions()
           />
         </span>
         <span className="flex items-center">
-          <span className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[228px] rounded text-center">
-            SEARCH
+          <span className="cursor-pointer bg-[#0EB599] hover:bg-[#068A55] text-white p-2 lg:w-[100px] text-center rounded-3xl">
+            Search
           </span>
         </span>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto">
-          <thead className="bg-white ">
+          <thead className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px] ">
             <tr className="">
-              <th className="px-4 py-2 text-left font-medium">No</th>
-              <th className="px-4 py-2 text-center font-medium">Title</th>
-              <th className="px-4 py-2 text-center font-medium">
+              <th className="px-4 py-2 border-r border-gray-400 text-left font-medium">No</th>
+              <th className="px-4 py-2 border-r border-gray-400 text-center font-medium">Title</th>
+              <th className="px-4 py-2 border-r border-gray-400 text-center font-medium">
                 No of Questions
               </th>
-              <th className="px-4 py-2 text-left font-medium">Bundle Id</th>
-              <th className="px-4 py-2 font-medium text-center">Action</th>
+              <th className="px-4 py-2 border-r border-gray-400 text-left font-medium">Bundle Id</th>
+              <th className="px-4 py-2 border-r border-gray-400 font-medium text-center">Action</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
             {data?.bundles?.map((bundle, index) => (
               <tr
-                className=" font-light odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
+                className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
                 key={index}
               >
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {index + 1}
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 text-center"
+                  className="px-4 py-2 border-r border-gray-400 text-center"
                 >
                   {bundle?.title}
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 text-center"
+                  className="px-4 py-2 border-r border-gray-400 text-center"
                 >
                   {bundle?.questions?.length}
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 "
+                  className="px-4 py-2 border-r border-gray-400 "
                 >
                   {bundle?.bundleId}
                 </td>
-                <td className="px-4 py-2 text-center">
+                <td className="px-4 py-2 border-r border-gray-400 text-center">
                   <button onClick={() => handleEditClick(bundle)}>
                     <img
                       alt="pics"
@@ -289,7 +289,7 @@ refetchQuestions()
                     <img
                       alt="pics"
                       src="/icons/delete.svg"
-                      className="w-6 h-6 rounded-full mr-2"
+                      className="w-6 h-6 rounded-full mr-2 fill-red-500"
                     />
                   </button>
                 </td>

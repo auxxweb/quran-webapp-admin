@@ -41,7 +41,7 @@ const ResponseAndResult = () => {
       <div className="flex justify-end ml-auto space-x-6 p-4">
         <span className="flex items-center justify-center">
           <input
-            className="p-2 lg:w-[300px] w-full appearance-none bg-white border border-gray-500"
+            className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
             placeholder="Qs ID"
             onChange={(e) => {
               handleSearchChange(e.target.value);
@@ -49,23 +49,23 @@ const ResponseAndResult = () => {
           />
         </span>
         <span className="flex items-center">
-          <span className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[228px] rounded text-center">
-            SEARCH
+          <span className="cursor-pointer bg-[#0EB599] hover:bg-[#068A55] text-white p-2 lg:w-[100px] text-center rounded-3xl">
+            Search
           </span>
         </span>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto">
-          <thead className="bg-teal-50">
+          <thead className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
             <tr>
-              <th className="px-4 py-4 text-left">Sl No</th>
-              <th className="px-4 py-2 text-left">Participant Name</th>
-              <th className="px-4 py-2 text-left">Image</th>
-              <th className="px-4 py-2 text-left">Zone</th>
-              <th className="px-4 py-2 text-left">Date</th>
-              <th className="px-4 py-2 text-left">Start Time</th>
-              <th className="px-4 py-2 text-left">End Time</th>
-              <th className="px-4 py-2 text-left">Score</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Sl No</th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">Participant Name</th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">Image</th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">Zone</th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">Date</th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">Start Time</th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">End Time</th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">Score</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
@@ -76,19 +76,19 @@ const ResponseAndResult = () => {
               >
                 <td
                   onClick={() => navigate(`/result/${result?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {index + 1}
                 </td>
                 <td
                   onClick={() => navigate(`/result/${result?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {result?.participant_id?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/result/${result?._id}`)}
-                  className="px-4 py-2 flex items-center"
+                  className="px-4 py-2 border-r border-gray-400 flex items-center"
                 >
                   <img
                     alt="img"
@@ -98,31 +98,31 @@ const ResponseAndResult = () => {
                 </td>
                 <td
                   onClick={() => navigate(`/result/${result?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {result?.zone?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/result/${result?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {dateFormater(result?.startTime)}
                 </td>
                 <td
                   onClick={() => navigate(`/result/${result?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {timeFormater(result?.startTime)}
                 </td>
                 <td
                   onClick={() => navigate(`/result/${result?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {timeFormater(result?.endTime)}
                 </td>
                 <td
                   onClick={() => navigate(`/result/${result?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {result?.totalScore}
                 </td>

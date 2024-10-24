@@ -167,9 +167,9 @@ const Questions = () => {
           {" "}
           <span className="flex items-center">
             <span
-              className="bg-[#0EB599] hover:bg-[#1ae69b] text-white rounded-full p-2 cursor-pointer"
+              className="bg-[#0EB599] hover:bg-[#068A55] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
               onClick={toggleModal}>
-              + Add Qs & Ans
+              Add Question & Answer
             </span>
           </span>
         </div>
@@ -200,7 +200,7 @@ const Questions = () => {
         </span> */}
         <span className="flex items-center justify-center">
           <input
-            className="p-2 lg:w-[300px] w-full appearance-none bg-white border border-gray-500"
+            className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
             placeholder="Qs ID"
             onChange={(e) => {
               handleSearchChange(e.target.value);
@@ -208,20 +208,20 @@ const Questions = () => {
           />
         </span>
         <span className="flex items-center">
-          <span className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[228px] rounded text-center">
-            SEARCH
+          <span className="cursor-pointer bg-[#0EB599] hover:bg-[#068A55] text-white p-2 lg:w-[100px] text-center rounded-3xl">
+            Search
           </span>
         </span>
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto">
-          <thead className="bg-teal-50">
+        <table className="min-w-full table-auto mt-6">
+          <thead className=" bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
             <tr>
-              <th className="px-4 py-2 text-left">No</th>
-              <th className="px-4 py-2 text-left">Question</th>
-              <th className="px-4 py-2 text-left">Answer</th>
-              <th className="px-4 py-2 text-left">Question Id</th>
-              <th className="px-4 py-2 text-left">Action</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">No</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Question</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Answer</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Question Id</th>
+              <th className="px-4 py-4 text-left">Action</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
@@ -230,25 +230,25 @@ const Questions = () => {
                 onClick={() => navigate(`/questions/${question?._id}`)}
                 className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}>
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">{question?.question}</td>
-                <td className="px-4 py-2 flex items-center">
+                <td className="px-4 py-2 border-r border-gray-400">{index + 1}</td>
+                <td className="px-4 py-2 border-r border-gray-400">{question?.question}</td>
+                <td className="px-4 py-2 border-r border-gray-400 flex items-center">
                   {question?.answer}
                 </td>
                 <td className="px-4 py-2">{question?.questionId}</td>
-                <td className="px-4 py-2 text-right w-[10%]">
+                <td className="px-4 py-2 border-r border-gray-400">
                   <button onClick={() => handleEditClick(question)}>
                     <img
                       alt="pics"
                       src="/icons/edit.svg"
-                      className="w-8 h-8 rounded-full mr-2"
+                      className="w-6 h-6 rounded-full mr-2"
                     />
                   </button>
                   <button onClick={() => handleDeleteClick(question?._id)}>
                     <img
                       alt="pics"
                       src="/icons/delete.svg"
-                      className="w-8 h-8 rounded-full mr-2"
+                      className="w-6 h-6 rounded-full mr-2 fill-red-500"
                     />
                   </button>
                 </td>
