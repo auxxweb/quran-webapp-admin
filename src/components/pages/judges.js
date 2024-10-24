@@ -66,9 +66,22 @@ const Judges = () => {
     const formData = new FormData(event.target);
     const isMain = !!formData?.get("isMain");
 
+    if (!zonesList || !zonesList.value) {
+      toast.warning("Please select a zone", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          backgroundColor: "#e9c70b", // Custom red color for error
+          color: "#FFFFFF" // Text color
+        },
+        dismissible: true
+      });
+      return; // Stop the form from submitting if no zone is selected
+    }
+
     formData?.append("zone", zonesList?.value);
     formData?.set("isMain", isMain);
- 
+
     try {
       if (editPopupData) {
         formData?.append("judgeId", editPopupData?._id);
@@ -215,25 +228,24 @@ const Judges = () => {
   };
 
   const handlePreviewImage = (e) => {
-        // Handle image upload if the image file is selected
-        const imageFile = e.target.files[0]; // Access the selected image file
-        if (imageFile && imageFile.size <= 5 * 1024 * 1024) {
-          // Check if it's valid
-          setImageUrl(URL.createObjectURL(e.target.files[0]));
-        } else {
-          // Optionally, you could show an error toast here
-          toast.warning("Please select a valid image file (less than 5 MB).", {
-            position: "top-right",
-            duration: 2000,
-            style: {
-              backgroundColor: "#e5cc0e", // Custom red color for error
-              color: "#FFFFFF" // Text color
-            },
-            dismissible: true
-          });
-          return; // Exit the function if there's no valid image
-        }
-   
+    // Handle image upload if the image file is selected
+    const imageFile = e.target.files[0]; // Access the selected image file
+    if (imageFile && imageFile.size <= 5 * 1024 * 1024) {
+      // Check if it's valid
+      setImageUrl(URL.createObjectURL(e.target.files[0]));
+    } else {
+      // Optionally, you could show an error toast here
+      toast.warning("Please select a valid image file (less than 5 MB).", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          backgroundColor: "#e5cc0e", // Custom red color for error
+          color: "#FFFFFF" // Text color
+        },
+        dismissible: true
+      });
+      return; // Exit the function if there's no valid image
+    }
   };
 
   const selectOption = zoneList?.zones?.map((zone) => {
