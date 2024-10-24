@@ -8,6 +8,8 @@ import { BiSolidDownArrow } from "react-icons/bi";
 import Modal from "../reUsableCmponent/modal/Modal";
 import { useState } from "react";
 import { toast } from "sonner";
+import ParticipantAvatar from "../../assets/images/person-placeholder.png"
+
 
 const JudgeDetails = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -104,7 +106,7 @@ const JudgeDetails = () => {
           <div className="w-1/3 m-6">
             <div className="w-48 h-48 flex  rounded-full overflow-hidden border-2 border-gray-300">
               <img
-                src={data?.judge?.image}
+                src={data?.judge?.image ?? ParticipantAvatar}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
