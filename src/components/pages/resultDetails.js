@@ -4,7 +4,7 @@ import {
   useEditMarkMutation,
   useGetResultDetailQuery
 } from "../../api/responseAndResult";
-import { timeFormater } from "../../common/utils";
+import { dateFormater, timeFormater } from "../../common/utils";
 
 import placeholder from "../../assets/images/person-placeholder.png";
 import { toast } from "sonner";
@@ -62,13 +62,18 @@ function ResultDetails() {
   const getTimeDifference = (date2, date1) => {
     const startDate = new Date(date2);
     const endDate = new Date(date1);
-
+  
     // Calculate the difference in milliseconds
     const diffInMs = endDate - startDate;
-
-    // Convert milliseconds to minutes and seconds
-    const diffInSeconds = Math.floor(diffInMs / 1000);
-    return Math.floor(diffInSeconds / 60);
+  
+    // Convert milliseconds to total seconds
+    const totalSeconds = Math.floor(diffInMs / 1000);
+  
+    // Calculate minutes and remaining seconds
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+  
+    return `${minutes}.${seconds}s`
   };
 
   const handleEditclick = (id) => {
@@ -138,7 +143,8 @@ function ResultDetails() {
                   Date
                 </td>
                 <td className="text-2xl font-semibold mt-2 text-gray-600">
-                  12/1/1334
+                  {dateFormater(data?.result?.startTime)}
+                  
                 </td>
               </tr>
               <tr>
@@ -177,7 +183,6 @@ function ResultDetails() {
                       question?.startTime,
                       question?.endTime
                     )}{" "}
-                    mins
                   </span>
                   <span className="text-[#939393]">
                     | {timeFormater(question?.startTime)} -{" "}
