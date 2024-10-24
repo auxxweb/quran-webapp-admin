@@ -59,7 +59,19 @@ const Participants = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
-    const formData = new FormData(event.target); // Make sure event.target is the form
+    const formData = new FormData(event.target);
+    if (!zonesList || !zonesList.value) {
+      toast.warning("Please select a zone", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          backgroundColor: "#e9c70b", // Custom red color for error
+          color: "#FFFFFF" // Text color
+        },
+        dismissible: true
+      });
+      return; // Stop the form from submitting if no zone is selected
+    } // Make sure event.target is the form
     formData?.append("zone", zonesList?.value);
     try {
       if (editPopupData) {
