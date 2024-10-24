@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
+.text-area-1 {
+  width: 100%;
+  overflow: hidden;
+  resize: none; /* Prevents the user from manually resizing the textarea */
+}

@@ -3,7 +3,7 @@ import {
   useAddQuestionMutation,
   useDeleteQuestionMutation,
   useEditQuestionMutation,
-  useGetQuestionsQuery,
+  useGetQuestionsQuery
 } from "../../api/questions";
 import Modal from "../reUsableCmponent/modal/Modal";
 import { useDebouncedCallback } from "use-debounce";
@@ -23,12 +23,12 @@ const Questions = () => {
   const { data, refetch } = useGetQuestionsQuery({
     limit,
     page: currentPage,
-    search: searchValue,
+    search: searchValue
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     refetch({ limit, page: currentPage, search: searchValue });
-  },[])
+  }, []);
   const [addQuestion, { isLoading: isLoadingMutation }] =
     useAddQuestionMutation();
   const [deleteQuestion, { isLoading: isLoadingDelete }] =
@@ -59,7 +59,7 @@ const Questions = () => {
         const body = {
           questionId: editPopupData?._id,
           question,
-          answer,
+          answer
         };
         const res = await editQuestion?.(body);
         if (res?.data?.success) {
@@ -67,34 +67,34 @@ const Questions = () => {
           toggleModal();
           setEditPopupData(null);
         } else {
-          toast.error(res.data.message,{
+          toast.error(res.data.message, {
             position: "top-right",
-            duration: 2000,  
+            duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF", // Text color
+              color: "#FFFFFF" // Text color
             },
-            dismissible: true,  
+            dismissible: true
           });
         }
       } else {
         const body = {
           question,
-          answer,
+          answer
         };
         const res = await addQuestion?.(body);
         if (res?.data?.success) {
           refetch({ limit, page: currentPage, search: searchValue });
           toggleModal();
         } else {
-          toast.error(res.data.message,{
+          toast.error(res.data.message, {
             position: "top-right",
-            duration: 2000,  
+            duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF", // Text color
+              color: "#FFFFFF" // Text color
             },
-            dismissible: true,  
+            dismissible: true
           });
         }
       }
@@ -127,7 +127,7 @@ const Questions = () => {
   const handleDelete = async () => {
     try {
       const body = {
-        questionId: selectedQuestionId,
+        questionId: selectedQuestionId
       };
       const deleteres = await deleteQuestion?.(body);
       if (deleteres?.data?.success) {
@@ -135,14 +135,14 @@ const Questions = () => {
         setSelectedQuestionId(null);
         setShowDeletePopup(false);
       } else {
-        toast.error(deleteres.data.message,{
+        toast.error(deleteres.data.message, {
           position: "top-right",
-          duration: 2000,  
+          duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF", // Text color
+            color: "#FFFFFF" // Text color
           },
-          dismissible: true,  
+          dismissible: true
         });
       }
     } catch (error) {
@@ -154,6 +154,11 @@ const Questions = () => {
     setShowDeletePopup(false);
   };
 
+  function autoResize(textarea) {
+    textarea.style.height = "auto"; // Reset height
+    textarea.style.height = textarea?.scrollHeight + "px"; // Set new height based on content
+  }
+
   return (
     <>
       <div className="flex rounded-lg p-4">
@@ -163,8 +168,7 @@ const Questions = () => {
           <span className="flex items-center">
             <span
               className="bg-[#0EB599] hover:bg-[#1ae69b] text-white rounded-full p-2 cursor-pointer"
-              onClick={toggleModal}
-            >
+              onClick={toggleModal}>
               + Add Qs & Ans
             </span>
           </span>
@@ -225,8 +229,7 @@ const Questions = () => {
               <tr
                 onClick={() => navigate(`/questions/${question?._id}`)}
                 className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
-                key={index}
-              >
+                key={index}>
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{question?.question}</td>
                 <td className="px-4 py-2 flex items-center">
@@ -265,25 +268,25 @@ const Questions = () => {
         isVisible={isModalVisible}
         onClose={toggleModal}
         modalHeader={"Add Qs and Ans"}
-      >
+        isScrollable={true}>
         <form onSubmit={onSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 gap-4">
+          <div className=" grid grid-cols-1 gap-4">
             <div>
               <label
                 htmlFor="q&a"
-                className="block text-sm font-medium text-gray-700"
-              >
+                className="block text-sm font-medium text-gray-700">
                 Question
               </label>
               <textarea
                 type="text"
                 name="question"
                 id="question"
-                className="p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className=" text-area-1 p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 defaultValue={
-                  editPopupData?.question ? editPopupData?.question : ""
+                  editPopupData?.question ? editPopupData?.question: ""
                 }
-              />
+                rows="1"
+                onInput={(e) => autoResize(e.target)}></textarea>
             </div>
           </div>
 
@@ -291,19 +294,18 @@ const Questions = () => {
             <div>
               <label
                 htmlFor="q&a"
-                className="block text-sm font-medium text-gray-700"
-              >
+                className="block text-sm font-medium text-gray-700">
                 Answer
               </label>
               <textarea
                 type="text"
                 name="answer"
                 id="answer"
-                className="p-2 mt-1 block h-24 w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="text-area-1 p-2 mt-1 block h-24 w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 defaultValue={
                   editPopupData?.answer ? editPopupData?.answer : ""
                 }
-              />
+                onInput={(e) => autoResize(e.target)}></textarea>
             </div>
           </div>
 
@@ -311,8 +313,7 @@ const Questions = () => {
             <button
               disabled={isLoadingMutation || isLoadingEdit}
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Submit
             </button>
           </div>
@@ -326,15 +327,13 @@ const Questions = () => {
           <button
             onClick={handleDeleteModalClose}
             type="submit"
-            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
-          >
+            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
             No
           </button>
           <button
             disabled={isLoadingDelete}
             onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
-          >
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
             YES
           </button>
         </div>

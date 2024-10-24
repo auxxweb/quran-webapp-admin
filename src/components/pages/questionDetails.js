@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   useDeleteQuestionMutation,
@@ -11,6 +11,7 @@ import { toast } from "sonner";
 const QuestionDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const textareaRef = useRef(null);
   const questionId = location.pathname?.split("/")[2];
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -23,6 +24,14 @@ const QuestionDetails = () => {
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
+
+  useEffect(() => {
+    // Automatically resize the textarea based on the content when the component mounts
+    if (textareaRef.current) {
+      
+      autoResize(textareaRef.current);
+    }
+  }, [data?.question]);
 
   const onSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
@@ -83,6 +92,12 @@ const QuestionDetails = () => {
   const handleDeleteModalClose = () => {
     setShowDeletePopup(false);
   };
+
+  
+  function autoResize(textarea) {
+    textarea.style.height = "auto"; // Reset height
+    textarea.style.height = textarea?.scrollHeight + "px"; // Set new height based on content
+  }
 
   return (
     <>
@@ -145,6 +160,7 @@ const QuestionDetails = () => {
         isVisible={isModalVisible}
         onClose={toggleModal}
         modalHeader={"Edit Qs and Ans"}
+        isScrollable={true}
       >
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
@@ -155,11 +171,14 @@ const QuestionDetails = () => {
               >
                 Question
               </label>
-              <input
+              <textarea
+               onClick={(e) => autoResize(e.target)}
+               onInput={(e) => autoResize(e.target)}
                 type="text"
                 name="question"
                 id="question"
-                className="p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                ref={textareaRef}
+                className="  text-area-1 p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 defaultValue={data?.question?.question}
               />
             </div>
@@ -169,12 +188,15 @@ const QuestionDetails = () => {
             <div>
               <label
                 htmlFor="q&a"
-                className="block text-sm font-medium text-gray-700"
+                className="  text-area-1block text-sm font-medium text-gray-700"
               >
                 Answer
               </label>
-              <input
+              <textarea
+               onClick={(e) => autoResize(e.target)}
+               onInput={(e) => autoResize(e.target)}
                 type="text"
+                ref={textareaRef}
                 name="answer"
                 id="answer"
                 className="p-2 mt-1 block h-24 w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
