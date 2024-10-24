@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetParticipantDetailQuery } from "../../api/participants";
+import ParticipantAvatar from "../../assets/images/person-placeholder.png"
+
 
 const ParticipantDetails = () => {
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ const ParticipantDetails = () => {
           <div className="flex lg:w-1/2">
             <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-300">
               <img
-                src={data?.participant?.image}
+                src={data?.participant?.image ?? ParticipantAvatar}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
