@@ -195,7 +195,7 @@ const Zones = () => {
                     htmlFor="description"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    description
+                    Description
                   </label>
                   <input
                     type="text"

@@ -449,7 +449,7 @@ const Judges = () => {
                     }
                   />
                   <label
-                    htmlFor="image"
+                   
                     className="block text-m font-medium text-gray-700"
                   >
                     Main Judge
@@ -459,7 +459,7 @@ const Judges = () => {
                   <button
                     disabled={isLoadingMutation || isLoadingEdit}
                     type="submit"
-                    className="bg-[#0EB599] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl"
+                    className="bg-[#0EB599] hover:#0EB599 text-white font-bold py-2 px-6 rounded-3xl"
                   >
                     {isLoadingMutation || isLoadingEdit
                       ? "loading..."
