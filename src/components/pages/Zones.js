@@ -162,10 +162,10 @@ const Zones = () => {
         <div className="ml-auto flex items-center space-x-4">
           <span className="flex items-center">
             <span
-              className="bg-[#0EB599] text-white rounded-full p-3 cursor-pointer"
+              className="bg-[#0EB599] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
               onClick={toggleModal}
             >
-              + Add New Zone
+            Add Zone
             </span>
 
             <Modal
@@ -245,83 +245,85 @@ const Zones = () => {
           </span>
         </div>
       </div>
-      <div className="ml-auto lg:mr-4 flex items-center space-x-8 justify-end">
+      <div className="ml-auto lg:mr-4 flex items-center space-x-4 justify-end pt-3">
         {/* Parent div for span elements */}
         <span className="flex items-center justify-center">
           <input
-            className="p-2 lg:w-[300px] w-full appearance-none bg-white border border-gray-500"
+            className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
             placeholder="Search by name"
             onChange={(e) => {
               handleSearchChange(e.target.value);
             }}
           />
         </span>
-        <span className="flex items-center">
-          <span className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[250px] text-center">
+        <span className="flex items-center ">
+          <span className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[100px] text-center rounded-3xl">
             Search
           </span>
         </span>
       </div>
 
-      <table className="min-w-full table-auto mt-6">
-        <thead className="bg-white">
-          <tr>
-            <th className="px-4 py-4 text-left">Sl No</th>
-            <th className="px-4 py-4 text-left">Name</th>
-            <th className="px-4 py-4 text-left">Link</th>
-            <th className="px-4 py-4 text-left">Description</th>
-            <th className="px-4 py-4 text-left">Action</th>
-          </tr>
-        </thead>
-        <tbody className="border-[2px] border-opacity-50 border-[#969696]">
-          {isLoading ? (
-            <>Loading...</>
-          ) : (
-            data?.zones?.map((zone, index) => (
-              <tr
-                className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
-                key={index}
-              >
-                <td className="px-4 py-2">{index}</td>
-                <td className="px-4 py-2">{zone?.name}</td>
-                <td className="px-4 py-2 ">
-                  {" "}
-                  <button
-                    className="flex text-black items-center space-x-1"
-                    onClick={() => handleCopy(zone?._id)}
-                  >
-                    {copied === zone?._id ? (
-                      <LuCopyCheck title="Copied" className="h-6 w-6" />
-                    ) : (
-                      <IoMdCopy title="Copy" className="h-6 w-6" />
-                    )}{" "}
-                    <span className="text-[#1F5EE7]"> Competition Link</span>
-                  </button>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="flex -space-x-2">{zone?.description}</div>
-                </td>
-                <td>
-                  <button onClick={() => handleEditClick(zone)}>
-                    <img
-                      alt="pics"
-                      src="/icons/edit.svg"
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                  </button>
-                  <button onClick={() => handleDeleteClick(zone?._id)}>
-                    <img
-                      alt="pics"
-                      src="/icons/delete.svg"
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+      <table className="min-w-full table-auto mt-6 border-collapse">
+  <thead className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
+    <tr>
+      <th className="px-4 py-4 text-left border-r border-gray-400">Sl No</th>
+      <th className="px-4 py-4 text-left border-r border-gray-400">Name</th>
+      <th className="px-4 py-4 text-left border-r border-gray-400">Link</th>
+      <th className="px-4 py-4 text-left border-r border-gray-400">Description</th>
+      <th className="px-4 py-4 text-left">Action</th>
+    </tr>
+  </thead>
+  <tbody className="border-[2px] border-opacity-70 border-[#969696]">
+    {isLoading ? (
+      <>Loading...</>
+    ) : (
+      data?.zones?.map((zone, index) => (
+        <tr
+          className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
+          key={index}
+        >
+          <td className="px-4 py-2 border-r border-gray-400">{index}</td>
+          <td className="px-4 py-2 border-r border-gray-400">{zone?.name}</td>
+          <td className="px-4 py-2 border-r border-gray-400">
+            <button
+              className="flex text-black items-center space-x-1"
+              onClick={() => handleCopy(zone?._id)}
+            >
+              {copied === zone?._id ? (
+                <LuCopyCheck title="Copied" className="h-6 w-6" />
+              ) : (
+                <IoMdCopy title="Copy" className="h-6 w-6" />
+              )}
+              <span className="text-[#1F5EE7]">Competition Link</span>
+            </button>
+          </td>
+          <td className="px-4 py-2 border-r border-gray-400">
+            <div className="flex -space-x-2">{zone?.description}</div>
+          </td>
+          <td className="px-4 py-2">
+            <button onClick={() => handleEditClick(zone)}>
+              <img
+                alt="pics"
+                src="/icons/edit.svg"
+                className="w-6 h-6 rounded-full mr-2"
+              />
+            </button>
+            <button onClick={() => handleDeleteClick(zone?._id)}>
+              <img
+                alt="pics"
+                src="/icons/delete.svg"
+                className="w-6 h-6 rounded-full mr-2 fill-red-500"
+                style={{ filter: "invert(20%) sepia(94%) saturate(7496%) hue-rotate(347deg) brightness(102%) contrast(104%)" }} 
+              />
+            </button>
+          </td>
+        </tr>
+      ))
+    )}
+  </tbody>
+</table>
+
+
       <div className="m-auto flex justify-end">
         <Pagination
           itemsPerPage={limit}

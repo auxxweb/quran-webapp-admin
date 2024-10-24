@@ -231,10 +231,10 @@ const Participants = () => {
           {" "}
           <span className="flex items-center">
             <span
-              className="bg-[#0EB599] text-white rounded-full p-3 cursor-pointer"
+              className="bg-[#0EB599] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
               onClick={toggleModal}
             >
-              + Add Participant
+              Add Participant
             </span>
           </span>
           <Modal
@@ -422,7 +422,7 @@ const Participants = () => {
           </Modal>
         </div>
       </div>
-      <div className="flex rounded-lg p-4 pt-0">
+      <div className="flex rounded-lg p-4 pr-0 pt-0">
         <FilterPopup
           filterHeader="Zone"
           isOpen={isFilterPopupOpen}
@@ -478,11 +478,11 @@ const Participants = () => {
             </div>
           </div>
         </FilterPopup>
-        <div className="ml-auto lg:mr-4 flex items-center space-x-8 justify-end">
+        <div className="ml-auto lg:mr-4 flex items-center space-x-4 justify-end pt-3">
           {/* Parent div for span elements */}
           <span className="flex items-center justify-center">
             <input
-              className="p-2 lg:w-[300px] w-full appearance-none bg-white border border-gray-500"
+                className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
               placeholder="Search by name"
               onChange={(e) => {
                 handleSearchChange(e.target.value);
@@ -490,20 +490,20 @@ const Participants = () => {
             />
           </span>
           <span className="flex items-center">
-            <span className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[250px] text-center">
+            <span  className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[100px] text-center rounded-3xl">
               Search
             </span>
           </span>
         </div>
       </div>
       <table className="min-w-full table-auto mt-6">
-        <thead className="bg-white">
+        <thead  className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
           <tr>
-            <th className="px-4 py-4 text-left">Sl No</th>
-            <th className="px-4 py-4 text-left">Name</th>
-            <th className="px-4 py-4 text-left">Image</th>
-            <th className="px-4 py-4 text-left">Zone</th>
-            <th className="px-4 py-4 text-left">Email</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Sl No</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Name</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Image</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Zone</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Email</th>
             <th className="px-4 py-4 text-left">Action</th>
           </tr>
         </thead>
@@ -513,24 +513,24 @@ const Participants = () => {
           ) : (
             data?.participant?.map((participant, index) => (
               <tr
-                className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
+                 className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
                 key={index}
               >
                 <td
                   onClick={() => navigate(`/participants/${participant?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {index + 1}
                 </td>
                 <td
                   onClick={() => navigate(`/participants/${participant?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {participant?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/participants/${participant?._id}`)}
-                  className="px-3 py-2 flex items-center"
+                className="px-4 py-2 border-r border-gray-400"
                 >
                   <img
                     alt="img"
@@ -540,29 +540,29 @@ const Participants = () => {
                 </td>
                 <td
                   onClick={() => navigate(`/participants/${participant?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   {participant?.zone?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/participants/${participant?._id}`)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 border-r border-gray-400"
                 >
                   <div className="flex -space-x-2">{participant?.email}</div>
                 </td>
-                <td>
+                <td  className="px-4 py-2 border-r border-gray-400">
                   <button onClick={() => handleEditClick(participant)}>
                     <img
                       alt="pics"
                       src="/icons/edit.svg"
-                      className="w-8 h-8 rounded-full mr-2"
+                     className="w-6 h-6 rounded-full mr-2"
                     />
                   </button>
                   <button onClick={() => handleDeleteClick(participant?._id)}>
                     <img
                       alt="pics"
                       src="/icons/delete.svg"
-                      className="w-8 h-8 rounded-full mr-2"
+                     className="w-6 h-6 rounded-full mr-2 fill-red-500"
                     />
                   </button>
                 </td>

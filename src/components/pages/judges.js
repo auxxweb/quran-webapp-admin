@@ -289,9 +289,9 @@ const Judges = () => {
         <div className="ml-auto flex items-center space-x-4">
           <span className="flex items-center">
             <span
-              className="bg-[#0EB599] text-white rounded-full p-3 cursor-pointer"
+              className="bg-[#0EB599] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
               onClick={toggleModal}>
-              + Add New Judges
+              Add Judge
             </span>
 
             <Modal
@@ -527,7 +527,7 @@ const Judges = () => {
         </div>
       </div>
       <div>
-        <div className="flex rounded-lg p-4 pt-0">
+        <div className="flex rounded-lg p-4 pr-0 pt-0">
           <FilterPopup
             filterHeader="Zone"
             isOpen={isFilterPopupOpen}
@@ -535,7 +535,7 @@ const Judges = () => {
             <div className="space-y-4">
               {/* Example Filter Option 1 */}
               {selectOption && (
-                <div className="m-4 w-60">
+                <div className="m-4 w-50">
                   <Select
                     className="border-gray-400"
                     options={selectOption}
@@ -579,21 +579,20 @@ const Judges = () => {
               </div>
             </div>
           </FilterPopup>
-          <div className="ml-auto flex items-center space-x-4">
+          <div  className="ml-auto lg:mr-4 flex items-center space-x-4 justify-end pt-3">
             {/* Parent div for span elements */}
             <span className="flex items-center justify-center">
               <input
                 onChange={(e) => {
                   handleSearchChange(e.target.value);
                 }}
-                className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-500"
+                  className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
                 placeholder="Search by name"
               />
             </span>
             <span className="flex items-center">
               <span
-                // onClick={selectRole} // Call selectRole when the Search button is clicked
-                className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[260px] text-center">
+                className="cursor-pointer bg-[#0EB599] text-white p-2 lg:w-[100px] text-center rounded-3xl">
                 Search
               </span>
             </span>
@@ -601,17 +600,17 @@ const Judges = () => {
         </div>
       </div>
 
-      <table className="min-w-full table-auto ">
-        <thead className="bg-white">
+      <table className="min-w-full table-auto mt-6">
+        <thead className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
           <tr>
-            <th className="px-4 py-4 text-left">Sl No</th>
-            <th className="px-4 py-4 text-left">Image</th>
-            <th className="px-4 py-4 text-left">Name</th>
-            <th className="px-4 py-4 text-left">Zone</th>
-            <th className="px-4 py-4 text-left">Email</th>
-            <th className="py-4 text-left">Main Judge</th>
-            <th className="px-4 py-4 text-left">Password</th>
-            <th className="px-4 py-4 text-left">Status</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Sl No</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Image</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Name</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Zone</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Email</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Main Judge</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Password</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">Status</th>
             <th className="px-4 py-4 text-left">Action</th>
           </tr>
         </thead>
@@ -621,16 +620,16 @@ const Judges = () => {
           ) : (
             data?.judge?.map((judge, index) => (
               <tr
-                className="odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
+               className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
                 key={index}>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2">
+                  className="px-4 py-2 border-r border-gray-400">
                   {index + 1}
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2 flex items-center">
+                  className="px-4 py-2 border-r border-gray-400">
                   <img
                     alt="img"
                     src={judge?.image ?? JudgeAvatar}
@@ -639,25 +638,25 @@ const Judges = () => {
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2">
+                  className="px-4 py-2 border-r border-gray-400">
                   {judge?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2">
+                 className="px-4 py-2 border-r border-gray-400">
                   {judge?.zone?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2">
+                 className="px-4 py-2 border-r border-gray-400">
                   {judge?.email}
-                </td>
-                <td>
+                </td >
+                <td className="px-4 py-2 border-r border-gray-400">
                   <div className="flex ml-3 -space-x-2">
                     {judge?.isMain ? "YES" : "NO"}
                   </div>
                 </td>
-                <td>
+                <td className="px-4 py-2 border-r border-gray-400">
                   <div className="flex">
                     <button
                       className="flex mb-4 text-black"
@@ -684,7 +683,7 @@ const Judges = () => {
                     </button>
                   </div>
                 </td>
-                <td className="px-4 py-2 ">
+                <td className="px-4 py-2 border-r border-gray-400">
                   <button
                     onClick={() => handleShowBlockJudgePopup(judge?._id)}
                     className={`py-2 px-5 flex space-x-2 items-center ${
@@ -697,21 +696,21 @@ const Judges = () => {
                     <BiSolidDownArrow className="text-black" />
                   </button>
                 </td>
-                <td className="px-4 py-2 text-right">
+                <td className="px-4 py-2 border-r border-gray-400">
                   <button
                     disabled={isLoadingBlock}
                     onClick={() => handleEditClick(judge)}>
                     <img
                       alt="pics"
                       src="/icons/edit.svg"
-                      className="w-8 h-8 rounded-full mr-2"
+                      className="w-6 h-6 rounded-full mr-2"
                     />
                   </button>
                   <button onClick={() => handleDeleteClick(judge?._id)}>
                     <img
                       alt="pics"
                       src="/icons/delete.svg"
-                      className="w-8 h-8 rounded-full mr-2"
+                      className="w-6 h-6 rounded-full mr-2 fill-red-500"
                     />
                   </button>
                 </td>
