@@ -8,14 +8,16 @@ import { BiSolidDownArrow } from "react-icons/bi";
 import Modal from "../reUsableCmponent/modal/Modal";
 import { useState } from "react";
 import { toast } from "sonner";
-import ParticipantAvatar from "../../assets/images/person-placeholder.png"
+import ParticipantAvatar from "../../assets/images/person-placeholder.png";
 import { LuCopyCheck } from "react-icons/lu";
 import { IoMdCopy } from "react-icons/io";
 import copy from "copy-to-clipboard";
 
-
 const JudgeDetails = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showBlockPopup, setShowBlockPopup] = useState(false);
+  const [selectedJudgeId, setSelectedJudgeId] = useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
   const [copied, setCopied] = useState("");
@@ -28,23 +30,25 @@ const JudgeDetails = () => {
     setIsModalVisible(false);
   };
 
-  const handleBlockJudge = async (id) => {
+  const handleBlockJudge = async () => {
     try {
       const body = {
-        judgeId: id,
+        judgeId: selectedJudgeId,
       };
       const deleteres = await blockJudge?.(body);
       if (deleteres?.data?.success) {
         refetch();
+        setShowBlockPopup(false);
+
       } else {
-        toast.error(deleteres.data.message,{
+        toast.error(deleteres.data.message, {
           position: "top-right",
-          duration: 2000,  
+          duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
             color: "#FFFFFF", // Text color
           },
-          dismissible: true,  
+          dismissible: true,
         });
       }
     } catch (error) {
@@ -79,21 +83,28 @@ const JudgeDetails = () => {
         refetch();
         handleModalClose();
       } else {
-        toast.error(updateres.data.message,{
+        toast.error(updateres.data.message, {
           position: "top-right",
-          duration: 2000,  
+          duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
             color: "#FFFFFF", // Text color
           },
-          dismissible: true,  
+          dismissible: true,
         });
       }
     } catch (error) {
       console.log("error", error);
     }
   };
+  const handleBlockModalClose = () => {
+    setShowBlockPopup(false);
+  };
 
+  const handleShowBlockJudgePopup = (id) => {
+    setSelectedJudgeId(id);
+    setShowBlockPopup(true);
+  };
   return (
     <>
       <svg
@@ -149,12 +160,11 @@ const JudgeDetails = () => {
                     Phone:
                   </td>
                   <td className="pb-4 ">
-                    <a
-                      href={`tel:${data?.judge?.phone}`}
+                    <span
                       className="text-green-500"
                     >
                       {data?.judge?.phone}
-                    </a>
+                    </span>
                   </td>
                 </tr>
                 <tr className="align-top leading-none">
@@ -162,25 +172,26 @@ const JudgeDetails = () => {
                     Email:
                   </td>
                   <td className="pb-4">
-                  <div style={{display:"flex"}}>
-                    <a
-                      href={`mailto:${data?.judge?.email}`}
-                      className="text-green-500"
-                    >
-                      
-                      {data?.judge?.email}
-                    </a>
-                    
-                    <button
-                      className="flex mb-4 text-black"
-                      onClick={() => handleCopy(data?.judge?.email)}>
-                      {copied === data?.judge?.email ? (
-                        <LuCopyCheck title="Copied" className="h-6 w-6 mr-3" />
-                      ) : (
-                        <IoMdCopy title="Copy" className="h-6 w-6 mr-3" />
-                      )}{" "}
-                      
-                    </button>
+                    <div style={{ display: "flex" }}>
+                      <span
+                        className="text-green-500"
+                      >
+                        {data?.judge?.email}
+                      </span>
+
+                      <button
+                        className="flex mb-4 text-black"
+                        onClick={() => handleCopy(data?.judge?.email)}
+                      >
+                        {copied === data?.judge?.email ? (
+                          <LuCopyCheck
+                            title="Copied"
+                            className="h-6 w-6 mr-3"
+                          />
+                        ) : (
+                          <IoMdCopy title="Copy" className="h-6 w-6 mr-3" />
+                        )}{" "}
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -201,21 +212,22 @@ const JudgeDetails = () => {
                     Password:
                   </td>
                   <td className="pb-4">
-                    <div style={{display:"flex"}}>
+                    <div style={{ display: "flex" }}>
+                      <a>{data?.judge?.password}</a>
 
-                    <a>{data?.judge?.password}</a>
-
-
-<button 
-    className="flex mb-4 text-black"
-    onClick={() => handleCopy(data?.judge?.password)}>
-    {copied === data?.judge?.password ? (
-      <LuCopyCheck title="Copied" className="h-6 w-6 mr-3" />
-    ) : (
-      <IoMdCopy title="Copy" className="h-6 w-6 mr-3" />
-    )}{" "}
-    
-  </button>
+                      <button
+                        className="flex mb-4 text-black"
+                        onClick={() => handleCopy(data?.judge?.password)}
+                      >
+                        {copied === data?.judge?.password ? (
+                          <LuCopyCheck
+                            title="Copied"
+                            className="h-6 w-6 mr-3"
+                          />
+                        ) : (
+                          <IoMdCopy title="Copy" className="h-6 w-6 mr-3" />
+                        )}{" "}
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -226,7 +238,9 @@ const JudgeDetails = () => {
               {/* Status Dropdown */}
               <button
                 disabled={isLoadingBlock || isLoading}
-                onClick={() => handleBlockJudge(data?.judge?._id)}
+                // onClick={() => handleBlockJudge(data?.judge?._id)}
+                onClick={() => handleShowBlockJudgePopup(data?.judge?._id)}
+
                 className={`py-2 px-5 flex space-x-2 items-center ${
                   data?.judge?.isBlocked
                     ? " text-[#FF0404] border-[#FF0404]"
@@ -234,9 +248,7 @@ const JudgeDetails = () => {
                 } rounded-full  border `}
               >
                 <span>
-                  {isLoadingBlock
-                    ? "loading..."
-                    : data?.judge?.isBlocked
+                  { data?.judge?.isBlocked
                     ? "Blocked"
                     : "Unblocked"}
                 </span>
@@ -302,6 +314,28 @@ const JudgeDetails = () => {
             </button>
           </div>
         </form>
+      </Modal>
+      <Modal isVisible={showBlockPopup} onClose={handleBlockModalClose}>
+        <h3 className="flex self-center text-lg font-bold">
+          Are you sure want to Block/Unblock?
+        </h3>
+        <div className="flex justify-center p-6">
+          <button
+            disabled={isLoadingBlock}
+            onClick={handleBlockModalClose}
+            type="submit"
+            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
+          >
+            No
+          </button>
+          <button
+            disabled={isLoadingBlock}
+            onClick={handleBlockJudge}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
+          >
+            {isLoadingBlock ? "loading" : "YES"}
+          </button>
+        </div>
       </Modal>
     </>
   );

@@ -39,7 +39,7 @@ const QuestionDetails = () => {
     const answer = formData.get("answer");
     try {
       const body = {
-        questionId: questionId,
+        id: questionId,
         question,
         answer
       };

@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useGetQuestionsListQuery } from "../../api/common";
 import { IoIosClose } from "react-icons/io";
 import { toast } from "sonner";
+import { getTextDirection } from "../../common/utils";
 
 const BundleDetails = () => {
   
@@ -75,7 +76,7 @@ const BundleDetails = () => {
     try {
       if (editPopupData) {
         const body = {
-          bundleId: editPopupData?._id,
+          id: editPopupData?._id,
           questions: selectedQuestions,
         };
         if(selectedQuestions.length <= 0){
@@ -114,11 +115,7 @@ const BundleDetails = () => {
   const handleChange = (selectedOptions) => {
     setQuestions(selectedOptions || []);
   };
-  const handleRemoveQuestion = (questionToRemove) => {
-    setQuestions(
-      questions.filter((question) => question.value !== questionToRemove.value)
-    );
-  };
+
   const handleDelete = async () => {
     if(data?.bundle?.questions?.length <= 1){
       toast.error("Cannot delete last remaining question", {
@@ -137,7 +134,7 @@ const BundleDetails = () => {
     .map((option) => option?._id);
 
     const body = {
-      bundleId: data?.bundle?._id,
+      id: data?.bundle?._id,
       questions: remainingQuestions,
     };
     const res = await editBundle?.(body);
@@ -193,19 +190,18 @@ const BundleDetails = () => {
               </h2>
               <div>
                 <span className="font-semibold text-gray-600">Bundle Id: </span>
-                <a href="tel:9876543210" className="text-green-500 ml-6">
+                <span className="text-green-500 ml-6">
                   {data?.bundle?.bundleId}
-                </a>
+                </span>
               </div>
               <div>
                 <span className="font-semibold text-gray-600">
                   No Of Questions:
                 </span>
-                <a
-                  href="mailto:hari@example.com"
+                <span
                   className="text-green-500 ml-6">
                   {data?.bundle?.questions?.length}
-                </a>
+                </span>
               </div>
             </div>
           </div>
@@ -222,8 +218,8 @@ const BundleDetails = () => {
             <tr className="">
               <th className="px-4 py-2 text-left font-medium">Qs ID</th>
               <th className="px-4 py-2 text-center font-medium">Question</th>
-              <th className="px-4 py-2 text-center font-medium">Answers</th>
-              <th className="px-4 py-2 text-center font-medium">Actions</th>
+              <th className="px-4 py-2 text-left font-medium">Answers</th>
+              <th className="px-4 py-2 text-left font-medium">Actions</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
@@ -232,10 +228,10 @@ const BundleDetails = () => {
                 className="font-light odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}>
                 <td className="w-6 px-4 py-2">{question?.questionId}</td>
-                <td className="px-4 py-2 flex justify-center items-center">
+                <td className="px-4 py-2 " dir={getTextDirection(question?.question)}>
                   {question?.question}
                 </td>
-                <td className="px-4 py-2 text-center">{question?.answer}</td>
+                <td className="px-4 py-2 " dir={getTextDirection(question?.answer)}>{question?.answer}</td>
                 <td className="px-4 py-2 text-center">
                   <button onClick={() => handleDeleteClick(question?._id)}>
                     <img
@@ -295,7 +291,7 @@ const BundleDetails = () => {
                 components={{ MultiValue: () => null }} // Hide selected options in input
                 filterOption={customFilterOption}
               />
-              <div className="pt-2">
+              {/* <div className="pt-2">
                 {questions.length > 0 && (
                   <ul className="flex flex-wrap gap-1">
                     {questions.map((question) => (
@@ -315,7 +311,7 @@ const BundleDetails = () => {
                     ))}
                   </ul>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
 

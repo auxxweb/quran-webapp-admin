@@ -62,23 +62,21 @@ const ParticipantDetails = () => {
                   <tr className="mt-4">
                     <td className="font-semibold text-gray-600 w-1/4">Phone</td>
                     <td>
-                      <a
-                        href={`tel:${data?.participant?.phone}`}
+                      <span
                         className="text-green-500"
                       >
                         {data?.participant?.phone}
-                      </a>
+                      </span>
                     </td>
                   </tr>
                   <tr className="mt-4">
                     <td className="font-semibold text-gray-600 w-1/4">Email</td>
                     <td>
-                      <a
-                        href={`mailto:${data?.participant?.email}`}
+                      <span
                         className="text-green-500"
                       >
                         {data?.participant?.email}
-                      </a>
+                      </span>
                     </td>
                   </tr>
                   <tr className="mt-4">
