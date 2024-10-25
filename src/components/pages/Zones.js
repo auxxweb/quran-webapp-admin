@@ -282,7 +282,7 @@ const Zones = () => {
           className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
           key={index}
         >
-          <td className="px-4 py-2 border-r border-gray-400">{index}</td>
+          <td className="px-4 py-2 border-r border-gray-400">{index + 1}</td>
           <td className="px-4 py-2 border-r border-gray-400">{zone?.name}</td>
           <td className="px-4 py-2 border-r border-gray-400">
             <button
