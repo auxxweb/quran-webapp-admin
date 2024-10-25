@@ -203,7 +203,13 @@ const Questions = () => {
             className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
             placeholder="Qs ID"
             onChange={(e) => {
-              handleSearchChange(e.target.value);
+              const value = e.target.value;
+              const containsArabic = /[\u0600-\u06FF]/.test(value); // Detects any Arabic character
+
+              // Set direction based on presence of Arabic characters
+              e.target.dir = containsArabic ? "rtl" : "ltr";
+
+              handleSearchChange(value);
             }}
           />
         </span>
@@ -217,43 +223,68 @@ const Questions = () => {
         <table className="min-w-full table-auto mt-6">
           <thead className=" bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
             <tr>
-              <th className="px-4 py-4 text-left border-r border-gray-400">No</th>
-              <th className="px-4 py-4 text-left border-r border-gray-400">Question</th>
-              <th className="px-4 py-4 text-left border-r border-gray-400">Answer</th>
-              <th className="px-4 py-4 text-left border-r border-gray-400">Question Id</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">
+                No
+              </th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">
+                Question
+              </th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">
+                Answer
+              </th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">
+                Question Id
+              </th>
               <th className="px-4 py-4 text-left">Action</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
-            {data?.questions?.map((question, index) => (
-              <tr
-                onClick={() => navigate(`/questions/${question?._id}`)}
-                className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
-                key={index}>
-                <td className="px-4 py-2 border-r border-gray-400">{index + 1}</td>
-                <td className="px-4 py-2 border-r border-gray-400">{question?.question}</td>
-                <td className="px-4 py-2 border-r border-gray-400 flex items-center">
-                  {question?.answer}
-                </td>
-                <td className="px-4 py-2">{question?.questionId}</td>
-                <td className="px-4 py-2 border-r border-gray-400">
-                  <button onClick={() => handleEditClick(question)}>
-                    <img
-                      alt="pics"
-                      src="/icons/edit.svg"
-                      className="w-6 h-6 rounded-full mr-2"
-                    />
-                  </button>
-                  <button onClick={() => handleDeleteClick(question?._id)}>
-                    <img
-                      alt="pics"
-                      src="/icons/delete.svg"
-                      className="w-6 h-6 rounded-full mr-2 fill-red-500"
-                    />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {data?.questions?.map((question, index) => {
+              const getTextDirection = (text) => {
+                if (/[\u0600-\u06FF]/.test(text)) {
+                  return "rtl"; // Arabic text detected
+                }
+                return "ltr"; // Default to left-to-right for other languages
+              };
+
+              return (
+                <tr
+                  onClick={() => navigate(`/questions/${question?._id}`)}
+                  className="odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
+                  key={index}>
+                  <td className="px-4 py-2 border-r border-gray-400">
+                    {index + 1}
+                  </td>
+                  <td
+                    className="px-4 py-2 border-r border-gray-400"
+                    dir={getTextDirection(question?.question)}>
+                    {question?.question}
+                  </td>
+                  <td
+                    className="px-4 py-2 border-r border-gray-400 flex items-center"
+                    dir={getTextDirection(question?.answer)}>
+                    {question?.answer}
+                  </td>
+                  <td className="px-4 py-2">{question?.questionId}</td>
+                  <td className="px-4 py-2 border-r border-gray-400">
+                    <button onClick={() => handleEditClick(question)}>
+                      <img
+                        alt="Edit"
+                        src="/icons/edit.svg"
+                        className="w-6 h-6 rounded-full mr-2"
+                      />
+                    </button>
+                    <button onClick={() => handleDeleteClick(question?._id)}>
+                      <img
+                        alt="Delete"
+                        src="/icons/delete.svg"
+                        className="w-6 h-6 rounded-full mr-2 fill-red-500"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <Pagination
@@ -281,12 +312,24 @@ const Questions = () => {
                 type="text"
                 name="question"
                 id="question"
-                className=" text-area-1 p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="text-area-1 p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 defaultValue={
-                  editPopupData?.question ? editPopupData?.question: ""
+                  editPopupData?.question ? editPopupData.question : ""
                 }
                 rows="1"
-                onInput={(e) => autoResize(e.target)}></textarea>
+                dir="auto" // Set to auto initially
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Check if the input consists mostly of Arabic characters or spaces
+                  const isMostlyArabic = /^[\u0600-\u06FF\s]+$/.test(value);
+
+                  // Set input direction based on the content
+                  e.target.dir = isMostlyArabic ? "rtl" : "ltr";
+
+                  // Resize the textarea (if you're using the autoResize function)
+                  autoResize(e.target);
+                }}></textarea>
             </div>
           </div>
 
@@ -305,7 +348,19 @@ const Questions = () => {
                 defaultValue={
                   editPopupData?.answer ? editPopupData?.answer : ""
                 }
-                onInput={(e) => autoResize(e.target)}></textarea>
+                // dir="auto" // Set to auto initially/
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Check if the input consists mostly of Arabic characters or spaces
+                  const isMostlyArabic = /^[\u0600-\u06FF\s]+$/.test(value);
+
+                  // Set input direction based on the content
+                  e.target.dir = isMostlyArabic ? "rtl" : "ltr";
+
+                  // Resize the textarea (if you're using the autoResize function)
+                  autoResize(e.target);
+                }}></textarea>
             </div>
           </div>
 

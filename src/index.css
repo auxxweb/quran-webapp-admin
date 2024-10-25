@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -11,3 +13,11 @@ body {
   overflow: hidden;
   resize: none; /* Prevents the user from manually resizing the textarea */
 }
+
+table {
+  font-family: 'Roboto', sans-serif; /* Change 'Roboto' to your chosen font */
+  width: 100%; /* Optional: make the table full width */
+  border-collapse: collapse; /* Optional: collapse borders for a cleaner look */
+}
+
+

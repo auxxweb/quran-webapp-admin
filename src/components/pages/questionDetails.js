@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   useDeleteQuestionMutation,
   useEditQuestionMutation,
-  useGetQuestionDetailQuery,
+  useGetQuestionDetailQuery
 } from "../../api/questions";
 import Modal from "../reUsableCmponent/modal/Modal";
 import { toast } from "sonner";
@@ -28,7 +28,6 @@ const QuestionDetails = () => {
   useEffect(() => {
     // Automatically resize the textarea based on the content when the component mounts
     if (textareaRef.current) {
-      
       autoResize(textareaRef.current);
     }
   }, [data?.question]);
@@ -42,21 +41,21 @@ const QuestionDetails = () => {
       const body = {
         questionId: questionId,
         question,
-        answer,
+        answer
       };
       const res = await editQuestion?.(body);
       if (res?.data?.success) {
         refetch();
         toggleModal();
       } else {
-        toast.error(res.data.message,{
+        toast.error(res.data.message, {
           position: "top-right",
-          duration: 2000,  
+          duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF", // Text color
+            color: "#FFFFFF" // Text color
           },
-          dismissible: true,  
+          dismissible: true
         });
       }
     } catch (error) {
@@ -67,21 +66,21 @@ const QuestionDetails = () => {
   const handleDelete = async () => {
     try {
       const body = {
-        questionId: questionId,
+        questionId: questionId
       };
       const deleteres = await deleteQuestion?.(body);
       if (deleteres?.data?.success) {
         setShowDeletePopup(false);
         navigate("/questions");
       } else {
-        toast.error(deleteres.data.message,{
+        toast.error(deleteres.data.message, {
           position: "top-right",
-          duration: 2000,  
+          duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF", // Text color
+            color: "#FFFFFF" // Text color
           },
-          dismissible: true,  
+          dismissible: true
         });
       }
     } catch (error) {
@@ -93,7 +92,6 @@ const QuestionDetails = () => {
     setShowDeletePopup(false);
   };
 
-  
   function autoResize(textarea) {
     textarea.style.height = "auto"; // Reset height
     textarea.style.height = textarea?.scrollHeight + "px"; // Set new height based on content
@@ -109,8 +107,7 @@ const QuestionDetails = () => {
           height="22"
           viewBox="0 0 13 22"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -127,14 +124,12 @@ const QuestionDetails = () => {
           <div className="space-x-4">
             <button
               onClick={() => setIsModalVisible(true)}
-              className="bg-[#0EB599] text-white px-4 py-1 rounded-md hover:bg-[#1ae69b]"
-            >
+              className="bg-[#0EB599] text-white px-4 py-1 rounded-md hover:bg-[#1ae69b]">
               Edit
             </button>
             <button
               onClick={() => setShowDeletePopup(true)}
-              className="bg-[#0EB599] text-white px-4 py-1 rounded-md hover:bg-[#1ae69b]"
-            >
+              className="bg-[#0EB599] text-white px-4 py-1 rounded-md hover:bg-[#1ae69b]">
               Delete
             </button>
           </div>
@@ -143,7 +138,8 @@ const QuestionDetails = () => {
         {/* Question */}
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-700">Question</h3>
-          <div className="border text-lg bg-white border-gray-300 p-4 rounded-md mt-2">
+          <div className="border text-lg bg-white border-gray-300 p-4 rounded-md mt-2"
+           dir={/[\u0600-\u06FF]/.test(data?.question?.question) ? 'rtl' : 'ltr'}>
             {data?.question?.question}
           </div>
         </div>
@@ -152,7 +148,7 @@ const QuestionDetails = () => {
         <div>
           <h3 className="text-lg font-semibold text-gray-700">Answer</h3>
           <div className="border border-gray-300 p-4 rounded-md mt-2 bg-gray-50">
-            <p className="text-gray-600">{data?.question?.answer}</p>
+            <p  dir={/[\u0600-\u06FF]/.test(data?.question?.question) ? 'rtl' : 'ltr'} className="text-gray-600">{data?.question?.answer}</p>
           </div>
         </div>
       </div>
@@ -160,24 +156,23 @@ const QuestionDetails = () => {
         isVisible={isModalVisible}
         onClose={toggleModal}
         modalHeader={"Edit Qs and Ans"}
-        isScrollable={true}
-      >
+        isScrollable={true}>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
             <div>
               <label
                 htmlFor="q&a"
-                className="block text-sm font-medium text-gray-700"
-              >
+                className="block text-sm font-medium text-gray-700">
                 Question
               </label>
               <textarea
-               onClick={(e) => autoResize(e.target)}
-               onInput={(e) => autoResize(e.target)}
+                onClick={(e) => autoResize(e.target)}
+                //  onInput={(e) => autoResize(e.target)}
                 type="text"
                 name="question"
                 id="question"
                 ref={textareaRef}
+                dir="auto"
                 className="  text-area-1 p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 defaultValue={data?.question?.question}
               />
@@ -188,13 +183,12 @@ const QuestionDetails = () => {
             <div>
               <label
                 htmlFor="q&a"
-                className="  text-area-1block text-sm font-medium text-gray-700"
-              >
+                className="  text-area-1block text-sm font-medium text-gray-700">
                 Answer
               </label>
               <textarea
-               onClick={(e) => autoResize(e.target)}
-               onInput={(e) => autoResize(e.target)}
+                onClick={(e) => autoResize(e.target)}
+                dir="auto"
                 type="text"
                 ref={textareaRef}
                 name="answer"
@@ -209,8 +203,7 @@ const QuestionDetails = () => {
             <button
               disabled={isLoadingEdit}
               type="submit"
-              className="bg-[#0EB599] hover:bg-blue-[#1ae69b] text-white font-bold py-2 px-4 rounded"
-            >
+              className="bg-[#0EB599] hover:bg-blue-[#1ae69b] text-white font-bold py-2 px-4 rounded">
               Update
             </button>
           </div>
@@ -224,15 +217,13 @@ const QuestionDetails = () => {
           <button
             onClick={handleDeleteModalClose}
             type="submit"
-            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
-          >
+            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
             No
           </button>
           <button
             disabled={isLoadingDelete}
             onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
-          >
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
             YES
           </button>
         </div>
