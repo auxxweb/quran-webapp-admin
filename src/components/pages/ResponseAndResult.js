@@ -4,20 +4,19 @@ import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 import { useGetResultsQuery } from "../../api/responseAndResult";
 import { dateFormater, timeFormater } from "../../common/utils";
-import placeholder from "../../assets/images/person-placeholder.png"
+import placeholder from "../../assets/images/person-placeholder.png";
 
 const ResponseAndResult = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 3;
+  const limit = 10;
   const { data } = useGetResultsQuery({
     limit,
     page: currentPage,
     search: searchValue,
   });
 
-  
   const handleSearchChange = useDebouncedCallback(
     // function
     (value) => {
@@ -58,14 +57,30 @@ const ResponseAndResult = () => {
         <table className="min-w-full table-auto">
           <thead className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
             <tr>
-              <th className="px-4 py-4 text-left border-r border-gray-400">Sl No</th>
-              <th className="px-4 py-2 text-left border-r border-gray-400">Participant Name</th>
-              <th className="px-4 py-2 text-left border-r border-gray-400">Image</th>
-              <th className="px-4 py-2 text-left border-r border-gray-400">Zone</th>
-              <th className="px-4 py-2 text-left border-r border-gray-400">Date</th>
-              <th className="px-4 py-2 text-left border-r border-gray-400">Start Time</th>
-              <th className="px-4 py-2 text-left border-r border-gray-400">End Time</th>
-              <th className="px-4 py-2 text-left border-r border-gray-400">Score</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">
+                Sl No
+              </th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">
+                Participant Name
+              </th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">
+                Image
+              </th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">
+                Zone
+              </th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">
+                Date
+              </th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">
+                Start Time
+              </th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">
+                End Time
+              </th>
+              <th className="px-4 py-2 text-left border-r border-gray-400">
+                Score
+              </th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
@@ -130,12 +145,14 @@ const ResponseAndResult = () => {
             ))}
           </tbody>
         </table>
-        <Pagination
-          itemsPerPage={limit}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-          totalPages={data?.totalPages}
-        />
+        <div className="flex justify-end">
+          <Pagination
+            itemsPerPage={limit}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            totalPages={data?.totalPages}
+          />
+        </div>
       </div>
     </>
   );

@@ -6,7 +6,7 @@ const DashBoard = () => {
   return (
     <div className="bg-white">
         {/* <DashBoard1Top /> */}
-      <div className="p-4 w-full">
+      <div className=" w-full">
         <DashBoardSection2 />
       </div>
       <DashBoard3Chart />

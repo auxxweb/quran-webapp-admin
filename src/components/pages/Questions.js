@@ -223,76 +223,52 @@ const Questions = () => {
         <table className="min-w-full table-auto mt-6">
           <thead className=" bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
             <tr>
-              <th className="px-4 py-4 text-left border-r border-gray-400">
-                No
-              </th>
-              <th className="px-4 py-4 text-left border-r border-gray-400">
-                Question
-              </th>
-              <th className="px-4 py-4 text-left border-r border-gray-400">
-                Answer
-              </th>
-              <th className="px-4 py-4 text-left border-r border-gray-400">
-                Question Id
-              </th>
-              <th className="px-4 py-4 text-left">Action</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">No</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Question</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Answer</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Question Id</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Action</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
-            {data?.questions?.map((question, index) => {
-              const getTextDirection = (text) => {
-                if (/[\u0600-\u06FF]/.test(text)) {
-                  return "rtl"; // Arabic text detected
-                }
-                return "ltr"; // Default to left-to-right for other languages
-              };
-
-              return (
-                <tr
-                  onClick={() => navigate(`/questions/${question?._id}`)}
-                  className="odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
-                  key={index}>
-                  <td className="px-4 py-2 border-r border-gray-400">
-                    {index + 1}
-                  </td>
-                  <td
-                    className="px-4 py-2 border-r border-gray-400"
-                    dir={getTextDirection(question?.question)}>
-                    {question?.question}
-                  </td>
-                  <td
-                    className="px-4 py-2 border-r border-gray-400 flex items-center"
-                    dir={getTextDirection(question?.answer)}>
-                    {question?.answer}
-                  </td>
-                  <td className="px-4 py-2">{question?.questionId}</td>
-                  <td className="px-4 py-2 border-r border-gray-400">
-                    <button onClick={() => handleEditClick(question)}>
-                      <img
-                        alt="Edit"
-                        src="/icons/edit.svg"
-                        className="w-6 h-6 rounded-full mr-2"
-                      />
-                    </button>
-                    <button onClick={() => handleDeleteClick(question?._id)}>
-                      <img
-                        alt="Delete"
-                        src="/icons/delete.svg"
-                        className="w-6 h-6 rounded-full mr-2 fill-red-500"
-                      />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+            {data?.questions?.map((question, index) => (
+              <tr
+                onClick={() => navigate(`/questions/${question?._id}`)}
+                className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
+                key={index}>
+                <td className="px-4 py-2 border-r border-gray-400">{index + 1}</td>
+                <td className="px-4 py-2 border-r border-gray-400">{question?.question}</td>
+                <td className="px-4 py-2 border-r border-gray-400 flex items-center">
+                  {question?.answer}
+                </td>
+                <td className="px-4 py-2 border-r border-gray-400">{question?.questionId}</td>
+                <td className="px-4 py-2 border-r border-gray-400">
+                  <button onClick={() => handleEditClick(question)}>
+                    <img
+                      alt="pics"
+                      src="/icons/edit.svg"
+                      className="w-6 h-6 rounded-full mr-2"
+                    />
+                  </button>
+                  <button onClick={() => handleDeleteClick(question?._id)}>
+                    <img
+                      alt="pics"
+                      src="/icons/delete.svg"
+                      className="w-6 h-6 rounded-full mr-2 fill-red-500"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
-        <Pagination
+        <div className="flex justify-end">   <Pagination
           itemsPerPage={limit}
           currentPage={currentPage}
           onPageChange={handlePageChange}
           totalPages={data?.totalPages}
-        />
+        /></div>
+     
       </div>
 
       <Modal

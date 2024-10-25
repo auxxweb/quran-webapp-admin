@@ -11,7 +11,7 @@ import {
   useAddBundleMutation,
   useDeleteBundleMutation,
   useEditBundleMutation,
-  useGetBundlesQuery
+  useGetBundlesQuery,
 } from "../../api/bundle";
 import { useGetQuestionsListQuery } from "../../api/common";
 import { toast } from "sonner";
@@ -26,12 +26,11 @@ const Bundles = () => {
   const { data: questionList, refetch: refetchQuestions } =
     useGetQuestionsListQuery();
   const options = questionList?.questions?.map((question) => {
-    
     return {
       value: question?._id,
       label: question?.question,
       question: question?.question,
-      questionId: question?.questionId
+      questionId: question?.questionId,
     };
   });
 
@@ -41,7 +40,7 @@ const Bundles = () => {
   const { data, refetch } = useGetBundlesQuery({
     limit,
     page: currentPage,
-    search: searchValue
+    search: searchValue,
   });
   const [addBundle, { isLoading: isLoadingMutation }] = useAddBundleMutation();
   const [deleteBundle, { isLoading: isLoadingDelete }] =
@@ -79,8 +78,20 @@ const Bundles = () => {
         const body = {
           bundleId: editPopupData?._id,
           questions: selectedQuestions,
-          title
+          title,
         };
+        if(selectedQuestions.length <= 0){
+          toast.error("Please select minimum one question", {
+            position: "top-right",
+            duration: 2000,
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,
+          });
+          return
+        }
         const res = await editBundle?.(body);
         if (res?.data?.success) {
           refetch({ limit, page: currentPage, search: searchValue });
@@ -92,16 +103,28 @@ const Bundles = () => {
             duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF" // Text color
+              color: "#FFFFFF", // Text color
             },
-            dismissible: true
+            dismissible: true,
           });
         }
       } else {
         const body = {
           questions: selectedQuestions,
-          title
+          title,
         };
+        if(selectedQuestions.length <= 0){
+          toast.error("Please select minimum one question", {
+            position: "top-right",
+            duration: 2000,
+            style: {
+              backgroundColor: "#fb0909", // Custom green color for success
+              color: "#FFFFFF", // Text color
+            },
+            dismissible: true,
+          });
+          return
+        }
         const res = await addBundle?.(body);
         if (res?.data?.success) {
           refetch({ limit, page: currentPage, search: searchValue });
@@ -112,9 +135,9 @@ const Bundles = () => {
             duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF" // Text color
+              color: "#FFFFFF", // Text color
             },
-            dismissible: true
+            dismissible: true,
           });
         }
       }
@@ -141,7 +164,7 @@ const Bundles = () => {
     const selectedQuestions = bundle?.questions?.map((question) => {
       return {
         value: question?._id,
-        label: question?.question
+        label: question?.question,
       };
     });
     setQuestions(selectedQuestions);
@@ -163,7 +186,7 @@ const Bundles = () => {
   const handleDelete = async () => {
     try {
       const body = {
-        bundleId: selectedBundleId
+        bundleId: selectedBundleId,
       };
       const deleteres = await deleteBundle?.(body);
       if (deleteres?.data?.success) {
@@ -176,9 +199,9 @@ const Bundles = () => {
           duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF" // Text color
+            color: "#FFFFFF", // Text color
           },
-          dismissible: true
+          dismissible: true,
         });
       }
     } catch (error) {
@@ -208,7 +231,8 @@ const Bundles = () => {
           <span className="flex items-center">
             <span
               className="bg-[#0EB599] hover:bg-[#068A55] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
-              onClick={toggleModal}>
+              onClick={toggleModal}
+            >
               Add Bundle
             </span>
           </span>
@@ -278,25 +302,37 @@ const Bundles = () => {
             {data?.bundles?.map((bundle, index) => (
               <tr
                 className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
-                key={index}>
+                key={index}
+              >
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400">
+                  className="px-4 py-2 border-r border-gray-400"
+                >
                   {index + 1}
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400 text-center">
-                  {bundle?.title}
+                  className="px-4 py-2 border-r border-gray-400 text-center"
+                >
+                  <u
+                    style={{ cursor: "pointer" }}
+                    onMouseOver={({ target }) => (target.style.color = "blue")}
+                    onMouseOut={({ target }) => (target.style.color = "black")}
+                  >
+                    {" "}
+                    {bundle?.title}
+                  </u>
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400 text-center">
+                  className="px-4 py-2 border-r border-gray-400 text-center"
+                >
                   {bundle?.questions?.length}
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400 ">
+                  className="px-4 py-2 border-r border-gray-400 "
+                >
                   {bundle?.bundleId}
                 </td>
                 <td className="px-4 py-2 border-r border-gray-400 text-center">
@@ -332,13 +368,15 @@ const Bundles = () => {
       <Modal
         isVisible={isModalVisible}
         onClose={toggleModal}
-        modalHeader={editPopupData ? "Edit Bundle" : "Add Bundle"}>
+        modalHeader={editPopupData ? "Edit Bundle" : "Add Bundle"}
+      >
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
             <div>
               <label
                 htmlFor="q&a"
-                className="block text-sm font-medium text-gray-700">
+                className="block text-sm font-medium text-gray-700"
+              >
                 Title
               </label>
               <input
@@ -355,7 +393,8 @@ const Bundles = () => {
             <div>
               <label
                 htmlFor="q&a"
-                className="block text-sm font-medium text-gray-700">
+                className="block text-sm font-medium text-gray-700"
+              >
                 Question
               </label>
               <Select
@@ -376,12 +415,14 @@ const Bundles = () => {
                     {questions.map((question) => (
                       <li
                         key={question.value}
-                        className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light">
+                        className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light"
+                      >
                         <span>{question.label}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveQuestion(question)}
-                          className="ml-2">
+                          className="ml-2"
+                        >
                           <IoIosClose className="text-lg" />
                         </button>
                       </li>
@@ -396,7 +437,8 @@ const Bundles = () => {
             <button
               disabled={isLoadingEdit || isLoadingMutation}
               type="submit"
-              className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl">
+              className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
+            >
               Submit
             </button>
           </div>
@@ -410,13 +452,15 @@ const Bundles = () => {
           <button
             onClick={handleDeleteModalClose}
             type="submit"
-            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
+            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
+          >
             No
           </button>
           <button
             disabled={isLoadingDelete}
             onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
+          >
             YES
           </button>
         </div>

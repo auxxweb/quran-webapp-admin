@@ -6,7 +6,7 @@ const DashBoard3Chart = () => {
     <>
       <div className="mt-4">
         {/* Your content for the first column */}
-        <div className="bg-white  p-4 rounded-lg">
+        <div className="bg-white   rounded-lg">
           <div className="flex flex-col items-center   p-6 w-full max-w-2xl mx-auto">
             <BarChart />
           </div>

@@ -9,12 +9,16 @@ import Modal from "../reUsableCmponent/modal/Modal";
 import { useState } from "react";
 import { toast } from "sonner";
 import ParticipantAvatar from "../../assets/images/person-placeholder.png"
+import { LuCopyCheck } from "react-icons/lu";
+import { IoMdCopy } from "react-icons/io";
+import copy from "copy-to-clipboard";
 
 
 const JudgeDetails = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [copied, setCopied] = useState("");
   const judgeId = location.pathname?.split("/")[2];
   const { data, refetch, isLoading } = useGetJudgeDetailQuery(judgeId);
   const [blockJudge, { isLoading: isLoadingBlock }] = useBlockJudgeMutation();
@@ -48,6 +52,13 @@ const JudgeDetails = () => {
     }
   };
 
+  const handleCopy = async (value) => {
+    setCopied(value);
+    copy(value);
+    setTimeout(() => {
+      setCopied("");
+    }, 2000);
+  };
   const onSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
     const formData = new FormData(event.target);
@@ -151,12 +162,26 @@ const JudgeDetails = () => {
                     Email:
                   </td>
                   <td className="pb-4">
+                  <div style={{display:"flex"}}>
                     <a
                       href={`mailto:${data?.judge?.email}`}
                       className="text-green-500"
                     >
+                      
                       {data?.judge?.email}
                     </a>
+                    
+                    <button
+                      className="flex mb-4 text-black"
+                      onClick={() => handleCopy(data?.judge?.email)}>
+                      {copied === data?.judge?.email ? (
+                        <LuCopyCheck title="Copied" className="h-6 w-6 mr-3" />
+                      ) : (
+                        <IoMdCopy title="Copy" className="h-6 w-6 mr-3" />
+                      )}{" "}
+                      
+                    </button>
+                    </div>
                   </td>
                 </tr>
                 <tr className="align-top leading-none">
@@ -175,7 +200,24 @@ const JudgeDetails = () => {
                   <td className="font-semibold text-gray-600 pr-2 pb-2">
                     Password:
                   </td>
-                  <td className="pb-4">{data?.judge?.password}</td>
+                  <td className="pb-4">
+                    <div style={{display:"flex"}}>
+
+                    <a>{data?.judge?.password}</a>
+
+
+<button 
+    className="flex mb-4 text-black"
+    onClick={() => handleCopy(data?.judge?.password)}>
+    {copied === data?.judge?.password ? (
+      <LuCopyCheck title="Copied" className="h-6 w-6 mr-3" />
+    ) : (
+      <IoMdCopy title="Copy" className="h-6 w-6 mr-3" />
+    )}{" "}
+    
+  </button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>

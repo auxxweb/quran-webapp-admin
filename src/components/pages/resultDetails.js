@@ -20,7 +20,6 @@ function ResultDetails() {
   const [EditMark, { isLoading: isLoadingEdit }] = useEditMarkMutation();
   const { data, refetch } = useGetResultDetailQuery(resultId);
 
-  console.log(data);
 
   const handleEdit = async () => {
     const body = {
@@ -77,9 +76,6 @@ function ResultDetails() {
   };
 
   const handleEditclick = (id) => {
-    console.log(id);
-
-    console.log(id);
     setSelectedId(id);
     setShowEdit(true);
   };

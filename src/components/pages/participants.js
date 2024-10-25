@@ -526,7 +526,9 @@ const Participants = () => {
                   onClick={() => navigate(`/participants/${participant?._id}`)}
                   className="px-4 py-2 border-r border-gray-400"
                 >
-                  {participant?.name}
+                  <u style={{cursor:"pointer"}} onMouseOver={({target})=>target.style.color="blue"}
+    onMouseOut={({target})=>target.style.color="black"}
+> {participant?.name}</u>
                 </td>
                 <td
                   onClick={() => navigate(`/participants/${participant?._id}`)}

@@ -639,7 +639,10 @@ const Judges = () => {
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
                   className="px-4 py-2 border-r border-gray-400">
-                  {judge?.name}
+                     <u style={{cursor:"pointer"}} onMouseOver={({target})=>target.style.color="blue"}
+    onMouseOut={({target})=>target.style.color="black"}
+>
+                  {judge?.name}</u>
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}

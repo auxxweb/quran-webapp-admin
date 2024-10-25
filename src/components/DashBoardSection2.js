@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useGetDashboardDetailQuery } from "../api/dashboard";
-import participats from '../assets/images/participats.png'
-import judges from '../assets/images/judges.png'
-import zones from '../assets/images/zones.png'
+import participats from "../assets/images/participats.png";
+import judges from "../assets/images/judges.png";
+import zones from "../assets/images/zones.png";
 const DashBoardSection2 = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const { data, refetch, isLoading } = useGetDashboardDetailQuery();
+  const { data} = useGetDashboardDetailQuery();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -45,72 +45,52 @@ const DashBoardSection2 = () => {
   const month = currentDate.toLocaleString("default", { month: "long" });
   const year = currentDate.getFullYear();
 
+  const dashboardData = [
+    {
+      logo: zones,
+      count: data?.data?.zones,
+      title: "Zones",
+    },
+    {
+      logo: judges,
+      count: data?.data?.judges,
+      title: "Judges",
+    },
+    {
+      logo: participats,
+      count: data?.data?.participants,
+      title: "Participants",
+    },
+  ];
+
   return (
     <>
-      <div className="flex flex-col space-y-4 sm:flex-row md:space-y-0">
-        {/* Left Column (Large Section) */}
-        <div className="w-full sm:w-96 px-2 py-5 text-left bg-white shadow-md border border-gray-300 gap-4  mr-4 flex flex-col items-center justify-center rounded-2xl">
-          <div className="text-gray-500 text-3xl font-light pl-7 ">
-            {formattedTime}
-          </div>
-
+      <div className="flex flex-col space-y-4 ">
+        <div className="w-full px-2 py-5 text-left bg-white shadow-md border border-gray-300 gap-5 sm:gap-10  mr-4 flex items-center justify-center rounded-2xl">
           <div className="text-left">
-            <span className="mx-4 pl-7 cursor-pointer text-xl text-left">Today</span>
-            <div className="flex justify-center items-center text-xl  text-gray-700">
-              {/* Left arrow */}
-              <span className="mx-4 cursor-pointer text-xl">&lt;</span>
-
-              {/* Date */}
+            <div className="flex justify-center items-center text-xl text-gray-500 ">
               <span>{`${dayWithSuffix} ${month} ${year}`}</span>
-
-              {/* Right arrow */}
-              <span className="mx-4 cursor-pointer text-xl">&gt;</span>
             </div>
+          </div>
+          <div className="text-gray-700 text-2xl font-light  ">
+            {formattedTime}
           </div>
         </div>
 
         {/* Right Column (Grid of 6 items in 2 rows, 3 columns) */}
         <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="bg-white p-6 rounded-2xl flex items-center space-x-3 justify-between shadow-md border border-gray-300">
-            <div className="flex flex-col ">
-              <h2 className="text-3xl font-semibold">
-                {data?.data?.participants}
-              </h2>
+          {dashboardData?.map((ele, index) => (
+            <div className="bg-white p-6 rounded-2xl flex items-center space-x-3 justify-between shadow-md border border-gray-300">
+              <div className="flex flex-col ">
+                <h2 className="text-3xl font-semibold">{ele?.count}</h2>
 
-              <p className=" text-black ">Total Participants</p>
-            </div>{" "}
-            <div>
-              <img src={participats} className="h-9 w-9 object-contain"/>
-    
+                <p className=" text-black ">{ele?.title}</p>
+              </div>{" "}
+              <div>
+                <img src={ele?.logo} className="h-12 w-12 object-contain" />
+              </div>
             </div>
-          </div>
-          <div className="bg-white p-6 rounded-2xl flex items-center space-x-3 justify-between shadow-md border border-gray-300">
-            <div className="flex flex-col ">
-              <h2 className="text-3xl font-semibold">
-                {data?.data?.judges}
-              </h2>
-
-              <p className=" text-black ">Total Judges</p>
-            </div>{" "}
-            <div>
-            <img src={judges} className="h-9 w-9 object-contain"/>
-
-            </div>
-          </div>
-          <div className="bg-white p-6 rounded-2xl flex items-center space-x-3 justify-between shadow-md border border-gray-300">
-            <div className="flex flex-col ">
-              <h2 className="text-3xl font-semibold">
-                {data?.data?.zones}
-              </h2>
-
-              <p className=" text-black ">Total Zones</p>
-            </div>{" "}
-            <div>
-            <img src={zones} className="h-9 w-9 object-contain"/>
-
-            </div>
-          </div>
-       
+          ))}
         </div>
       </div>
     </>

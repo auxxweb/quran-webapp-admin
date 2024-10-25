@@ -21,7 +21,7 @@ const Zones = () => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedZoneId, setSelectedZoneId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 3;
+  const limit = 10;
   const { data, isLoading, refetch } = useGetZonesQuery({
     limit,
     page: currentPage,
@@ -282,8 +282,12 @@ const Zones = () => {
           className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
           key={index}
         >
-          <td className="px-4 py-2 border-r border-gray-400">{index}</td>
-          <td className="px-4 py-2 border-r border-gray-400">{zone?.name}</td>
+          <td className="px-4 py-2 border-r border-gray-400">{index + 1}</td>
+          <td style={{cursor:"pointer"}} className="px-4 py-2 border-r border-gray-400"> 
+          <u style={{cursor:"pointer"}} onMouseOver={({target})=>target.style.color="blue"}
+    onMouseOut={({target})=>target.style.color="black"}
+>{zone?.name}</u>
+          </td>
           <td className="px-4 py-2 border-r border-gray-400">
             <button
               className="flex text-black items-center space-x-1"
