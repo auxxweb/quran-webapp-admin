@@ -1,7 +1,5 @@
 import React from "react";
 import { Transition } from "@headlessui/react";
-import { Disclosure } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function Sidebar({ isOpen, setIsOpen }) {

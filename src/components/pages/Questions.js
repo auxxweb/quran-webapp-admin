@@ -256,12 +256,13 @@ const Questions = () => {
             ))}
           </tbody>
         </table>
-        <Pagination
+        <div className="flex justify-end">   <Pagination
           itemsPerPage={limit}
           currentPage={currentPage}
           onPageChange={handlePageChange}
           totalPages={data?.totalPages}
-        />
+        /></div>
+     
       </div>
 
       <Modal
