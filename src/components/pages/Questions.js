@@ -221,7 +221,7 @@ const Questions = () => {
               <th className="px-4 py-4 text-left border-r border-gray-400">Question</th>
               <th className="px-4 py-4 text-left border-r border-gray-400">Answer</th>
               <th className="px-4 py-4 text-left border-r border-gray-400">Question Id</th>
-              <th className="px-4 py-4 text-left">Action</th>
+              <th className="px-4 py-4 text-left border-r border-gray-400">Action</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
@@ -235,7 +235,7 @@ const Questions = () => {
                 <td className="px-4 py-2 border-r border-gray-400 flex items-center">
                   {question?.answer}
                 </td>
-                <td className="px-4 py-2">{question?.questionId}</td>
+                <td className="px-4 py-2 border-r border-gray-400">{question?.questionId}</td>
                 <td className="px-4 py-2 border-r border-gray-400">
                   <button onClick={() => handleEditClick(question)}>
                     <img
