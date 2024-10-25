@@ -110,6 +110,15 @@ const Zones = () => {
       };
       const deleteres = await deleteZone?.(body);
       if (deleteres?.data?.success) {
+        toast.success(deleteres?.data?.msg, {
+          position: "top-right",
+          duration: 2000,
+          style: {
+            backgroundColor: "green", // Custom green color for success
+            color: "#FFFFFF", // Text color
+          },
+          dismissible: true,
+        });
         refetch();
         setSelectedZoneId(null);
         setShowDeletePopup(false);
@@ -222,8 +231,11 @@ const Zones = () => {
               </form>
             </Modal>
             <Modal isVisible={showDeletePopup} onClose={handleDeleteModalClose}>
-              <h3 className="flex self-center text-lg font-bold">
+              <h3 className="flex justify-center self-center text-md font-bold">
                 Are you sure want to Delete?
+              </h3>
+              <h3 className="flex justify-center self-center text-md font-bold">
+              This will also delete the judges and participants in this zone.
               </h3>
               <div className="flex justify-center p-6">
                 <button
