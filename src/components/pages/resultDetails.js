@@ -167,7 +167,7 @@ function ResultDetails() {
       <div className="items-center m-6 justify-center">
         {/* Main Container */}
         {data?.questions?.map((question, index) => (
-          <div className="bg-white  align-center shadow-md rounded-lg mb-6 bg-[#D9D9D9] w-full">
+          <div className="bg-white  align-center shadow-md rounded-lg mb-6  w-full">
             <div className="border-b rounded-t-lg p-3 bg-white">
               <div className="flex justify-between items-center">
                 <h1 className="text-xl font-bold">Question {index + 1}</h1>
