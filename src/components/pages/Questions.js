@@ -203,7 +203,13 @@ const Questions = () => {
             className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
             placeholder="Qs ID"
             onChange={(e) => {
-              handleSearchChange(e.target.value);
+              const value = e.target.value;
+              const containsArabic = /[\u0600-\u06FF]/.test(value); // Detects any Arabic character
+
+              // Set direction based on presence of Arabic characters
+              e.target.dir = containsArabic ? "rtl" : "ltr";
+
+              handleSearchChange(value);
             }}
           />
         </span>
@@ -282,12 +288,24 @@ const Questions = () => {
                 type="text"
                 name="question"
                 id="question"
-                className=" text-area-1 p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="text-area-1 p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 defaultValue={
-                  editPopupData?.question ? editPopupData?.question: ""
+                  editPopupData?.question ? editPopupData.question : ""
                 }
                 rows="1"
-                onInput={(e) => autoResize(e.target)}></textarea>
+                dir="auto" // Set to auto initially
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Check if the input consists mostly of Arabic characters or spaces
+                  const isMostlyArabic = /^[\u0600-\u06FF\s]+$/.test(value);
+
+                  // Set input direction based on the content
+                  e.target.dir = isMostlyArabic ? "rtl" : "ltr";
+
+                  // Resize the textarea (if you're using the autoResize function)
+                  autoResize(e.target);
+                }}></textarea>
             </div>
           </div>
 
@@ -306,7 +324,19 @@ const Questions = () => {
                 defaultValue={
                   editPopupData?.answer ? editPopupData?.answer : ""
                 }
-                onInput={(e) => autoResize(e.target)}></textarea>
+                // dir="auto" // Set to auto initially/
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Check if the input consists mostly of Arabic characters or spaces
+                  const isMostlyArabic = /^[\u0600-\u06FF\s]+$/.test(value);
+
+                  // Set input direction based on the content
+                  e.target.dir = isMostlyArabic ? "rtl" : "ltr";
+
+                  // Resize the textarea (if you're using the autoResize function)
+                  autoResize(e.target);
+                }}></textarea>
             </div>
           </div>
 
