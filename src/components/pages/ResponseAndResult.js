@@ -10,7 +10,7 @@ const ResponseAndResult = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 3;
+  const limit = 10;
   const { data } = useGetResultsQuery({
     limit,
     page: currentPage,

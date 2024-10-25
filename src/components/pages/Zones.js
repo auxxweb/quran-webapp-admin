@@ -21,7 +21,7 @@ const Zones = () => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedZoneId, setSelectedZoneId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 3;
+  const limit = 10;
   const { data, isLoading, refetch } = useGetZonesQuery({
     limit,
     page: currentPage,
