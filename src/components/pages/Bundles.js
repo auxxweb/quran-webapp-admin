@@ -11,7 +11,7 @@ import {
   useAddBundleMutation,
   useDeleteBundleMutation,
   useEditBundleMutation,
-  useGetBundlesQuery,
+  useGetBundlesQuery
 } from "../../api/bundle";
 import { useGetQuestionsListQuery } from "../../api/common";
 import { toast } from "sonner";
@@ -23,9 +23,16 @@ const Bundles = () => {
   const [editPopupData, setEditPopupData] = useState(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedBundleId, setSelectedBundleId] = useState(null);
-  const { data: questionList,refetch:refetchQuestions } = useGetQuestionsListQuery();
+  const { data: questionList, refetch: refetchQuestions } =
+    useGetQuestionsListQuery();
   const options = questionList?.questions?.map((question) => {
-    return { value: question?._id, label: question?.question };
+    
+    return {
+      value: question?._id,
+      label: question?.question,
+      question: question?.question,
+      questionId: question?.questionId
+    };
   });
 
   const [questions, setQuestions] = useState([]);
@@ -34,16 +41,16 @@ const Bundles = () => {
   const { data, refetch } = useGetBundlesQuery({
     limit,
     page: currentPage,
-    search: searchValue,
+    search: searchValue
   });
   const [addBundle, { isLoading: isLoadingMutation }] = useAddBundleMutation();
   const [deleteBundle, { isLoading: isLoadingDelete }] =
     useDeleteBundleMutation();
   const [editBundle, { isLoading: isLoadingEdit }] = useEditBundleMutation();
 
-  useEffect(()=>{
-refetchQuestions()
-  },[])
+  useEffect(() => {
+    refetchQuestions();
+  }, []);
 
   // const [selectedDesignation, setSelectedDesignation] =
   //   useState("Total Project : 3");
@@ -72,7 +79,7 @@ refetchQuestions()
         const body = {
           bundleId: editPopupData?._id,
           questions: selectedQuestions,
-          title,
+          title
         };
         const res = await editBundle?.(body);
         if (res?.data?.success) {
@@ -80,34 +87,34 @@ refetchQuestions()
           toggleModal();
           setEditPopupData(null);
         } else {
-          toast.error(res.data.message,{
+          toast.error(res.data.message, {
             position: "top-right",
-            duration: 2000,  
+            duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF", // Text color
+              color: "#FFFFFF" // Text color
             },
-            dismissible: true,  
+            dismissible: true
           });
         }
       } else {
         const body = {
           questions: selectedQuestions,
-          title,
+          title
         };
         const res = await addBundle?.(body);
         if (res?.data?.success) {
           refetch({ limit, page: currentPage, search: searchValue });
           toggleModal();
         } else {
-          toast.error(res.data.message,{
+          toast.error(res.data.message, {
             position: "top-right",
-            duration: 2000,  
+            duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF", // Text color
+              color: "#FFFFFF" // Text color
             },
-            dismissible: true,  
+            dismissible: true
           });
         }
       }
@@ -132,7 +139,10 @@ refetchQuestions()
     toggleModal();
     setEditPopupData(bundle);
     const selectedQuestions = bundle?.questions?.map((question) => {
-      return { value: question?._id, label: question?.question };
+      return {
+        value: question?._id,
+        label: question?.question
+      };
     });
     setQuestions(selectedQuestions);
   };
@@ -153,7 +163,7 @@ refetchQuestions()
   const handleDelete = async () => {
     try {
       const body = {
-        bundleId: selectedBundleId,
+        bundleId: selectedBundleId
       };
       const deleteres = await deleteBundle?.(body);
       if (deleteres?.data?.success) {
@@ -161,14 +171,14 @@ refetchQuestions()
         setSelectedBundleId(null);
         setShowDeletePopup(false);
       } else {
-        toast.error(deleteres.data.message,{
+        toast.error(deleteres.data.message, {
           position: "top-right",
-          duration: 2000,  
+          duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF", // Text color
+            color: "#FFFFFF" // Text color
           },
-          dismissible: true,  
+          dismissible: true
         });
       }
     } catch (error) {
@@ -180,6 +190,16 @@ refetchQuestions()
     setShowDeletePopup(false);
   };
 
+  const customFilterOption = (option, inputValue) => {
+    const { question, questionId } = option.data;
+    if (!inputValue) return true;
+    // Match input value with question or questionId
+    return (
+      question?.toLowerCase()?.includes(inputValue?.toLowerCase()) ||
+      questionId?.toLowerCase()?.includes(inputValue?.toLowerCase())
+    );
+  };
+
   return (
     <>
       <div className="flex rounded-lg p-4">
@@ -188,8 +208,7 @@ refetchQuestions()
           <span className="flex items-center">
             <span
               className="bg-[#0EB599] hover:bg-[#068A55] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
-              onClick={toggleModal}
-            >
+              onClick={toggleModal}>
               Add Bundle
             </span>
           </span>
@@ -238,43 +257,46 @@ refetchQuestions()
         <table className="min-w-full table-auto">
           <thead className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px] ">
             <tr className="">
-              <th className="px-4 py-2 border-r border-gray-400 text-left font-medium">No</th>
-              <th className="px-4 py-2 border-r border-gray-400 text-center font-medium">Title</th>
+              <th className="px-4 py-2 border-r border-gray-400 text-left font-medium">
+                No
+              </th>
+              <th className="px-4 py-2 border-r border-gray-400 text-center font-medium">
+                Title
+              </th>
               <th className="px-4 py-2 border-r border-gray-400 text-center font-medium">
                 No of Questions
               </th>
-              <th className="px-4 py-2 border-r border-gray-400 text-left font-medium">Bundle Id</th>
-              <th className="px-4 py-2 border-r border-gray-400 font-medium text-center">Action</th>
+              <th className="px-4 py-2 border-r border-gray-400 text-left font-medium">
+                Bundle Id
+              </th>
+              <th className="px-4 py-2 border-r border-gray-400 font-medium text-center">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
             {data?.bundles?.map((bundle, index) => (
               <tr
                 className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
-                key={index}
-              >
+                key={index}>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400"
-                >
+                  className="px-4 py-2 border-r border-gray-400">
                   {index + 1}
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400 text-center"
-                >
+                  className="px-4 py-2 border-r border-gray-400 text-center">
                   {bundle?.title}
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400 text-center"
-                >
+                  className="px-4 py-2 border-r border-gray-400 text-center">
                   {bundle?.questions?.length}
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400 "
-                >
+                  className="px-4 py-2 border-r border-gray-400 ">
                   {bundle?.bundleId}
                 </td>
                 <td className="px-4 py-2 border-r border-gray-400 text-center">
@@ -310,15 +332,13 @@ refetchQuestions()
       <Modal
         isVisible={isModalVisible}
         onClose={toggleModal}
-        modalHeader={editPopupData ? "Edit Bundle" : "Add Bundle"}
-      >
+        modalHeader={editPopupData ? "Edit Bundle" : "Add Bundle"}>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
             <div>
               <label
                 htmlFor="q&a"
-                className="block text-sm font-medium text-gray-700"
-              >
+                className="block text-sm font-medium text-gray-700">
                 Title
               </label>
               <input
@@ -335,8 +355,7 @@ refetchQuestions()
             <div>
               <label
                 htmlFor="q&a"
-                className="block text-sm font-medium text-gray-700"
-              >
+                className="block text-sm font-medium text-gray-700">
                 Question
               </label>
               <Select
@@ -349,6 +368,7 @@ refetchQuestions()
                 closeMenuOnSelect={false} // Keep the dropdown open for multiple selections
                 placeholder="Select Questions"
                 components={{ MultiValue: () => null }} // Hide selected options in input
+                filterOption={customFilterOption}
               />
               <div className="pt-2">
                 {questions.length > 0 && (
@@ -356,14 +376,12 @@ refetchQuestions()
                     {questions.map((question) => (
                       <li
                         key={question.value}
-                        className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light"
-                      >
+                        className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light">
                         <span>{question.label}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveQuestion(question)}
-                          className="ml-2"
-                        >
+                          className="ml-2">
                           <IoIosClose className="text-lg" />
                         </button>
                       </li>
@@ -378,8 +396,7 @@ refetchQuestions()
             <button
               disabled={isLoadingEdit || isLoadingMutation}
               type="submit"
-              className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
-            >
+              className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl">
               Submit
             </button>
           </div>
@@ -393,15 +410,13 @@ refetchQuestions()
           <button
             onClick={handleDeleteModalClose}
             type="submit"
-            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
-          >
+            className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
             No
           </button>
           <button
             disabled={isLoadingDelete}
             onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
-          >
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
             YES
           </button>
         </div>
