@@ -57,7 +57,7 @@ const Questions = () => {
     try {
       if (editPopupData) {
         const body = {
-          questionId: editPopupData?._id,
+          id: editPopupData?._id,
           question,
           answer
         };
@@ -237,7 +237,7 @@ const Questions = () => {
                 className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}>
                 <td className="px-4 py-2 border-r border-gray-400">{index + 1}</td>
-                <td className="px-4 py-2 border-r border-gray-400">{question?.question}</td>
+                <td className="px-4 py-2  border-r border-gray-400">{question?.question}</td>
                 <td className="px-4 py-2 border-r border-gray-400 flex items-center">
                   {question?.answer}
                 </td>

@@ -76,7 +76,7 @@ const Bundles = () => {
     try {
       if (editPopupData) {
         const body = {
-          bundleId: editPopupData?._id,
+          id: editPopupData?._id,
           questions: selectedQuestions,
           title,
         };

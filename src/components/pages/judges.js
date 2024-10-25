@@ -11,7 +11,7 @@ import {
   useBlockJudgeMutation,
   useDeleteJudgeMutation,
   useEditJudgeMutation,
-  useGetJudgesQuery
+  useGetJudgesQuery,
 } from "../../api/judges";
 import { useGetZonesListQuery } from "../../api/common";
 import { IoIosClose, IoMdCopy } from "react-icons/io";
@@ -44,7 +44,7 @@ const Judges = () => {
     limit,
     page: currentPage,
     search: searchValue,
-    zones: selectedZones
+    zones: selectedZones,
   });
   const { data: zoneList, refetch: ZoneListsRefetch } = useGetZonesListQuery();
   const [addJudge, { isLoading: isLoadingMutation }] = useAddJudgeMutation({});
@@ -72,9 +72,9 @@ const Judges = () => {
         duration: 2000,
         style: {
           backgroundColor: "#e9c70b", // Custom red color for error
-          color: "#FFFFFF" // Text color
+          color: "#FFFFFF", // Text color
         },
-        dismissible: true
+        dismissible: true,
       });
       return; // Stop the form from submitting if no zone is selected
     }
@@ -98,9 +98,9 @@ const Judges = () => {
             duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF" // Text color
+              color: "#FFFFFF", // Text color
             },
-            dismissible: true
+            dismissible: true,
           });
         }
       } else {
@@ -116,9 +116,9 @@ const Judges = () => {
             duration: 2000,
             style: {
               backgroundColor: "#fb0909", // Custom green color for success
-              color: "#FFFFFF" // Text color
+              color: "#FFFFFF", // Text color
             },
-            dismissible: true
+            dismissible: true,
           });
         }
       }
@@ -141,7 +141,7 @@ const Judges = () => {
   const handleDelete = async () => {
     try {
       const body = {
-        judgeId: selectedJudgeId
+        judgeId: selectedJudgeId,
       };
       const deleteres = await deleteJudge?.(body);
       if (deleteres?.data?.success) {
@@ -154,9 +154,9 @@ const Judges = () => {
           duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF" // Text color
+            color: "#FFFFFF", // Text color
           },
-          dismissible: true
+          dismissible: true,
         });
       }
     } catch (error) {
@@ -179,7 +179,7 @@ const Judges = () => {
   const handleBlockJudge = async () => {
     try {
       const body = {
-        judgeId: selectedJudgeId
+        judgeId: selectedJudgeId,
       };
       const deleteres = await blockJudge?.(body);
       if (deleteres?.data?.success) {
@@ -191,9 +191,9 @@ const Judges = () => {
           duration: 2000,
           style: {
             backgroundColor: "#fb0909", // Custom green color for success
-            color: "#FFFFFF" // Text color
+            color: "#FFFFFF", // Text color
           },
-          dismissible: true
+          dismissible: true,
         });
       }
     } catch (error) {
@@ -240,9 +240,9 @@ const Judges = () => {
         duration: 2000,
         style: {
           backgroundColor: "#e5cc0e", // Custom red color for error
-          color: "#FFFFFF" // Text color
+          color: "#FFFFFF", // Text color
         },
-        dismissible: true
+        dismissible: true,
       });
       return; // Exit the function if there's no valid image
     }
@@ -290,20 +290,23 @@ const Judges = () => {
           <span className="flex items-center">
             <span
               className="bg-[#0EB599] hover:bg-[#068A55] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
-              onClick={toggleModal}>
+              onClick={toggleModal}
+            >
               Add Judge
             </span>
 
             <Modal
               isVisible={isModalVisible}
               onClose={handleModalClose}
-              modalHeader={editPopupData ? "Edit Judge" : "Add Judge"}>
+              modalHeader={editPopupData ? "Edit Judge" : "Add Judge"}
+            >
               <form onSubmit={onSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium text-gray-700">
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Full name
                     </label>
                     <input
@@ -321,7 +324,8 @@ const Judges = () => {
                   <div>
                     <label
                       htmlFor="zone"
-                      className="block text-sm font-medium text-gray-700">
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Zone
                     </label>
                     <Select
@@ -363,7 +367,8 @@ const Judges = () => {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-gray-700">
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Email address
                     </label>
                     <input
@@ -381,7 +386,8 @@ const Judges = () => {
                   <div>
                     <label
                       htmlFor="phone"
-                      className="block text-sm font-medium text-gray-700">
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Phone number
                     </label>
                     <input
@@ -402,7 +408,8 @@ const Judges = () => {
                   <div>
                     <label
                       htmlFor="address"
-                      className="block text-sm font-medium text-gray-700">
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Address
                     </label>
                     <input
@@ -421,7 +428,8 @@ const Judges = () => {
                     <div>
                       <label
                         htmlFor="gender"
-                        className="block text-sm font-medium text-gray-700">
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Gender
                       </label>
                       <select
@@ -430,7 +438,8 @@ const Judges = () => {
                         className="mt-1 block w-full border-2 p-1 border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         defaultValue={
                           editPopupData?.gender ? editPopupData?.gender : ""
-                        }>
+                        }
+                      >
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                       </select>
@@ -438,7 +447,8 @@ const Judges = () => {
                     <div className="mt-5">
                       <label
                         htmlFor="image"
-                        className="block text-sm font-medium text-gray-700">
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Image
                       </label>
                       <input
@@ -476,7 +486,8 @@ const Judges = () => {
                   <button
                     disabled={isLoadingMutation || isLoadingEdit}
                     type="submit"
-                    className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl">
+                    className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
+                  >
                     {isLoadingMutation || isLoadingEdit
                       ? "loading..."
                       : "Submit"}
@@ -492,13 +503,15 @@ const Judges = () => {
                 <button
                   onClick={handleDeleteModalClose}
                   type="submit"
-                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
+                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
+                >
                   No
                 </button>
                 <button
                   disabled={isLoadingDelete}
                   onClick={handleDelete}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
+                >
                   YES
                 </button>
               </div>
@@ -512,13 +525,15 @@ const Judges = () => {
                   disabled={isLoadingBlock}
                   onClick={handleBlockModalClose}
                   type="submit"
-                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl">
+                  className="border border-green-500 text-green-600 hover:bg-green-700 hover:text-white font-bold  py-2 m-2 px-8 rounded-2xl"
+                >
                   No
                 </button>
                 <button
                   disabled={isLoadingBlock}
                   onClick={handleBlockJudge}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl">
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 m-2 px-8 rounded-2xl"
+                >
                   {isLoadingBlock ? "loading" : "YES"}
                 </button>
               </div>
@@ -531,7 +546,8 @@ const Judges = () => {
           <FilterPopup
             filterHeader="Zone"
             isOpen={isFilterPopupOpen}
-            togglePopup={toggleFilterPopup}>
+            togglePopup={toggleFilterPopup}
+          >
             <div className="space-y-4">
               {/* Example Filter Option 1 */}
               {selectOption && (
@@ -553,12 +569,14 @@ const Judges = () => {
                         {filterZonesList.map((zone) => (
                           <li
                             key={zone.value}
-                            className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light">
+                            className="bg-[#1DB290] flex items-center justify-between text-white rounded-full py-0.5 px-2 text-xs font-light"
+                          >
                             <span>{zone.label}</span>
                             <button
                               type="button"
                               onClick={() => handleRemoveZone(zone)}
-                              className="ml-2">
+                              className="ml-2"
+                            >
                               <IoIosClose className="text-lg" />
                             </button>
                           </li>
@@ -573,26 +591,26 @@ const Judges = () => {
                 <button
                   onClick={handleFilterClick}
                   type="submit"
-                  className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl">
+                  className="bg-[#0EB599] hover:bg-[#068A55] text-white font-bold py-2 px-6 rounded-3xl"
+                >
                   Apply
                 </button>
               </div>
             </div>
           </FilterPopup>
-          <div  className="ml-auto lg:mr-4 flex items-center space-x-4 justify-end pt-3">
+          <div className="ml-auto lg:mr-4 flex items-center space-x-4 justify-end pt-3">
             {/* Parent div for span elements */}
             <span className="flex items-center justify-center">
               <input
                 onChange={(e) => {
                   handleSearchChange(e.target.value);
                 }}
-                  className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
+                className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
                 placeholder="Search by name"
               />
             </span>
             <span className="flex items-center">
-              <span
-                className="cursor-pointer bg-[#0EB599] hover:bg-[#068A55] text-white p-2 lg:w-[100px] text-center rounded-3xl">
+              <span className="cursor-pointer bg-[#0EB599] hover:bg-[#068A55] text-white p-2 lg:w-[100px] text-center rounded-3xl">
                 Search
               </span>
             </span>
@@ -603,14 +621,30 @@ const Judges = () => {
       <table className="min-w-full table-auto mt-6">
         <thead className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px]">
           <tr>
-            <th className="px-4 py-4 text-left border-r border-gray-400">Sl No</th>
-            <th className="px-4 py-4 text-left border-r border-gray-400">Image</th>
-            <th className="px-4 py-4 text-left border-r border-gray-400">Name</th>
-            <th className="px-4 py-4 text-left border-r border-gray-400">Zone</th>
-            <th className="px-4 py-4 text-left border-r border-gray-400">Email</th>
-            <th className="px-4 py-4 text-left border-r border-gray-400">Main Judge</th>
-            <th className="px-4 py-4 text-left border-r border-gray-400">Password</th>
-            <th className="px-4 py-4 text-left border-r border-gray-400">Status</th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">
+              Sl No
+            </th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">
+              Image
+            </th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">
+              Name
+            </th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">
+              Zone
+            </th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">
+              Email
+            </th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">
+              Main Judge
+            </th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">
+              Password
+            </th>
+            <th className="px-4 py-4 text-left border-r border-gray-400">
+              Status
+            </th>
             <th className="px-4 py-4 text-left">Action</th>
           </tr>
         </thead>
@@ -620,16 +654,19 @@ const Judges = () => {
           ) : (
             data?.judge?.map((judge, index) => (
               <tr
-               className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
-                key={index}>
+                className="odd:bg-teal-100 even:bg-grey border-[2px] border-opacity-50 border-[#9e9696]"
+                key={index}
+              >
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400">
+                  className="px-4 py-2 border-r border-gray-400"
+                >
                   {index + 1}
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400">
+                  className="px-4 py-2 border-r border-gray-400"
+                >
                   <img
                     alt="img"
                     src={judge?.image ?? JudgeAvatar}
@@ -638,22 +675,28 @@ const Judges = () => {
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400">
-                     <u style={{cursor:"pointer"}} onMouseOver={({target})=>target.style.color="blue"}
-    onMouseOut={({target})=>target.style.color="black"}
->
-                  {judge?.name}</u>
+                  className="px-4 py-2 border-r border-gray-400"
+                >
+                  <u
+                    style={{ cursor: "pointer" }}
+                    onMouseOver={({ target }) => (target.style.color = "blue")}
+                    onMouseOut={({ target }) => (target.style.color = "black")}
+                  >
+                    {judge?.name}
+                  </u>
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                 className="px-4 py-2 border-r border-gray-400">
+                  className="px-4 py-2 border-r border-gray-400"
+                >
                   {judge?.zone?.name}
                 </td>
                 <td
                   onClick={() => navigate(`/judges/${judge?._id}`)}
-                 className="px-4 py-2 border-r border-gray-400">
+                  className="px-4 py-2 border-r border-gray-400"
+                >
                   {judge?.email}
-                </td >
+                </td>
                 <td className="px-4 py-2 border-r border-gray-400">
                   <div className="flex ml-3 -space-x-2">
                     {judge?.isMain ? "YES" : "NO"}
@@ -663,7 +706,8 @@ const Judges = () => {
                   <div className="flex">
                     <button
                       className="flex mb-4 text-black"
-                      onClick={() => handleCopy(judge?.password)}>
+                      onClick={() => handleCopy(judge?.password)}
+                    >
                       {copied === judge?.password ? (
                         <LuCopyCheck title="Copied" className="h-6 w-6 mr-3" />
                       ) : (
@@ -675,7 +719,8 @@ const Judges = () => {
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleShowPassword(judge?._id)}>
+                      onClick={() => handleShowPassword(judge?._id)}
+                    >
                       <div className="ml-3 mb-6 w-2 h-2">
                         {showPassword?.includes(judge?._id) ? (
                           <PiEyeSlashFill />
@@ -693,7 +738,8 @@ const Judges = () => {
                       judge?.isBlocked
                         ? " text-[#FF0404] border-[#FF0404]"
                         : "  border-[#1DB290] text-[#1DB290]"
-                    } rounded-full  border `}>
+                    } rounded-full  border `}
+                  >
                     {" "}
                     <span>{judge?.isBlocked ? "Blocked" : "Unblocked"}</span>
                     <BiSolidDownArrow className="text-black" />
@@ -702,7 +748,8 @@ const Judges = () => {
                 <td className="px-4 py-2 border-r border-gray-400">
                   <button
                     disabled={isLoadingBlock}
-                    onClick={() => handleEditClick(judge)}>
+                    onClick={() => handleEditClick(judge)}
+                  >
                     <img
                       alt="pics"
                       src="/icons/edit.svg"
