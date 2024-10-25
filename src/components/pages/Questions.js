@@ -10,6 +10,7 @@ import { useDebouncedCallback } from "use-debounce";
 import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { getTextDirection } from "../../common/utils";
 
 const Questions = () => {
   const navigate = useNavigate();
@@ -237,8 +238,8 @@ const Questions = () => {
                 className=" odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}>
                 <td className="px-4 py-2 border-r border-gray-400">{index + 1}</td>
-                <td className="px-4 py-2  border-r border-gray-400">{question?.question}</td>
-                <td className="px-4 py-2 border-r border-gray-400 flex items-center">
+                <td className="px-4 py-2  border-r border-gray-400" dir={getTextDirection(question?.question)}>{question?.question}</td>
+                <td className="px-4 py-2 border-r border-gray-400 flex items-center" dir={getTextDirection(question?.answer)}>
                   {question?.answer}
                 </td>
                 <td className="px-4 py-2 border-r border-gray-400">{question?.questionId}</td>

@@ -65,3 +65,8 @@ export const timeFormater = (date) => {
   );
   return formatedTime;
 };
+
+
+export const getTextDirection = (text) => {
+  return /^[\u0600-\u06FF\s]+$/.test(text) ? "rtl" : "ltr";
+};

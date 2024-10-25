@@ -1,5 +1,5 @@
 // BarChart.js
-import React from "react";
+import React, { useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -22,8 +22,10 @@ ChartJS.register(
 );
 
 const BarChart = () => {
-  const { data, refetch, isLoading } = useGetDashboardDetailQuery();
-
+  const { data, refetch } = useGetDashboardDetailQuery();
+  useEffect(() => {
+    refetch();
+  }, []);
   const barData = {
     labels: data?.data?.zoneBasedParticipants?.map((data) => data?.label),
     datasets: [

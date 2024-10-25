@@ -5,7 +5,7 @@ import judges from "../assets/images/judges.png";
 import zones from "../assets/images/zones.png";
 const DashBoardSection2 = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const { data} = useGetDashboardDetailQuery();
+  const { data,refetch} = useGetDashboardDetailQuery();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -15,7 +15,10 @@ const DashBoardSection2 = () => {
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
-
+  
+  useEffect(() => {
+    refetch();
+  }, []);
   // Format the time as HH:MM:SS AM/PM
   const formattedTime = currentTime.toLocaleTimeString("en-US", {
     hour: "2-digit",

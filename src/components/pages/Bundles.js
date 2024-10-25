@@ -15,6 +15,7 @@ import {
 } from "../../api/bundle";
 import { useGetQuestionsListQuery } from "../../api/common";
 import { toast } from "sonner";
+import { getTextDirection } from "../../common/utils";
 const Bundles = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -49,6 +50,7 @@ const Bundles = () => {
 
   useEffect(() => {
     refetchQuestions();
+    refetch();
   }, []);
 
   // const [selectedDesignation, setSelectedDesignation] =
@@ -222,6 +224,10 @@ const Bundles = () => {
       questionId?.toLowerCase()?.includes(inputValue?.toLowerCase())
     );
   };
+  function autoResize(textarea) {
+    textarea.style.height = "auto"; // Reset height
+    textarea.style.height = textarea?.scrollHeight + "px"; // Set new height based on content
+  }
 
   return (
     <>
@@ -267,7 +273,13 @@ const Bundles = () => {
             className="p-2 lg:w-[250px] w-full appearance-none bg-white border border-gray-400 rounded-3xl"
             placeholder="Bundle ID"
             onChange={(e) => {
-              handleSearchChange(e.target.value);
+              const value = e.target.value;
+              const containsArabic = /[\u0600-\u06FF]/.test(value); // Detects any Arabic character
+
+              // Set direction based on presence of Arabic characters
+              e.target.dir = containsArabic ? "rtl" : "ltr";
+
+              handleSearchChange(value);
             }}
           />
         </span>
@@ -312,16 +324,17 @@ const Bundles = () => {
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
-                  className="px-4 py-2 border-r border-gray-400 text-center"
+                  className="px-4 py-2 border-r border-gray-400 "
                 >
-                  <u
+                  <div className="underline"
                     style={{ cursor: "pointer" }}
                     onMouseOver={({ target }) => (target.style.color = "blue")}
                     onMouseOut={({ target }) => (target.style.color = "black")}
+                    dir={getTextDirection(bundle?.title)}
                   >
                     {" "}
                     {bundle?.title}
-                  </u>
+                  </div>
                 </td>
                 <td
                   onClick={() => navigate(`/bundles/${bundle?._id}`)}
@@ -385,6 +398,19 @@ const Bundles = () => {
                 id="title"
                 className="p-2 mt-1 block w-full border-2 border-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 defaultValue={editPopupData?.title ? editPopupData?.title : ""}
+                dir="auto" // Set to auto initially
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Check if the input consists mostly of Arabic characters or spaces
+                  const isMostlyArabic = /^[\u0600-\u06FF\s]+$/.test(value);
+
+                  // Set input direction based on the content
+                  e.target.dir = isMostlyArabic ? "rtl" : "ltr";
+
+                  // Resize the textarea (if you're using the autoResize function)
+                  autoResize(e.target);
+                }}
               />
             </div>
           </div>

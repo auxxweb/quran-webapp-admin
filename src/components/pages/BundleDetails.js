@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useGetQuestionsListQuery } from "../../api/common";
 import { IoIosClose } from "react-icons/io";
 import { toast } from "sonner";
+import { getTextDirection } from "../../common/utils";
 
 const BundleDetails = () => {
   
@@ -75,7 +76,7 @@ const BundleDetails = () => {
     try {
       if (editPopupData) {
         const body = {
-          bundleId: editPopupData?._id,
+          id: editPopupData?._id,
           questions: selectedQuestions,
         };
         if(selectedQuestions.length <= 0){
@@ -133,7 +134,7 @@ const BundleDetails = () => {
     .map((option) => option?._id);
 
     const body = {
-      bundleId: data?.bundle?._id,
+      id: data?.bundle?._id,
       questions: remainingQuestions,
     };
     const res = await editBundle?.(body);
@@ -217,8 +218,8 @@ const BundleDetails = () => {
             <tr className="">
               <th className="px-4 py-2 text-left font-medium">Qs ID</th>
               <th className="px-4 py-2 text-center font-medium">Question</th>
-              <th className="px-4 py-2 text-center font-medium">Answers</th>
-              <th className="px-4 py-2 text-center font-medium">Actions</th>
+              <th className="px-4 py-2 text-left font-medium">Answers</th>
+              <th className="px-4 py-2 text-left font-medium">Actions</th>
             </tr>
           </thead>
           <tbody className="border-[2px] border-opacity-50 border-[#969696]">
@@ -227,10 +228,10 @@ const BundleDetails = () => {
                 className="font-light odd:bg-teal-100 even:bg-white border-[2px] border-opacity-50 border-[#969696]"
                 key={index}>
                 <td className="w-6 px-4 py-2">{question?.questionId}</td>
-                <td className="px-4 py-2 flex justify-center items-center">
+                <td className="px-4 py-2 " dir={getTextDirection(question?.question)}>
                   {question?.question}
                 </td>
-                <td className="px-4 py-2 text-center">{question?.answer}</td>
+                <td className="px-4 py-2 " dir={getTextDirection(question?.answer)}>{question?.answer}</td>
                 <td className="px-4 py-2 text-center">
                   <button onClick={() => handleDeleteClick(question?._id)}>
                     <img
