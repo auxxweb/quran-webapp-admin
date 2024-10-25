@@ -283,7 +283,11 @@ const Zones = () => {
           key={index}
         >
           <td className="px-4 py-2 border-r border-gray-400">{index + 1}</td>
-          <td className="px-4 py-2 border-r border-gray-400">{zone?.name}</td>
+          <td style={{cursor:"pointer"}} className="px-4 py-2 border-r border-gray-400"> 
+          <u style={{cursor:"pointer"}} onMouseOver={({target})=>target.style.color="blue"}
+    onMouseOut={({target})=>target.style.color="black"}
+>{zone?.name}</u>
+          </td>
           <td className="px-4 py-2 border-r border-gray-400">
             <button
               className="flex text-black items-center space-x-1"
