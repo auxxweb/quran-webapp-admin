@@ -115,6 +115,11 @@ const BundleDetails = () => {
   const handleChange = (selectedOptions) => {
     setQuestions(selectedOptions || []);
   };
+  const handleRemoveQuestion = (questionToRemove) => {
+    setQuestions(
+      questions.filter((question) => question.value !== questionToRemove.value)
+    );
+  };
 
   const handleDelete = async () => {
     if(data?.bundle?.questions?.length <= 1){
@@ -208,7 +213,7 @@ const BundleDetails = () => {
           <button onClick={() => handleEditClick(data?.bundle)}
           className="bg-[#0EB599] hover:bg-[#068A55] text-white rounded-3xl pt-2 pb-2 pl-4 pr-4 cursor-pointer"
               >
-              Add Question
+              Insert new Question
             </button>
         </div>
       </div>
@@ -286,12 +291,12 @@ const BundleDetails = () => {
                 value={questions}
                 isMulti
                 hideSelectedOptions
-                closeMenuOnSelect={false} // Keep the dropdown open for multiple selections
+                closeMenuOnSelect={true} // Keep the dropdown open for multiple selections
                 placeholder="Select Questions"
                 components={{ MultiValue: () => null }} // Hide selected options in input
                 filterOption={customFilterOption}
               />
-              {/* <div className="pt-2">
+              { <div className="pt-2">
                 {questions.length > 0 && (
                   <ul className="flex flex-wrap gap-1">
                     {questions.map((question) => (
@@ -311,7 +316,7 @@ const BundleDetails = () => {
                     ))}
                   </ul>
                 )}
-              </div> */}
+              </div> }
             </div>
           </div>
 
