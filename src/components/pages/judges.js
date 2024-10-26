@@ -551,7 +551,7 @@ const Judges = () => {
             <div className="space-y-4">
               {/* Example Filter Option 1 */}
               {selectOption && (
-                <div className="m-4 w-50">
+                <div className="m-4 w-60">
                   <Select
                     className="border-gray-400"
                     options={selectOption}
