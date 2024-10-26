@@ -155,6 +155,12 @@ const BundleDetails = () => {
     }
 
   };
+
+  const handleRemoveQuestion = (questionToRemove) => {
+    setQuestions(
+      questions.filter((question) => question.value !== questionToRemove.value)
+    );
+  };
   return (
     <>
       <svg
@@ -291,7 +297,7 @@ const BundleDetails = () => {
                 components={{ MultiValue: () => null }} // Hide selected options in input
                 filterOption={customFilterOption}
               />
-              {/* <div className="pt-2">
+              <div className="pt-2">
                 {questions.length > 0 && (
                   <ul className="flex flex-wrap gap-1">
                     {questions.map((question) => (
@@ -311,7 +317,7 @@ const BundleDetails = () => {
                     ))}
                   </ul>
                 )}
-              </div> */}
+              </div>
             </div>
           </div>
 
