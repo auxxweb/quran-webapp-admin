@@ -157,12 +157,25 @@ const Zones = () => {
     setCurrentPage(page);
   };
 
-  const handleCopy = async (value) => {
-    setCopied(value);
-    copy(PUBLIC_USER_FRONTEND_URL + "/participant/" + value);
-    setTimeout(() => {
-      setCopied("");
-    }, 2000);
+  const handleCopy = async (value,mainJudge) => {
+    if(mainJudge){
+
+      setCopied(value);
+      copy(PUBLIC_USER_FRONTEND_URL + "/participant/" + value);
+      setTimeout(() => {
+        setCopied("");
+      }, 2000);
+    }else{
+      toast.error("Please add at least one main judge in this zone.", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          backgroundColor: "#fb0909", // Custom green color for success
+          color: "#FFFFFF", // Text color
+        },
+        dismissible: true,
+      });
+    }
   };
   return (
     <>
@@ -303,7 +316,7 @@ const Zones = () => {
           <td className="px-4 py-2 border-r border-gray-400">
             <button
               className="flex text-black items-center space-x-1"
-              onClick={() => handleCopy(zone?._id)}
+              onClick={() => handleCopy(zone?._id,zone?.mainJudge)}
             >
               {copied === zone?._id ? (
                 <LuCopyCheck title="Copied" className="h-6 w-6" />
