@@ -175,7 +175,7 @@ const Questions = () => {
           </span>
         </div>
       </div>
-      <div className="flex justify-end ml-auto space-x-6 p-4">
+      <div className="ml-auto lg:mr-4 flex items-center space-x-4 justify-end pt-3">
         {/* <span className="flex items-center">
           <select
             value={selectedDesignation}

@@ -244,7 +244,7 @@ const Bundles = () => {
           </span>
         </div>
       </div>
-      <div className="flex justify-end ml-auto space-x-6 p-4">
+      <div className="ml-auto lg:mr-4 flex items-center space-x-4 justify-end pt-3">
         {/* <span className="flex items-center">
           <select
             value={selectedDesignation}
@@ -290,7 +290,7 @@ const Bundles = () => {
         </span>
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto">
+        <table className="min-w-full table-auto mt-6">
           <thead className="bg-white border-gray-400 border-t-[2px] border-l-[2px] border-r-[2px] border-b-[2px] ">
             <tr className="">
               <th className="px-4 py-2 border-r border-gray-400 text-left font-medium">
