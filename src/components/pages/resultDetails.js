@@ -4,7 +4,11 @@ import {
   useEditMarkMutation,
   useGetResultDetailQuery
 } from "../../api/responseAndResult";
-import { dateFormater, timeFormater } from "../../common/utils";
+import {
+  dateFormater,
+  getTextDirection,
+  timeFormater
+} from "../../common/utils";
 
 import placeholder from "../../assets/images/person-placeholder.png";
 import { toast } from "sonner";
@@ -19,7 +23,6 @@ function ResultDetails() {
   const resultId = location.pathname?.split("/")[2];
   const [EditMark, { isLoading: isLoadingEdit }] = useEditMarkMutation();
   const { data, refetch } = useGetResultDetailQuery(resultId);
-
 
   const handleEdit = async () => {
     const body = {
@@ -61,18 +64,18 @@ function ResultDetails() {
   const getTimeDifference = (date2, date1) => {
     const startDate = new Date(date2);
     const endDate = new Date(date1);
-  
+
     // Calculate the difference in milliseconds
     const diffInMs = endDate - startDate;
-  
+
     // Convert milliseconds to total seconds
     const totalSeconds = Math.floor(diffInMs / 1000);
-  
+
     // Calculate minutes and remaining seconds
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-  
-    return `${minutes}.${seconds}s`
+
+    return `${minutes}.${seconds}s`;
   };
 
   const handleEditclick = (id) => {
@@ -140,7 +143,6 @@ function ResultDetails() {
                 </td>
                 <td className="text-2xl font-semibold mt-2 text-gray-600">
                   {dateFormater(data?.result?.startTime)}
-                  
                 </td>
               </tr>
               <tr>
@@ -188,9 +190,17 @@ function ResultDetails() {
               </div>
             </div>
             <div className="p-6">
-              <div className="bg-[#D9D9D9]  p-4 rounded-md">
-                <p className="text-lg font-semibold">{question?.question}</p>
-                <p className="mt-2 text-sm text-black">
+              <div className="bg-[#E9FFFB]  p-4 rounded-md">
+                <p
+                 dir="auto"
+                  // eslint-disable-next-line react/jsx-no-duplicate-props
+                  // dir={getTextDirection(question?.answer)}
+                  className="text-lg font-semibold">
+                  {question?.question}
+                </p>
+                <p
+                  dir={getTextDirection(question?.answer)}
+                  className="mt-2 text-sm text-black">
                   Answer: {question?.answer}
                 </p>
               </div>

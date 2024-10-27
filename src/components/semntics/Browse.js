@@ -30,6 +30,39 @@ function Browse() {
     //eslint-disable-next-line
   }, []);
 
+
+  useEffect(() => {
+    // Function to detect language and apply appropriate classes
+    const applyLanguageClasses = () => {
+      document.querySelectorAll("p, span, div").forEach((element) => {
+        const text = element.textContent;
+
+        // Arabic character range
+        if (/[ء-ي]/.test(text)) {
+          element.classList.add("arabic-text");
+        } 
+        // Malayalam character range
+        else if (/[\u0D00-\u0D7F]/.test(text)) {
+          element.classList.add("malayalam-text");
+        } 
+        // Default to English
+        else {
+          element.classList.add("english-text");
+        }
+      });
+    };
+
+    // Apply classes initially
+    applyLanguageClasses();
+
+    // Apply classes whenever content updates
+    const observer = new MutationObserver(applyLanguageClasses);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Cleanup observer on component unmount
+    return () => observer.disconnect();
+  }, []);
+
   if (publicRoutes.includes(basePath)) {
     return (
       <div className="flex-1 flex flex-col">
