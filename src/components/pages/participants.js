@@ -227,7 +227,7 @@ const Participants = () => {
     <>
       <div className="flex rounded-lg p-4">
         <h2 className="text-2xl font-semibold text-gray-700">Participants</h2>
-        <div className="ml-auto flex items-center space-x-4">
+        <div className="ml-auto flex items-center">
           {" "}
           <span className="flex items-center">
             <span
@@ -242,8 +242,8 @@ const Participants = () => {
             onClose={handleModalClose}
             modalHeader={editPopupData ? "Edit Participant" : "Add Participant"}
           >
-            <form onSubmit={onSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <form onSubmit={onSubmit} className="space-y-4 overflow-y-scroll">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                   <label
                     htmlFor="name"
@@ -284,7 +284,7 @@ const Participants = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                   <label
                     htmlFor="email"
@@ -325,7 +325,7 @@ const Participants = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                   <label
                     htmlFor="address"

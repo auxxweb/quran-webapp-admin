@@ -301,7 +301,7 @@ const Judges = () => {
               modalHeader={editPopupData ? "Edit Judge" : "Add Judge"}
             >
               <form onSubmit={onSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div>
                     <label
                       htmlFor="name"
@@ -363,7 +363,7 @@ const Judges = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div>
                     <label
                       htmlFor="email"
@@ -404,7 +404,7 @@ const Judges = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div>
                     <label
                       htmlFor="address"
