@@ -319,6 +319,9 @@ const JudgeDetails = () => {
         <h3 className="flex self-center text-lg font-bold">
           Are you sure want to Block/Unblock?
         </h3>
+        <h6 className="flex self-center text-lg text-red font-semibold">
+          Judges cannot be unblocked while the competition is live.
+        </h6>
         <div className="flex justify-center p-6">
           <button
             disabled={isLoadingBlock}
